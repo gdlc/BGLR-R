@@ -42,7 +42,7 @@
               (K) must be provided. Further details about the models implemented in BGLR see the vignettes in the package or \url{http://genomics.cimmyt.org/BGLR-extdoc.pdf}. 
              }
    \item{weights}{(numeric, \eqn{n}{n}) a vector of weights, may be \code{NULL}. If weights is not \code{NULL}, the 
-                  residual variance of each data-point is set to be proportional to the square of the weight. Only
+                  residual variance of each data-point is set to be proportional to the inverse of the squared-weight. Only
                   used with Gaussian outcomes.}
    \item{nIter,burnIn, thin}{(integer) the number of iterations, burn-in and thinning.}
    \item{saveAt}{(string) this may include a path and a pre-fix that will be added to the name of the files that are saved as the program runs.}
