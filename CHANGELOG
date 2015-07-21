@@ -1,0 +1,36 @@
+version 1.0 (2012-10-01)
+  
+  It starts as a copy of BLR version 1.3
+  
+  major changes, new list interface, models added for continuous, discrete and 
+  censored traits. 
+  
+  For continuous traits:
+  
+  -BayesA
+  -BayesB
+  -BayesC-pi
+  -RKHS(reproducing kernel Hilbert spaces)
+  
+  For discrete traits
+  
+  -Binary responses
+  -Ordinal responses
+
+   New functions to read and write plink files in binary format
+
+version 1.0.1 
+
+  initial release
+
+version 1.0.2
+
+  some documentation fixes, some comments added to the code
+
+version 1.0.3
+  some methods added: summary, residuals, predict, effects
+
+version 1.0.4
+  methods added to deal with heterogeneous variances
+  bug fixes for BayesB and BayesC-pi. There was a bug that included 
+  markers that should not appear in the model.

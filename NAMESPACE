@@ -1,0 +1,13 @@
+useDynLib(BGLR)
+
+export(BGLR,BLR, 
+       read_bed,read_ped,
+       write_bed)
+
+exportMethods(BGLR)
+
+#S3method(effects, BGLR)
+S3method(plot, BGLR)
+S3method(residuals, BGLR)
+S3method(predict,BGLR)
+S3method(summary,BGLR)

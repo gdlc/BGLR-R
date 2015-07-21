@@ -1,0 +1,14 @@
+BL		Bayesian LASSO
+BRR		Bayesian Ridge Regression
+BRR_windows     Bayesian Ridge Regression with sliding windows
+RKHS		Reproducing kernel Hilbert spaces
+RKHS_KA		Reproducing kernel Hilbert spaces with kernel averaging
+BayesC		BayesC-pi
+BA		BayesA
+BB		BayesB
+Bernoulli	Probit regression
+ordinal		Ordinal regression
+read_bed	Read a BED file
+read_ped	Read a PED file
+write_bed      	Write a BED file
+censored	Regression for censored samples
