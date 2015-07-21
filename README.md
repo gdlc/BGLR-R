@@ -7,6 +7,13 @@ Technical details about the software and the methods implemented, as well as sev
 
 [Genome-wide regression and prediction with the BGLR statistical package (Genetics, 2014)](http://www.ncbi.nlm.nih.gov/pubmed/25009151)
 
+** Installing BGLR from GitHub **
+
+```R
+   install.packages(pkg='devtools',repos='https://cran.r-project.org/')  #1# install devtools
+   library(devtools)                                                     #2# load the library
+   install_github('https://github.com/gdlc/BGLR/')                       #3# install BGLR from GitHub
+```
 
 Recent changes:
    - In V.1.0.4 We have implemented models for heterogeneous error variances (example).
@@ -15,5 +22,5 @@ Recent changes:
       - implemented a new method (BRR-groups), this model is similar to BRR but uses one variance parameter per set of predictors (example),
       - added a function that computes, from samples of effects, the contribution of sets of SNPs to variance (example).
             
-            
+
             
