@@ -15,6 +15,14 @@ Technical details about the software and the methods implemented, as well as sev
    install_github('https://github.com/gdlc/BGLR/')                       #3# install BGLR from GitHub
 ```
 
+*Note*: when trying to install from github on a mac I got the following error message
+
+```
+ld: library not found for -lgfortran
+```
+
+I was able to fix it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
+
 Recent changes:
    - In V.1.0.4 We have implemented models for heterogeneous error variances (example).
    - More recently, in this repository, we:
