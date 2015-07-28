@@ -1,7 +1,7 @@
 useDynLib(BGLR)
 
 export(BGLR,BLR, 
-       read_bed,read_ped, write_bed,readBinMat,getVar)
+       read_bed,read_ped, write_bed,readBinMat,getVariances)
 
 exportMethods(BGLR)
 
