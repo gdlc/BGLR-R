@@ -12,7 +12,7 @@ Technical details about the software and the methods implemented, as well as sev
 ```R
    install.packages(pkg='devtools',repos='https://cran.r-project.org/')  #1# install devtools
    library(devtools)                                                     #2# load the library
-   install_github('https://github.com/gdlc/BGLR/')                       #3# install BGLR from GitHub
+   install_git('https://github.com/gdlc/BGLR/')                       #3# install BGLR from GitHub
 ```
 
 *Note*: when trying to install from github on a mac I got the following error message
