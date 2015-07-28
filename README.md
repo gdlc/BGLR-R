@@ -17,6 +17,12 @@ Technical details about the software and the methods implemented, as well as sev
 
 *Note*: when trying to install from github on a mac I got the following error message
 
+
+**Examples**
+
+-[Shinkage & Variable Selection (Human SNPs) ]()
+
+
 ```
 ld: library not found for -lgfortran
 ```
