@@ -20,7 +20,7 @@ Technical details about the software and the methods implemented, as well as sev
 
 **Examples**
 
--[Shinkage & Variable Selection (Human SNPs) ]()
+- [Shinkage & Variable Selection (Human SNPs) ](https://github.com/gdlc/BGLR/blob/master/exampleHumanSNP.md)
 
 
 ```
