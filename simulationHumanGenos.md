@@ -43,14 +43,11 @@ The following code simulates a simple trait with heritability 0.5 and 10 QTL.
  # Point of mass at zero plus a slab (BayesB)
   fmBB=BGLR(y=yNA,ETA=list(list(X=X,model='BayesB')), saveAt='bb_',nIter=nIter,burnIn=burnIn)
 
- # Gausian pior with window-specific variances
- fmBRRW=BGLR(y=yNA,ETA=list(list(X=X,model='BRR_windows')),nIeter=nIter,burnIn=burnIn)
-
  # Estimated effects
-  plot(abs(fmBRR$ETA[[1]]$b)); abline(v=QTLs,lty=2,col=4)
-  plot(abs(fmBA$ETA[[1]]$b)); abline(v=QTLs,lty=2,col=4)
-  plot(abs(fmBB$ETA[[1]]$b)); abline(v=QTLs,lty=2,col=4)
- 
+ plot(abs(fmBRR$ETA[[1]]$b),main='Model=BRR',ylab='|estimated effect|',cex=.5,col=2,type='o') ;abline(v=QTLs,lty=2,col=4)
+ plot(abs(fmBB$ETA[[1]]$b),main='Model=BB',  ylab='|estimated effect|',cex=.5,col=2,type='o') ;abline(v=QTLs,lty=2,col=4)
+ plot(abs(fmBB$ETA[[1]]$b),main='Model=BRR', ylab='|estimated effect|',cex=.5,col=2,type='o') ;abline(v=QTLs,lty=2,col=4)
+
  # Prediction correlation in testing set
   cor(y[tst],fmBRR$yHat[tst])
   cor(y[tst],fmBA$yHat[tst])
