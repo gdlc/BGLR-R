@@ -27,19 +27,24 @@ The genotypes used for the simulation can be downloaded from the following[link]
 
 #### Fitting four different models with BGLR
 ```R
- G=tcrossprod(scale(X))/ncol(X)
- EVD=eigen(G)
- plot(y=c(0,cumsum(EVD$values)/sum(EVD$values)),x=0:nrow(G),type='o',col=2,cex=.5)
- plot(EVD$vectors[,1:2],cex=.5,col=2)
- library(BGLR)
+ nIter=12000
+ burnIn=2000
+ # Gaussian prior (equivalent to Genomic BLUP)
+  fmBRR=BGLR(y=y,ETA=list(list(X=X,model='BRR')), saveAt='brr_',nIeter=nIter,burnIn=burnIn)
  
- fmGBLUP=BGLR(y=y,ETA=list(list(V=EVD$vectors,d=EVD$values,model='RKHS')))
- fmBRR=BGLR(y=y,ETA=list(list(X=X,model='BRR')), saveAt='brr_')
+ # t-prior (BayesA)
+  fmBA=BGLR(y=y,ETA=list(list(X=X,model='BayesA')), saveAt='ba_',nIeter=nIter,burnIn=burnIn)
  
+ # double-exponential prior (Bayesian Lasso)
+ 
+  fmBL=BGLR(y=y,ETA=list(list(X=X,model='BL')), saveAt='bl_',nIeter=nIter,burnIn=burnIn)
 
  
- fmGBLUP=BGLR(y=error+signal,ETA=list(list(X=X,model='BRR')))
- fmBB=BGLR(y=error+signal,ETA=list(list(X=X,model='BayesB')))
+ # Point of mass at zero plus a slab (BayesB)
+  fmBB=BGLR(y=y,ETA=list(list(X=X,model='BayesB')), saveAt='bb_',nIeter=nIter,burnIn=burnIn)
+
+ # Gausian pior with window-specific variances
+ fmBRRW=BGLR(y=y,ETA=list(list(X=X,model='BRR_windows')),nIeter=nIter,burnIn=burnIn)
 
 ```
 
