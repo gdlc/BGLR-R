@@ -2,7 +2,10 @@
 
 In the following example we use human genotypes (SNPs from distantly related individuals) to simulate an additive trait and subsequently analyze the simulated data using four Bayesian models that differ on the prior distirbution of effects. 
 
-The genotypes used for the simulation can be downloaded from the following[link](https://www.dropbox.com/s/tkrnzipro28gah2/X_3K_30K.RData?dl=0).
+
+[link]()
+
+The genotypes used for the simulation can be downloaded from the following [link](https://www.dropbox.com/s/tkrnzipro28gah2/X_3K_30K.RData?dl=0).
 
 #### Simulation
 ```R
