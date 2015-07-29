@@ -1,4 +1,4 @@
-### Imlementing shrinkage and variable selection methods with BGLR
+###(1) Imlementing shrinkage and variable selection methods with BGLR
 
 In the following example we use human genotypes (SNPs from distantly related individuals) to simulate an additive trait and subsequently analyze the simulated data using four Bayesian models that differ on the prior distirbution of effects. The following figure display three prior densities commonly used in genomic models: the Gaussian density (black, used in the G-BLUP or Bayesian Ridge Regression model), the double-exponential density (blue, used in the Bayesian Lasso) and a point-of-mass-plus-slab prior (red, used in models BayesB and BayesC).
 
@@ -32,26 +32,30 @@ The following code simulates a simple trait with heritability 0.5 and 10 QTL.
 
 #### Fitting four different models with BGLR
 ```R
- nIter=12000
- burnIn=2000
+ nIter=6000 # note, we use a limited number of iterations to illustrate; for formal analyses longer chains are needed.
+ burnIn=1000
  # Gaussian prior (equivalent to Genomic BLUP)
-  fmBRR=BGLR(y=y,ETA=list(list(X=X,model='BRR')), saveAt='brr_',nIeter=nIter,burnIn=burnIn)
+  fmBRR=BGLR(y=yNA,ETA=list(list(X=X,model='BRR')), saveAt='brr_',nIter=nIter,burnIn=burnIn)
  
- # t-prior (BayesA)
-  fmBA=BGLR(y=y,ETA=list(list(X=X,model='BayesA')), saveAt='ba_',nIeter=nIter,burnIn=burnIn)
- 
- # double-exponential prior (Bayesian Lasso)
- 
-  fmBL=BGLR(y=y,ETA=list(list(X=X,model='BL')), saveAt='bl_',nIeter=nIter,burnIn=burnIn)
-
+ # t-prior (BayesA, prior from the thick-tail faimily, similar to BL=Bayesian Lasso)
+  fmBA=BGLR(y=yNA,ETA=list(list(X=X,model='BayesA')), saveAt='ba_',nIter=nIter,burnIn=burnIn)
  
  # Point of mass at zero plus a slab (BayesB)
-  fmBB=BGLR(y=y,ETA=list(list(X=X,model='BayesB')), saveAt='bb_',nIeter=nIter,burnIn=burnIn)
+  fmBB=BGLR(y=yNA,ETA=list(list(X=X,model='BayesB')), saveAt='bb_',nIter=nIter,burnIn=burnIn)
 
  # Gausian pior with window-specific variances
- fmBRRW=BGLR(y=y,ETA=list(list(X=X,model='BRR_windows')),nIeter=nIter,burnIn=burnIn)
+ fmBRRW=BGLR(y=yNA,ETA=list(list(X=X,model='BRR_windows')),nIeter=nIter,burnIn=burnIn)
+
+ # Estimated effects
+  plot(abs(fmBRR$ETA[[1]]$b)); abline(v=QTLs,lty=2,col=4)
+  plot(abs(fmBA$ETA[[1]]$b)); abline(v=QTLs,lty=2,col=4)
+  plot(abs(fmBB$ETA[[1]]$b)); abline(v=QTLs,lty=2,col=4)
+ 
+ # Prediction correlation in testing set
+  cor(y[tst],fmBRR$yHat[tst])
+  cor(y[tst],fmBA$yHat[tst])
+  cor(y[tst],fmBB$yHat[tst])
 
 ```
 
-```
-
+ 
