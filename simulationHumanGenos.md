@@ -5,7 +5,7 @@ In the following example we use human genotypes (SNPs from distantly related ind
 
 ![Priors](https://github.com/gdlc/BGLR/blob/master/priors.jpg)
 
-The simulation uses real SNP genotypes, these can be downloaded from the following [link](https://www.dropbox.com/s/tkrnzipro28gah2/X_3K_30K.RData?dl=0).
+The simulation uses real SNP genotypes, these can be downloaded from the following [link](https://www.dropbox.com/s/1njvl6sr8maphun/X_1.3K_8K.RData?dl=0).
 
 #### Simulation
 The following code simulates a simple trait with heritability 0.5 and 10 QTL.
