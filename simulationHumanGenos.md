@@ -11,27 +11,28 @@ The simulation uses real SNP genotypes, these can be downloaded from the followi
 The following code simulates a simple trait with heritability 0.5 and 10 QTL.
 
 ```R
- load('~/Dropbox/shortCourseUAB/X_3x10.RData')
+ load('~/Dropbox/shortCourseUAB/X_1.3K_8K.RData')
  n=nrow(X) # number of individuals
  p=ncol(X) # number of markers
  nQTL=10   # number of loci with non-null effects
  h2=.5     # trait heritablity
  QTLs=sample(1:ncol(X),size=nQTL) # position of the QTL
- effects=runif(min=.8,max=1.2,n=nQTL) # QTL effects
+ effects=runif(min=.5,max=1.5,n=nQTL) # QTL effects
  signal=X[,QTLs]%*%effects # genetic signal
  signal=scale(signal)*sqrt(h2)
  error=rnorm(n)*sqrt(1-h2)
  y=signal+error # simulated phenotype.
  
  # Generating a testing set
- tst=sample(1:n,size=500)
+ tst=sample(1:n,size=300)
  yNA=y 
  yNA[tst]=NA # masking phenotypes in the testing set
 ##
 ```
 
 #### Fitting linear regressions with BGLR
-```R
+```R 
+ library(BGLR)
  nIter=6000 # note, we use a limited number of iterations to illustrate; for formal analyses longer chains are needed.
  burnIn=1000
 
@@ -53,15 +54,11 @@ The following code simulates a simple trait with heritability 0.5 and 10 QTL.
 
 ```
 
-###(2) GBLUP model and estimation of genomic heritability with BGLR
+###(2) GBLUP model 
 
 ```R
- G.MRK=tcrossprod(scale(X[,-QTLs])); G=G/mean(diag(G))
- G.ALL=tcrossprod(scale(X))/ncol(X)
- 
- fmMRK=BGLR(y=y,ETA=list(list(K=G.MRK,model='RKHS')),saveAt='mrk_',nIter=nIter,burnIn=burnIn)
- fmALL=BGLR(y=y,ETA=list(list(K=G.ALL,model='RKHS')),saveAt='all_',nIter=nIter,burnIn=burnIn)
- 
- fmMRK$ETA[[1]]$varU ; fmMRK$varE
- fmALL$ETA[[1]]$varU ; fmALL$varE
+ G=tcrossprod(scale(X))/ncol(X)
+ fmGBLUP=BGLR(y=y,ETA=list(list(K=G,model='RKHS')),saveAt='gblup_',nIter=nIter,burnIn=burnIn)
+
+ fmGBLUP$ETA[[1]]$varU ; fmGBLUP$varE
 ```
