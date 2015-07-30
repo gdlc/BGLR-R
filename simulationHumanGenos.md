@@ -2,7 +2,7 @@
 
 In the following example we use human genotypes (SNPs from distantly related individuals) to simulate an additive trait and subsequently analyze the simulated data using four Bayesian models that differ on the prior distirbution of effects. The following figure display three prior densities commonly used in genomic models: the Gaussian density (black, used in the G-BLUP or Bayesian Ridge Regression model), the double-exponential density (red, used in the Bayesian Lasso), the scaled-t prior (green, used in model BayesA) and a point-of-mass-plus-slab prior (blue, used in models BayesB and BayesC).
 
-
+<img src="https://github.com/gdlc/BGLR/blob/master/priors.jpg" width="48">
 ![Priors](https://github.com/gdlc/BGLR/blob/master/priors.jpg)
 
 The simulation uses real SNP genotypes, these can be downloaded from the following [link](https://www.dropbox.com/s/1njvl6sr8maphun/X_1.3K_8K.RData?dl=0).
