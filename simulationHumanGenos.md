@@ -62,3 +62,5 @@ The following code simulates a simple trait with heritability 0.5 and 10 QTL.
 
  fmGBLUP$ETA[[1]]$varU ; fmGBLUP$varE
 ```
+
+[More Examples](http://www.ncbi.nlm.nih.gov/pubmed/25009151)
