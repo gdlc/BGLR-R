@@ -61,9 +61,9 @@ The following code simulates a simple trait with heritability 0.5 and 10 QTL.
 ###(2) GBLUP model 
 
 ```R
- G=tcrossprod(scale(X))/ncol(X)
+ G=tcrossprod(scale(X,scale=F))
+ G=G/mean(diag(G))
  fmGBLUP=BGLR(y=y,ETA=list(list(K=G,model='RKHS')),saveAt='gblup_',nIter=nIter,burnIn=burnIn)
-
  fmGBLUP$ETA[[1]]$varU ; fmGBLUP$varE
 ```
 
