@@ -43,9 +43,14 @@ The following code simulates a simple trait with heritability 0.5 and 10 QTL.
   fmBB=BGLR(y=yNA,ETA=list(list(X=X,model='BayesB')), saveAt='bb_',nIter=nIter,burnIn=burnIn)
 
  # Estimated effects
- plot(abs(fmBRR$ETA[[1]]$b),main='Model=BRR',ylab='|estimated effect|',cex=.5,col=2,type='o') ;abline(v=QTLs,lty=2,col=4)
- plot(abs(fmBB$ETA[[1]]$b),main='Model=BRR', ylab='|estimated effect|',cex=.5,col=2,type='o') ;abline(v=QTLs,lty=2,col=4)
- plot(fmBB$ETA[[1]]$d)
+  plot(abs(fmBRR$ETA[[1]]$b),main='Model=BRR',ylab='|estimated effect|',cex=.5,col=2,type='o')
+  abline(v=QTLs,lty=2,col=4)
+  
+  plot(abs(fmBB$ETA[[1]]$b),main='Model=BRR', ylab='|estimated effect|',cex=.5,col=2,type='o')
+  abline(v=QTLs,lty=2,col=4)
+ 
+ # Probability of inclusion
+  plot(fmBB$ETA[[1]]$d,col=2,cex=.5);abline(v=QTLs,lty=2,col=4)
  
  # Prediction correlation in a testing set
   cor(y[tst],fmBRR$yHat[tst])
