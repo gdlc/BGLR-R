@@ -1,6 +1,6 @@
 ###(1) Imlementing shrinkage and variable selection methods with BGLR
 
-In the following example we use human genotypes (SNPs from distantly related individuals) to simulate an additive trait and subsequently analyze the simulated data using four Bayesian models that differ on the prior distirbution of effects. The following figure display three prior densities commonly used in genomic models: the Gaussian density (black, used in the G-BLUP or Bayesian Ridge Regression model), the double-exponential density (blue, used in the Bayesian Lasso) and a point-of-mass-plus-slab prior (red, used in models BayesB and BayesC).
+In the following example we use human genotypes (SNPs from distantly related individuals) to simulate an additive trait and subsequently analyze the simulated data using four Bayesian models that differ on the prior distirbution of effects. The following figure display three prior densities commonly used in genomic models: the Gaussian density (black, used in the G-BLUP or Bayesian Ridge Regression model), the double-exponential density (red, used in the Bayesian Lasso) and a point-of-mass-plus-slab prior (blue, used in models BayesB and BayesC).
 
 
 ![Priors](https://github.com/gdlc/BGLR/blob/master/priors.jpg)
