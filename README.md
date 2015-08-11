@@ -17,12 +17,6 @@ Technical details about the software and the methods implemented, as well as sev
 
 *Note*: when trying to install from github on a mac I got the following error message
 
-
-**Examples**
-
-- [Shinkage & Variable Selection (Human SNPs) ](https://github.com/gdlc/BGLR/blob/master/exampleHumanSNP.md)
-
-
 ```
 ld: library not found for -lgfortran
 ```
@@ -37,4 +31,9 @@ Recent changes:
       - added a function that computes, from samples of effects, the contribution of sets of SNPs to variance (example).
             
 
+###Examples
+- [BGLR-Genetics](http://www.ncbi.nlm.nih.gov/pubmed/25009151)
+- [Using BRR_sets (new method)]()
+- [Saving effects in binary files & computing window variances (new method)]()
+- [Shinkage & Variable Selection (Human SNPs) ](https://github.com/gdlc/BGLR-R/blob/master/simulationHumanGenos.md)
             
