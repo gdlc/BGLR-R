@@ -23,16 +23,11 @@ ld: library not found for -lgfortran
 
 I was able to fix it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
-Recent changes:
-   - In V.1.0.4 We have implemented models for heterogeneous error variances (example).
-   - More recently, in this repository, we:
-      - added the possiblity of saving samples of effects in binary files (example),
-      - implemented a new method (BRR-groups), this model is similar to BRR but uses one variance parameter per set of predictors (example),
-      - added a function that computes, from samples of effects, the contribution of sets of SNPs to variance (example).
-            
+ 
 
 ###Examples
 - [Comprehensive list of examples (BGLR-Genetics)](http://www.ncbi.nlm.nih.gov/pubmed/25009151)
+- [Modeling Heterogeneous error variances (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_heteroskedastic.md)
 - [Using BRR_sets (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_sets.md)
 - [Saving effects in binary files & computing window variances (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_saveEffects.md)
 - [Shinkage & Variable Selection (Human SNPs) ](https://github.com/gdlc/BGLR-R/blob/master/simulationHumanGenos.md)
