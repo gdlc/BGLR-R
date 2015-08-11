@@ -32,8 +32,8 @@ Recent changes:
             
 
 ###Examples
-- [BGLR-Genetics](http://www.ncbi.nlm.nih.gov/pubmed/25009151)
-- [Using BRR_sets (new method)]()
-- [Saving effects in binary files & computing window variances (new method)]()
+- [Comprehensive list of examples (BGLR-Genetics)](http://www.ncbi.nlm.nih.gov/pubmed/25009151)
+- [Using BRR_sets (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_sets.md)
+- [Saving effects in binary files & computing window variances (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_saveEffects.md)
 - [Shinkage & Variable Selection (Human SNPs) ](https://github.com/gdlc/BGLR-R/blob/master/simulationHumanGenos.md)
             
