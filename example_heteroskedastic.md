@@ -34,4 +34,4 @@ library(BGLR)
 
    fm=BGLR(y=y,ETA=list(list(X=PC,model='BRR')),groups=varGroups)
 
-```R
+```
