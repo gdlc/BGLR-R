@@ -1,5 +1,7 @@
 ### Fitting models with window-specific variances of effects
 
+
+```R
  library(devtools)
  install_git('https://github.com/gdlc/BGLR-R/')
  library(BGLR)
@@ -16,4 +18,4 @@
 
  plot(fm$ETA[[1]]$varB,cex=.1,col=4,type='o')
  abline(v=QTLs,col=2,lty=2,lwd=.5)
-
+```
