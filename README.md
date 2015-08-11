@@ -23,8 +23,9 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
 
 ###Examples
 
-**Comprehensive list of examples**[BGLR-Genetics](http://www.ncbi.nlm.nih.gov/pubmed/25009151)
-**New methods (v 1.05)
+**Comprehensive list of examples** [BGLR-Genetics](http://www.ncbi.nlm.nih.gov/pubmed/25009151).
+
+**New methods (v 1.05)**
 
 - [Modeling Heterogeneous error variances (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_heteroskedastic.md)
 - [Using BRR_sets (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_sets.md)
