@@ -1,5 +1,12 @@
 useDynLib(BGLR)
 
+importFrom("graphics", "abline", "plot")
+importFrom("stats", "cor", "dbeta", "dchisq", "dexp", "dgamma",
+           "dnorm", "model.frame", "model.matrix", "pnorm", "qnorm",
+           "rbeta", "rbinom", "rchisq", "rgamma", "rnorm", "runif",
+           "var", "weighted.mean")
+importFrom("utils", "read.table")
+
 export(BGLR,BLR, 
        read_bed,read_ped, write_bed,readBinMat,getVariances)
 
