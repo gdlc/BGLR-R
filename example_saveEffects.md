@@ -15,5 +15,4 @@ The following example shows how to tell BGLR to save the samples of effects in b
   VAR=getVariances(B=B,X=X,sets=sample(1:20,size=1279,replace=T))
   head(VAR)
   plot(VAR[,"total"])
- setwd('../')
 ```
