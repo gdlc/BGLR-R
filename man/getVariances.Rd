@@ -17,16 +17,8 @@
 	\item{verbose}{(logical), if TRUE it shows progress information in the console.}
 }
 
-\details{
-
-}
-
 \value{
 	A matrix with variances for markers as well as the total.	
-}
-
-\references{
-
 }
 
 \author{
