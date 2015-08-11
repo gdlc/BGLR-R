@@ -1,6 +1,6 @@
 Package: BGLR
-Version: 1.0.4
-Date: 2015-04-07
+Version: 1.0.5 beta
+Date: 2015-08-11
 Title: Bayesian Generalized Linear Regression
 Author: Gustavo de los Campos, Paulino Perez Rodriguez,
 Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
