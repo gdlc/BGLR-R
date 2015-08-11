@@ -7,7 +7,7 @@ Technical details about the software and the methods implemented, as well as sev
 
 [Genome-wide regression and prediction with the BGLR statistical package (Genetics, 2014)](http://www.ncbi.nlm.nih.gov/pubmed/25009151)
 
-**Installing BGLR from GitHub**
+####Installing BGLR from GitHub
 
 ```R
    install.packages(pkg='devtools',repos='https://cran.r-project.org/')  #1# install devtools
@@ -15,13 +15,13 @@ Technical details about the software and the methods implemented, as well as sev
    install_git('https://github.com/gdlc/BGLR/')                       #3# install BGLR from GitHub
 ```
 
-*Note*: when trying to install from github on a mac I got the following error message
+*Note*: when trying to install from github on a mac you may get the following error message
 
 ```
 ld: library not found for -lgfortran
 ```
 
-I was able to fix it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
+This can be fixed it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
  
 
