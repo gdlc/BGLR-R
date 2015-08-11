@@ -844,7 +844,7 @@ welcome=function()
   cat("#                      Bayesian Generalized Linear Regression        #\n");
   cat("#                      Gustavo de los Campos, gdeloscampos@gmail.com #\n");
   cat("#    .oooO     Oooo.   Paulino Perez, perpdgo@gmail.com              #\n");
-  cat("#    (   )     (   )   April, 2015                                   #\n");
+  cat("#    (   )     (   )   Agust, 2015                                   #\n");
   cat("#_____\\ (_______) /_________________________________________________ #\n");
   cat("#      \\_)     (_/                                                   #\n");
   cat("#                                                                    #\n");
@@ -1876,8 +1876,6 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     class(out) = "BGLR"
     return(out)
 }
-
- #fm<-BGLR(y=y,ETA=list(list(X=X,model='FIXED')))
 
 #This function will be a wrapper for BGLR
 #the idea is to maintain the compatibility with the function BLR in 
