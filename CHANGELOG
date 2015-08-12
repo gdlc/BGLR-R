@@ -34,3 +34,7 @@ version 1.0.4
   methods added to deal with heterogeneous variances
   bug fixes for BayesB and BayesC-pi. There was a bug that included 
   markers that should not appear in the model.
+
+version 1.0.5
+  using BRR_sets (BRR_windows removed)
+  saving effects in binary files & computing windos
