@@ -1,6 +1,6 @@
 ## BGLR: An R Package for (Bayesian) High-Dimensional Regression
 
-The BGLR Package ([Perez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151])) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
+The BGLR Package ([Perez-Rodriguez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151])) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
 version beta version. The latest stable release can be downloaded from [CRAN](https://cran.r-project.org/web/packages/BGLR/index.html).
 
 ###Installing BGLR from GitHub
@@ -27,8 +27,8 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
 
 **New methods (v 1.05)**
 
-- [Modeling Heterogeneous error variances (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_heteroskedastic.md)
-- [Using BRR_sets (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_sets.md)
-- [Saving effects in binary files & computing window variances (new method)](https://github.com/gdlc/BGLR-R/blob/master/example_saveEffects.md)
-- [Shinkage & Variable Selection (Human SNPs) ](https://github.com/gdlc/BGLR-R/blob/master/simulationHumanGenos.md)
+- [Modeling Heterogeneous error variances (new method)](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_heteroskedastic.md)
+- [Using BRR_sets (new method)](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_sets.md)
+- [Saving effects in binary files & computing window variances (new method)](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_saveEffects.md)
+- [Shinkage & Variable Selection (Human SNPs) ](https://github.com/gdlc/BGLR-R/blob/master/inst/md/simulationHumanGenos.md)
             
