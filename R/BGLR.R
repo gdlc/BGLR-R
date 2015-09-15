@@ -1065,7 +1065,11 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
         y=as.integer(y)
         z=y  
+
+	fname = paste(saveAt, "thresholds.dat", sep = "")
+        fileOutThresholds = file(description = fname, open = "w")
     }
+
     
     if (is.null(weights)) 
     {
@@ -1566,6 +1570,12 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
             #Output files
             write(x = mu, file = fileOutMu, append = TRUE)
             write(x = varE, ncolumns=nGroups,file = fileOutVarE, append = TRUE)
+
+	    if (response_type == "ordinal") {
+		  write(x=threshold[2:nclass],ncolumns=nclass-1,file=fileOutThresholds,append=TRUE)
+	    }
+
+
             if (i > burnIn) {
                 nSums = nSums + 1
                 k = (nSums - 1)/(nSums)
@@ -1720,6 +1730,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     #Closing files
     close(fileOutVarE)
     close(fileOutMu)
+    if(response_type == "ordinal") close(fileOutThresholds)
 
     if (nLT > 0) {
         for (i in 1:nLT) {
