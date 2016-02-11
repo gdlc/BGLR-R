@@ -1735,8 +1735,8 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     if (nLT > 0) {
         for (i in 1:nLT) {
             if (!is.null(ETA[[i]]$fileOut)) {
-                close(ETA[[i]]$fileOut)
-                ETA[[i]]$fileOut = NULL
+                #close(ETA[[i]]$fileOut)
+                #ETA[[i]]$fileOut = NULL
             }
             print('-----------------------------')
             print(i)
