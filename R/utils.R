@@ -25,7 +25,7 @@ getVariances<-function(X,B,sets,verbose=TRUE)
 	for(i in 1:nSets)
 	{
 		index<-sets==setLabels[i]
-		XList[[i]]<-list(index=index,X=X[,index])
+		XList[[i]]<-list(index=index,X=X[,index,drop=F])
 	}
 
 	rm(X)
@@ -37,7 +37,7 @@ getVariances<-function(X,B,sets,verbose=TRUE)
 
 		for(j in 1:nSets)
 		{
-			uHat<-XList[[j]]$X%*%B[i,XList[[j]]$index]
+			uHat<-XList[[j]]$X%*%as.vector(B[i,XList[[j]]$index])
 			VAR[i,j]<-var(uHat)
 			yHat=yHat+uHat
 		}
