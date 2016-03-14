@@ -1,3 +1,55 @@
+
+ readBinMat=function(filename,byrow=TRUE){
+ 	## Function to read effects saved by BGLR when ETA[[j]]$saveEffects=TRUE
+  	fileIn=file(filename,open='rb')
+ 	n=readBin(fileIn,n=1,what=numeric())
+ 	p=readBin(fileIn,n=1,what=numeric())
+ 	tmp=readBin(fileIn,n=(n*p),what=numeric())
+ 	X=matrix(data=tmp,nrow=n,ncol=p,byrow=byrow)
+ 	close(fileIn)
+ 	return(X)
+ }
+ 
+ 
+getVariances<-function(X,B,sets,verbose=TRUE)
+{
+
+	nSets=length(unique(sets))
+	n=nrow(X)
+	setLabels=unique(sets)
+	nIter=nrow(B)
+	VAR=matrix(nrow=nIter,ncol=(nSets+1),NA)
+	colnames(VAR)<-c(setLabels,'total')
+	XList=list()
+
+	for(i in 1:nSets)
+	{
+		index<-sets==setLabels[i]
+		XList[[i]]<-list(index=index,X=X[,index])
+	}
+
+	rm(X)
+
+	for(i in 1:nIter)
+	{
+		
+		yHat<-rep(0,n)
+
+		for(j in 1:nSets)
+		{
+			uHat<-XList[[j]]$X%*%B[i,XList[[j]]$index]
+			VAR[i,j]<-var(uHat)
+			yHat=yHat+uHat
+		}
+
+		if(verbose){ cat(' Working iteration',i,'(out of',nIter,')\n')}
+		VAR[i,(nSets+1)]<-var(yHat)
+	}
+	return(VAR)
+}
+ 
+
+
 #
 #Rotines for Plink support
 #http://pngu.mgh.harvard.edu/~purcell/plink/
