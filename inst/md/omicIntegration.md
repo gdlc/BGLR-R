@@ -30,5 +30,7 @@ The code below illustrates how to install BGLR and BGData from GitHub. BGLR can 
 #### (3)  Fitting a survival model for Fixed effects using BGLR
 
 ```R
-
+ ETA<-list( COV=list(X=XF, model='FIXED') )
+ nIter=12000; burnIn=2000
+ fm=BGLR(y=y, ETA=LP,nIter=nIter,burnIn=burnIn, saveAt='cov_', response_type='ordinal')
 ```
