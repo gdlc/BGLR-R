@@ -14,7 +14,9 @@ The code below illustrates how to install BGLR and BGData from GitHub. BGLR can 
 ```   
 
 #### (2) Loading data and computing similarity matrices.
-
+ 
+ The function `getG()`, from the [BGData](https://github.com/quantgen/BGData) R-package computes a similarity matrix of the form G=XX'. The function offers several alternatives relative to centering and scaling. The function also allows multi-core computing. For further details follow the link provided above.
+ 
 ```R
  library(BGData)
  library(BGLR)
@@ -23,5 +25,10 @@ The code below illustrates how to install BGLR and BGData from GitHub. BGLR can 
  Gge<-getG(Xge,scaleCol=T,scaleG=T) # Similarity matrix for gene expression.
  Gmt<-getG(Xmt,scaleCol=T,scaleG=T) # Similarity matrix for methylation. 
  XF<- scale(XF, scale=FALSE, center=TRUE) # centering and scaling the incidence matrix for fixed effects.
- 
+```
+
+#### (3)  Fitting a survival model for Fixed effects using BGLR
+
+```R
+
 ```
