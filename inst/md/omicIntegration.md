@@ -17,6 +17,9 @@ The code below illustrates how to install BGLR and BGData from GitHub. BGLR can 
  
  The function `getG()`, from the [BGData](https://github.com/quantgen/BGData) R-package computes a similarity matrix of the form G=XX'. The function offers several alternatives relative to centering and scaling. The function also allows multi-core computing. For further details follow the link provided above.
  
+ **Data**. The code assumes that the user has saved in the file `OMIC_DATA.RDasta` the objects that contain the phenotypic, covariates and omic information
+  * XF: 
+ 
 ```R
  library(BGData)
  library(BGLR)
