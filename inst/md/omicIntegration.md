@@ -2,7 +2,7 @@
 
 The following scripts illustrate how to fit some of the models presented in [Vazquez et al., Genetics (2016)]().
 
-#### Installing required libraries
+#### (1) Installing required libraries
 
 The code below illustrates how to install BGLR and BGData from GitHub. BGLR can also be installed from CRAN using `install.packages()`.
 
@@ -13,9 +13,15 @@ The code below illustrates how to install BGLR and BGData from GitHub. BGLR can 
  install_git('https://github.com/quantgen/BGData/')                      #4# install BGLR from GitHub
 ```   
 
-#### Loading the data and libraries
-
+#### (2) Loading data and computing similarity matrices.
 
 ```R
-
+ library(BGData)
+ library(BGLR)
+ load('OMIC_DATA.RData')
+ 
+ Gge<-getG(Xge,scaleCol=T,scaleG=T) # Similarity matrix for gene expression.
+ Gmt<-getG(Xmt,scaleCol=T,scaleG=T) # Similarity matrix for methylation. 
+ XF<- scale(XF, scale=FALSE, center=TRUE) # centering and scaling the incidence matrix for fixed effects.
+ 
 ```
