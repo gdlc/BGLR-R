@@ -10,6 +10,16 @@
  	return(X)
  }
  
+ writeBinMat=function(x,file,byrow=T){
+    n=nrow(x)
+    p=ncol(x)
+    x=as.vector(x)
+    fileOut<-file(file,open='rb')
+    writeBin(object=n,con=fileOut)
+    writeBin(object=p,con=fileOut)
+    writeBin(object=x,con=fileOut)
+    close(fileOut)
+ }
  
 getVariances<-function(X,B,sets,verbose=TRUE)
 {
