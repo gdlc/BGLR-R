@@ -10,13 +10,13 @@ The following code simulates a simple trait with heritability 0.5 and 10 QTL.
 
 ```R
  load('Z.RData')
- n=nrow(X) # number of individuals
- p=ncol(X) # number of markers
+ n=nrow(Z) # number of individuals
+ p=ncol(Z) # number of markers
  nQTL=10   # number of loci with non-null effects
  h2=.5     # trait heritablity
- QTLs=sample(1:ncol(X),size=nQTL) # position of the QTL
+ QTLs=sample(1:p,size=nQTL) # position of the QTL
  effects=runif(min=.5,max=1.5,n=nQTL) # QTL effects
- signal=X[,QTLs]%*%effects # genetic signal
+ signal=Z[,QTLs]%*%effects # genetic signal
  signal=scale(signal)*sqrt(h2)
  error=rnorm(n)*sqrt(1-h2)
  y=signal+error # simulated phenotype.
@@ -35,10 +35,10 @@ The following code simulates a simple trait with heritability 0.5 and 10 QTL.
  burnIn=1000
 
  # Gaussian prior (equivalent to Genomic BLUP, a shrinkage estimation method)
-  fmBRR=BGLR(y=yNA,ETA=list(list(X=X,model='BRR')), saveAt='brr_',nIter=nIter,burnIn=burnIn)
+  fmBRR=BGLR(y=yNA,ETA=list(list(X=Z,model='BRR')), saveAt='brr_',nIter=nIter,burnIn=burnIn)
 
  # Point of mass at zero plus a slab (BayesB, variable selection and shrinkage)
-  fmBB=BGLR(y=yNA,ETA=list(list(X=X,model='BayesB')), saveAt='bb_',nIter=nIter,burnIn=burnIn)
+  fmBB=BGLR(y=yNA,ETA=list(list(X=Z,model='BayesB')), saveAt='bb_',nIter=nIter,burnIn=burnIn)
 
  # Estimated effects
   plot(abs(fmBRR$ETA[[1]]$b),main='Model=BRR',ylab='|estimated effect|',cex=.5,col=2,type='o')
@@ -60,7 +60,7 @@ The following code simulates a simple trait with heritability 0.5 and 10 QTL.
 ###(2) GBLUP model 
 
 ```R
- G=tcrossprod(scale(X,scale=F))
+ G=tcrossprod(scale(Z,scale=F))
  G=G/mean(diag(G))
  fmGBLUP=BGLR(y=y,ETA=list(list(K=G,model='RKHS')),saveAt='gblup_',nIter=nIter,burnIn=burnIn)
  fmGBLUP$ETA[[1]]$varU ; fmGBLUP$varE
