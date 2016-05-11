@@ -4,13 +4,12 @@ In the following example we use human genotypes (SNPs from distantly related ind
 
 <img src="https://github.com/gdlc/BGLR/blob/master/inst/md/priors.jpg" width="500">
 
-The simulation uses real SNP genotypes, these can be downloaded from the following [link](https://www.dropbox.com/s/1njvl6sr8maphun/X_1.3K_8K.RData?dl=0).
 
 #### Simulation
 The following code simulates a simple trait with heritability 0.5 and 10 QTL.
 
 ```R
- load('~/Dropbox/shortCourseUAB/X_1.3K_8K.RData')
+ load('Z.RData')
  n=nrow(X) # number of individuals
  p=ncol(X) # number of markers
  nQTL=10   # number of loci with non-null effects
