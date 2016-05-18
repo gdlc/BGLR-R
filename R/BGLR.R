@@ -940,8 +940,8 @@ rtrun=function (mu, sigma, a, b)
 
 #Extract the values of z such that y[i]=j
 #z,y vectors, j integer
-#extract=function(z,y,j) subset(as.data.frame(z,y),subset=(y==j))
-extract=function(z,y,j) z[y==j]
+extract=function(z,y,j) subset(as.data.frame(z,y),subset=(y==j))
+#extract=function(z,y,j) z[y==j]
 
 #This routine was adapted from rinvGauss function from S-Plus
 # Random variates from inverse Gaussian distribution
