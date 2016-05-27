@@ -1,6 +1,6 @@
 ### List of Examples
 
-  (1) [Installing BGLR]()
+  - [1-Installing BGLR]()
   
   (2) [Parametric Bayesian Regression]()
   
