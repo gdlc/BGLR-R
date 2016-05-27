@@ -29,13 +29,20 @@ fm1=BGLR(	y=y,ETA=list(mrk=list(X=X,model='BRR')),
 			nIter=nIter,burnIn=burnIn,saveAt='brr_'
 		)
 
+varE=scan('brr_varE.dat')
+varB=scan('brr_ETA_mrk_varB.dat')
+h2_1=varB/(varB+varE)
+h2_1=mean(h2_1[-c(1:100)])
+
 
 G=tcrossprod(X)
-
 fm2=BGLR(	y=y,ETA=list(G=list(K=G,model='RKHS')),
 			nIter=nIter,burnIn=burnIn,saveAt='eig_'
 		)
-
+varE=scan( 'eig_varE.dat')
+varB=scan('eig_ETA_mrk_varB.dat')
+h2_2=varB/(varB+varE)
+h2_2=mean(h2_2[-c(1:100)])
 
 EVD=eigen(G)
 
@@ -52,5 +59,11 @@ PC=PC[,EVD$values>1e-5]
 
 fm3=BGLR(	y=y,ETA=list(pc=list(X=PC,model='BRR')),nIter=nIter,
 			burnIn=burnIn,saveAt='pc_')
+			
+varE=scan( 'pc_varE.dat')
+varB=scan('pc_ETA_mrk_varB.dat')
+h2_3=varB/(varB+varE)
+h2_3=mean(h2_3[-c(1:100)])			
+
 
 ```
