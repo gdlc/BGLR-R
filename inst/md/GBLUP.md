@@ -52,7 +52,7 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  h2_3=varB/(varB+varE)
 ```
 
-**(4) Providing scaled-eigenvectors and using `model='BRR'`
+**(4) Providing scaled-eigenvectors and using `model='BRR'`**
 
 ```R
  PC=EVD$vectors
