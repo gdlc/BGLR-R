@@ -36,7 +36,7 @@ BGLR Fits these Gaussian models using the eigenvalue decomposition og G. The eig
 	 )
  varE=scan( 'eig_varE.dat')
  varU=scan('eig_ETA_G_varU.dat')
- h2_2=varU/(varU+varE)
+ h2_2b=varU/(varU+varE)
 ```
 **(3) Providing eigenvalues and eigenvectors**
 
@@ -63,6 +63,20 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
 	   burnIn=burnIn,saveAt='pc_')
 			
  varE=scan( 'pc_varE.dat')
- varU=scan('pc_ETA_pc_varu.dat')
+ varU=scan('pc_ETA_pc_varU.dat')
  h2_3=varU/(varU+varE)
+```
+
+
+**(5) Using the Cholesky decompositon and `model='BRR'`**
+
+```R
+ L=t(chol(G)) # won't work if G is not positive definite (e.g., when n>p)
+ 
+ fm4=BGLR( y=y,ETA=list(pc=list(X=L,model='BRR')),nIter=nIter,
+	   burnIn=burnIn,saveAt='chol_')
+			
+ varE=scan( 'chol_varE.dat')
+ varU=scan('chol_ETA_pc_varU.dat')
+ h2_4=varU/(varU+varE)
 ```
