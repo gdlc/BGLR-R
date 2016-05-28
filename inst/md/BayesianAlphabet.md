@@ -5,7 +5,7 @@
 The following examples illustrate the priors implemented so far for linear regression in BGLR. In thes examples we illustrate the use of these priors
 one at a time.
 
-**0. Flat Prior (FIXED)**
+**1. Flat Prior (FIXED)**
 
 ```R
  library(BGLR)
@@ -15,16 +15,29 @@ one at a time.
  fm2=lm(Obesity.BMI~GENDER+CoatColour+CageDensity)
  plot(cbind(c(fm$mu,fm$ETA[[1]]$b),coef(fm2))); abline(a=0,b=1)
 ```
-**1. Gaussian Prior (BRR, RR-BLUP, BLUP)**
+
+**2. A simple simulation**
+
+```R
+ h2=.8
+ QTL=seq(from=500,to=10000,by=500)
+ nQTL=length(QTL); n=nrow(X)
+ b=rep(1,nQTL)*sqrt(h2/nQTL)
+ signal=X[,QTL]%*%b
+ error=rnorm(n,sd=sqrt(1-h2))
+ y=signal+error
+```
+
+**3. Gaussian Prior (BRR, RR-BLUP, BLUP)**
 
 
-**2. Scaled-t (BayesA)**
+**4. Scaled-t (BayesA)**
 
 
-**3. Double-Exponential (Bayesian Lasso)**
+**5. Double-Exponential (Bayesian Lasso)**
 
-**4. Point of mass at zero + Gaussian Slab (BayesC)**
+**6. Point of mass at zero + Gaussian Slab (BayesC)**
 
-**5. Point of mass at zero + t-Slab (BayesB)**
+**7. Point of mass at zero + t-Slab (BayesB)**
 
-**6. Gaussian prior with set-specific variance (BRR_sets)**
+**8. Gaussian prior with set-specific variance (BRR_sets)**
