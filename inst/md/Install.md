@@ -13,3 +13,4 @@ From GitHub (development version, added features).
   install.packages(pkg='devtools',repos='https://cran.r-project.org/')
   install_git('https://github.com/gdlc/BGLR-R')
 ```
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/inst/md/EXAMPLES.md)
