@@ -45,7 +45,7 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
 ```R
  EVD=eigen(G)
  
- fm2b=BGLR( y=y,ETA=list(G=list(V=EVD$vectors,d=EVD$values,model='RKHS')),
+ fm3=BGLR( y=y,ETA=list(G=list(V=EVD$vectors,d=EVD$values,model='RKHS')),
 	    nIter=nIter,burnIn=burnIn,saveAt='eigb_')
  varE=scan( 'eigb_varE.dat')
  varU=scan('eigb_ETA_G_varU.dat')
@@ -59,12 +59,12 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  for(i in 1:ncol(PC)){  PC[,i]=PC[,i]*sqrt(EVD$values[i]) }
  PC=PC[,EVD$values>1e-5]
 
- fm3=BGLR( y=y,ETA=list(pc=list(X=PC,model='BRR')),nIter=nIter,
+ fm4=BGLR( y=y,ETA=list(pc=list(X=PC,model='BRR')),nIter=nIter,
 	   burnIn=burnIn,saveAt='pc_')
 			
  varE=scan( 'pc_varE.dat')
- varU=scan('pc_ETA_pc_varU.dat')
- h2_3=varU/(varU+varE)
+ varU=scan('pc_ETA_pc_varB.dat')
+ h2_4=varU/(varU+varE)
 ```
 
 
@@ -75,10 +75,10 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  diag(G)=diag(G)+1/1e4
  L=t(chol(G)) 
  
- fm4=BGLR( y=y,ETA=list(pc=list(X=L,model='BRR')),nIter=nIter,
+ fm5=BGLR( y=y,ETA=list(list(X=L,model='BRR')),nIter=nIter,
 	   burnIn=burnIn,saveAt='chol_')
 			
  varE=scan( 'chol_varE.dat')
- varU=scan('chol_ETA_pc_varU.dat')
- h2_4=varU/(varU+varE)
+ varU=scan('chol_ETA_1_varB.dat')
+ h2_5=varU/(varU+varE)
 ```
