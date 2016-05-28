@@ -30,7 +30,11 @@ one at a time.
 
 **3. Gaussian Prior (BRR, RR-BLUP, BLUP)**
 
-
+```R
+ fmBRR=BGLR(y=y,ETA=list( list(X=X,model='BRR')), 
+            nIter=nIter,burnIn=burnIn,saveAt='brr_')
+ plot(fmBRR$ETA[[1]]$b,col=4,cex=.5, type='o')
+```
 **4. Scaled-t (BayesA)**
 
 
