@@ -35,8 +35,8 @@ BGLR Fits these Gaussian models using the eigenvalue decomposition og G. The eig
 	   nIter=nIter,burnIn=burnIn,saveAt='eig_'
 	 )
  varE=scan( 'eig_varE.dat')
- varU=scan('eig_ETA_mrk_varB.dat')
- h2_2=varB/(varB+varE)
+ varU=scan('eig_ETA_G_varU.dat')
+ h2_2=varU/(varU+varE)
 ```
 **(3) Providing eigenvalues and eigenvectors**
 
@@ -48,8 +48,8 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  fm2b=BGLR( y=y,ETA=list(G=list(V=EVD$vectors,d=EVD$values,model='RKHS')),
 	    nIter=nIter,burnIn=burnIn,saveAt='eigb_')
  varE=scan( 'eigb_varE.dat')
- varU=scan('eigb_ETA_mrk_varB.dat')
- h2_3=varB/(varB+varE)
+ varU=scan('eigb_ETA_G_varU.dat')
+ h2_3=varU/(varU+varE)
 ```
 
 **(4) Providing scaled-eigenvectors and using `model='BRR'`**
@@ -63,6 +63,6 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
 	   burnIn=burnIn,saveAt='pc_')
 			
  varE=scan( 'pc_varE.dat')
- varU=scan('pc_ETA_mrk_varB.dat')
- h2_3=varB/(varB+varE)
+ varU=scan('pc_ETA_pc_varu.dat')
+ h2_3=varU/(varU+varE)
 ```
