@@ -1,10 +1,13 @@
 
+#### Installing BGLR
 
+From CRAN (stable release).
 
 ```R
   install.packages(pkg='BGLR',repos='https://cran.r-project.org/')
 ```
 
+From GitHub (development version, added features).
 
 ```R
   install.packages(pkg='devtools',repos='https://cran.r-project.org/')
