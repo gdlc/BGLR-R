@@ -1,6 +1,7 @@
 
+### Various Ways of fitting a 'GBLUP' model using BGLR
 
-
+#### (i) Providing the G-matrix
 ``` R
 
 library(BGLR)
