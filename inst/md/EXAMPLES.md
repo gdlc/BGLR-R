@@ -1,20 +1,18 @@
 ### BGLR-Examples
 
-  - [1. Installing BGLR]()
+  - [1. Installing BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/Install.md)
   
-  - [2. Parametric Bayesian Regression]()
+  - [2. Parametric Bayesian Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BayesianAlphabet.md)
   
-  - [3. Estimating or Fixing Hyper-parameters?]()
+  - [3. Estimating or Fixing Hyper-parameters?](https://github.com/gdlc/BGLR-R/blob/master/inst/md/Hyperparameters.md)
   
-  - [4. GBLUP: four possible implementations with BGLR]()
+  - [4. GBLUP: various implementations with BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GBLUP.md)
   
-  - [5. Prediction in testing sets: two methods]()
+  - [5. Prediction in testing sets: two methods](https://github.com/gdlc/BGLR-R/blob/master/inst/md/Validation.md)
   
-  - [6. Semi-parametric regression (RKHS) using BGLR]()
+  - [6. Semi-parametric regression (RKHS) using BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS.md)
   
-  - [7. Choosing Bandwith parameters: CV & Kernel Averaging]()
-  
-  - [8. Fitting Models with Multiple sets of Effects]()
+  - [5. Fitting Models with Multiple sets of Effects]()
   
   - [9. Saving Samples of Effects]()
   
