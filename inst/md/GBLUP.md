@@ -13,7 +13,7 @@ In this case BGLR asigns iid normal priors to the markers.
  burnIn=2000
 
  X=scale(wheat.X)/sqrt(ncol(wheat.X))
- y=wheat.Y[,i]
+ y=wheat.Y[,1]
 
  fm1=BGLR( y=y,ETA=list(mrk=list(X=X,model='BRR')),
 	   nIter=nIter,burnIn=burnIn,saveAt='brr_'
