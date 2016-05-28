@@ -69,9 +69,11 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
 
 
 **(5) Using the Cholesky decompositon and `model='BRR'`**
-
+  This approach won't work if G is not positive definite. To avodi this problem we add a small constant in the diagonal.
+  
 ```R
- L=t(chol(G)) # won't work if G is not positive definite (e.g., when n>p)
+ diag(G)=diag(G)+1/1e4
+ L=t(chol(G)) 
  
  fm4=BGLR( y=y,ETA=list(pc=list(X=L,model='BRR')),nIter=nIter,
 	   burnIn=burnIn,saveAt='chol_')
