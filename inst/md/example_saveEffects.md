@@ -15,6 +15,9 @@ The following example shows how to tell BGLR to save the samples of effects in b
    fm=BGLR(y=y,ETA=list(list(X=X,model='BayesB',saveEffects=TRUE)),nIter=3000,thin=2,burnIn=1000)
    B=readBinMat('ETA_1_b.bin')
    plot(B[,1],type='o',col=4)
+   plot(B[,QTL[1]],type='o',col=4)
+   plot(B[,QTL[2]],type='o',col=4)
+   plot(B[,QTL[3]],type='o',col=4)
   
 ```
 [Back to examples](https://github.com/gdlc/BGLR-R/blob/master/inst/md/EXAMPLES.md)
