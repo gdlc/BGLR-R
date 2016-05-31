@@ -14,7 +14,7 @@
   
   - [5. Fitting Models with Multiple sets of Effects ("Mixed-Effects Model")](https://github.com/gdlc/BGLR-R/blob/master/inst/md/mixedModel.md)
   
-  - [9. Saving Samples of Effects]()
+  - [9. Saving Samples of Effects in Binary Files](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_saveEffects.md)
   
   - [10. Heritability Estimation: two methods]()
   
