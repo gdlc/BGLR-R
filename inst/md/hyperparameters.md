@@ -94,3 +94,6 @@ proportion of non-zero effects.
     #Suggestion: refit fm2 using probIn=.999
  
 ```
+
+
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/inst/md/EXAMPLES.md)
