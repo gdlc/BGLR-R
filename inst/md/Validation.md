@@ -93,3 +93,4 @@
 
 
 
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/inst/md/EXAMPLES.md)
