@@ -16,3 +16,4 @@ The following example shows how to tell BGLR to save the samples of effects in b
   head(VAR)
   plot(VAR[,"total"])
 ```
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/inst/md/EXAMPLES.md)
