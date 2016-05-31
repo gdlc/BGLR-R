@@ -12,7 +12,7 @@
   
   - [6. Semi-parametric regression (RKHS) using BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS.md)
   
-  - [5. Fitting Models with Multiple sets of Effects](https://github.com/gdlc/BGLR-R/blob/master/inst/md/mixedModels.md)
+  - [5. Fitting Models with Multiple sets of Effects](https://github.com/gdlc/BGLR-R/blob/master/inst/md/mixedModel.md)
   
   - [9. Saving Samples of Effects]()
   
