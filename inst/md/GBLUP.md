@@ -3,7 +3,7 @@
 
 **(i) Providing the markers, using `model='BRR'`**
 
-In this case BGLR asigns iid normal priors to the markers.
+In this case BGLR asigns iid normal priors to the marker effects.
 
 ``` R
  library(BGLR)
