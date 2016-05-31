@@ -12,8 +12,8 @@
   fm=BGLR(y=pheno$Obesity.BMI,
           ETA=list(
 			fixed=list(~factor(GENDER)+factor(Litter),data=pheno,model='FIXED'),
-		    	cage=list(~factor(cage),data=pheno,model='BRR'),
-		    	ped=list(K=A,model='RKHS'),
+                    	cage=list(~factor(cage),data=pheno,model='BRR'),
+                    	ped=list(K=A,model='RKHS'),
                     	mrk=list(X=X,model='BayesB')
 		)
 	)
