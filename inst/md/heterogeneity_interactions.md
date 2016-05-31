@@ -1,6 +1,6 @@
 #####Estimating the proportion of variance explained by PC
 
-For further details see (xx)[] (de los Campos et al. JABES, 2015)[http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666286/] and references therein.
+For further details see (de los Campos et al., 2015)[http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666286] and references therein.
 
 ```R
   ## Clustering using 5-PCs and kmeans
