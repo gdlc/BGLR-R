@@ -1,6 +1,6 @@
 #####Estimating the proportion of variance explained by PC
 
-For further details see de los Campos et al. (JABES, 2015)[http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666286/] and references therein.
+For further details see (de los Campos et al. JABES, 2015)[http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666286/] and references therein.
 
 ```R
   ## Clustering using 5-PCs and kmeans
@@ -39,5 +39,6 @@ For further details see de los Campos et al. (JABES, 2015)[http://www.ncbi.nlm.n
 ```
 
 **NOTE**: Similar models can be fitted using G-matrices or PCs.
+
 [Back to examples](https://github.com/gdlc/BGLR-R/blob/master/inst/md/EXAMPLES.md)
 
