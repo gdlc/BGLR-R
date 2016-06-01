@@ -29,12 +29,12 @@ The following examples illustrate how to implement marker-by-environments intera
                        int1=list(X=X_1,model='BRR'),
                        int2=list(X=X_2,model='BRR')
                       ),
-	   nIter=6000,burnIn=1000,saveAt='GxE_',groups=re(1:2,each=nrow(X))
+	   nIter=6000,burnIn=1000,saveAt='GxE_',groups=rep(1:2,each=nrow(X))
  	 )
- varU_main=scan('ETA_main_varB.dat')[-c(1:200)]
- varU_int1=scan('ETA_int1_varB.dat')[-c(1:200)]
- varU_int2=scan('ETA_int2_varB.dat')[-c(1:200)]
- varE=read.table('varE.dat',header=FALSE)[-c(1:200),]
+ varU_main=scan('GxE_ETA_main_varB.dat')[-c(1:200)]
+ varU_int1=scan('GxE_ETA_int1_varB.dat')[-c(1:200)]
+ varU_int2=scan('GxE_ETA_int2_varB.dat')[-c(1:200)]
+ varE=read.table('GxE_varE.dat',header=FALSE)[-c(1:200),]
  varU1=varU_main+varU_int1
  varU2=varU_main+varU_int2
  h2_1=varU1/(varU1+varE[,1])
@@ -45,8 +45,7 @@ The following examples illustrate how to implement marker-by-environments intera
  mean(COR)
 ```
 
-**(2) Providing the G-matrix**
-
+**Note**: similar models can be fitted using G-matrices (or factorizations of it) with off-diagnoal blocks zeroed out for interactions, for further detials see [Lopez-Cruz et al., 2015](http://www.g3journal.org/content/5/4/569.full?sid=81d404b6-7d0f-4ace-8556-936393eb829d).
 
 
 [Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
