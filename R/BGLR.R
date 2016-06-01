@@ -1021,7 +1021,7 @@ loglik_ordinal=function(y,yHat,threshold)
 BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL, 
     ETA = NULL, nIter = 1500, burnIn = 500, thin = 5, saveAt = "", 
     S0 = NULL, df0 = 5, R2 = 0.5, weights = NULL, 
-    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL) 
+    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnvironment=F) 
 {
    
     if(verbose)
@@ -1820,6 +1820,11 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     out$fit$postMeanLogLik = post_logLik
     out$fit$pD = -2 * (post_logLik - out$fit$logLikAtPostMean)
     out$fit$DIC = out$fit$pD - 2 * post_logLik
+
+	#*#
+	if(saveEnvironment){
+		save(list=ls(),file=paste0(saveAt,'BGLR_env.RData'))
+	}
 
     # Renaming/removing objects in ETA and appending names
     if (nLT > 0) {
