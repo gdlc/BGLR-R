@@ -10,3 +10,4 @@ The following example illsutrates how to fit models with heterogeneous variances
   cbind(VAR,fm$varE)
 ```
 
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
