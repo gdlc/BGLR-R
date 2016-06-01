@@ -20,4 +20,4 @@ The following example shows how to tell BGLR to save the samples of effects in b
    plot(B[,QTL[3]],type='o',col=4)
   
 ```
-[Back to examples](https://github.com/gdlc/BGLR-R/README.md)
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
