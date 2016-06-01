@@ -20,7 +20,7 @@ one at a time.
 
 ```R
  h2=.5
- QTL=seq(from=50,to=ncol(X),length=20)
+ QTL=floor(seq(from=50,to=ncol(X),length=20))
  nQTL=length(QTL); n=nrow(X)
  b=rep(1,nQTL)*sqrt(h2/nQTL)
  signal=X[,QTL]%*%b
