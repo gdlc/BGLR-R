@@ -60,5 +60,6 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   - [13. Categorical (binary and ordinal) Regression]()
   
   - [14. Censored Regression]()
+
 ---------------------------------------------------------------- 
  
