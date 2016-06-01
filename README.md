@@ -30,6 +30,8 @@ ld: library not found for -lgfortran
 This can be fixed it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
 ### Examples<a name="examples"></a>
+
+**Genomic Regressions**
 ----------------------------------------------------------------
 
   - [1. Parametric Bayesian Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BayesianAlphabet.md)
@@ -61,5 +63,7 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   
   - [14. Censored Regression]()
 
----------------------------------------------------------------- 
- 
+##### Other Omics
+
+  - [Metabolomics (milk-spectra): Ferragina et al., J.D.Sci, 2015](http://www.sciencedirect.com/science/article/pii/S0022030215006645)
+  - Multi-omic (gene expression, methylation & CNV): Vazquez et al., [10th, WCGALP](https://www.researchgate.net/profile/Sadeep_Shrestha/publication/266077932_Integration_of_Multi-Layer_Omic_Data_for_Prediction_of_Disease_Risk_in_Humans/links/542430f30cf26120b7a72201.pdf), [Genetics, 2016.](http://www.genetics.org/content/early/2016/04/27/genetics.115.185181.abstract)
