@@ -82,4 +82,4 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  varU=scan('chol_ETA_1_varB.dat')
  h2_5=varU/(varU+varE)
 ```
-[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/inst/md/EXAMPLES.md)
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
