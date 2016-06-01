@@ -35,3 +35,4 @@ The examples below illustrate how to fit models for binary and ordinal traits us
   head(fm$probs)
   
 ```
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
