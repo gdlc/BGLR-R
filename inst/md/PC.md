@@ -1,6 +1,6 @@
 ** Estimating the proportion of variance explained by PC**
 
-For further details see Janss et al. (Genetics, 2014) and references therein.
+For further details see Janss et al. [Genetics, 2014](http://www.ncbi.nlm.nih.gov/pubmed/?term=janss+de+los+campos+sorensen) and references therein.
 
 ```R
  
@@ -31,3 +31,4 @@ For further details see Janss et al. (Genetics, 2014) and references therein.
    plot(varExplained~EVD$values[1:598])
 ```
 
+[Return to examples](https://github.com/gdlc/BGLR-R)
