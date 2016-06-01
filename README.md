@@ -30,7 +30,6 @@ ld: library not found for -lgfortran
 This can be fixed it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
  
-----------------------------------------------------------------
 ###Examples
 ----------------------------------------------------------------
 
@@ -61,5 +60,5 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   - [13. Categorical (binary and ordinal) Regression]()
   
   - [14. Censored Regression]()
-  
+:---------------------------------------------------------------- 
  
