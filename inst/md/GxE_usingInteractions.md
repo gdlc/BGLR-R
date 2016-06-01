@@ -29,9 +29,20 @@ The following examples illustrate how to implement marker-by-environments intera
                        int1=list(X=X_1,model='BRR'),
                        int2=list(X=X_2,model='BRR')
                       ),
-	   nIter=12999,burnIn=2000,saveAt='GxE_'
+	   nIter=6000,burnIn=1000,saveAt='GxE_'
  	 )
-
+ varU_main=scan('ETA_main_varB.dat')[-c(1:200)]
+ varU_int1=scan('ETA_int1_varB.dat')[-c(1:200)]
+ varU_int2=scan('ETA_int2_varB.dat')[-c(1:200)]
+ varE=read.table('varE.dat',header=FALSE)[-c(1:200),]
+ varU1=varU_main+varU_int1
+ varU2=varU_main+varU_int2
+ h2_1=varU1/(varU1+varE[,1])
+ h2_2=varU2/(varU2+varE[,2])
+ COR=varU_main/sqrt(varU1*varU2)
+ mean(h2_1)
+ mean(h2_2)
+ mean(COR)
 ```
 
 **(2) Providing the G-matrix**
