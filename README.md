@@ -47,7 +47,11 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   
   - [7. Saving Samples of Effects in Binary Files](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_saveEffects.md)
   
+<<<<<<< HEAD
   - [8. Heritability Estimation: two methods](/Users/gdeloscampos/GitHub/BGLR/inst/md/heritability.md)
+=======
+  - [8. Heritability Estimation: two methods](https://github.com/gdlc/BGLR-R/blob/master/inst/md/heritability.md)
+>>>>>>> origin/master
 
   - [10. Heterogeneous Error Variance Models](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_heteroskedastic.md)
   
@@ -58,9 +62,9 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   
   - [12. Estimating the Proportion of Variance Explained by Principal Components](https://github.com/gdlc/BGLR-R/blob/master/inst/md/PC.md)
   
-  - [13. Categorical (binary and ordinal) Regression]()
+  - [13. Categorical (binary and ordinal) Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/categorical.md)
   
-  - [14. Censored Regression]()
+  - [14. Censored Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/censored.md)
 
 
 **Other Omics**
