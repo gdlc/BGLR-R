@@ -92,3 +92,5 @@ Examples (modified) from [de los Campos et al., Genetics Research, 2010](http://
  PMSE<-mean((y[tst]-fmKA$yHat[tst])^2)
  R2_KA<-1-PMSE/mean((y[tst]-mean(y[-tst]))^2)
 ```
+
+[Return to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
