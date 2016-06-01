@@ -76,4 +76,4 @@ plot(abs(fmBRR_sets$ETA[[1]]$b),col=4,cex=.5, type='o',main='BRR_sets');abline(v
 
 ```
 
-[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/inst/md/EXAMPLES.md)
+[Back to examples](https://github.com/gdlc/BGLR-R)
