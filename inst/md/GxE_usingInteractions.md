@@ -29,7 +29,7 @@ The following examples illustrate how to implement marker-by-environments intera
                        int1=list(X=X_1,model='BRR'),
                        int2=list(X=X_2,model='BRR')
                       ),
-	   nIter=6000,burnIn=1000,saveAt='GxE_'
+	   nIter=6000,burnIn=1000,saveAt='GxE_',groups=re(1:2,each=nrow(X))
  	 )
  varU_main=scan('ETA_main_varB.dat')[-c(1:200)]
  varU_int1=scan('ETA_int1_varB.dat')[-c(1:200)]
