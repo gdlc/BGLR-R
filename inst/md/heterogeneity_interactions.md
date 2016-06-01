@@ -40,5 +40,4 @@ For further details see [de los Campos et al., (2015)](http://www.ncbi.nlm.nih.g
 
 **NOTE**: Similar models can be fitted using G-matrices or PCs.
 
-[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/inst/md/EXAMPLES.md)
-
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
