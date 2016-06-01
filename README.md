@@ -3,7 +3,17 @@
 The BGLR Package ([Perez-Rodriguez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151])) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
 version beta version. The latest stable release can be downloaded from [CRAN](https://cran.r-project.org/web/packages/BGLR/index.html).
 
-###Installing BGLR from GitHub
+#### Installation
+
+
+**From CRAN (stable release)**.
+
+```R
+  install.packages(pkg='BGLR',repos='https://cran.r-project.org/')
+```
+
+**From GitHub (development version, added features)**.
+
 
 ```R
    install.packages(pkg='devtools',repos='https://cran.r-project.org/')  #1# install devtools
