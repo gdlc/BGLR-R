@@ -1,4 +1,4 @@
-[Back to examples](#headin)
+[Back to examples](#examples)
 
 ## BGLR: An R Package for (Bayesian) High-Dimensional Regression
 
