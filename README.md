@@ -1,3 +1,5 @@
+[Back to examples](#headin)
+
 ## BGLR: An R Package for (Bayesian) High-Dimensional Regression
 
 The BGLR Package ([Perez-Rodriguez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151])) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
