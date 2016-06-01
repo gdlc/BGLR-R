@@ -29,8 +29,7 @@ ld: library not found for -lgfortran
 
 This can be fixed it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
- 
-###Examples
+### Examples<a name="examples"></a>
 ----------------------------------------------------------------
 
   - [1. Parametric Bayesian Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BayesianAlphabet.md)
