@@ -31,6 +31,7 @@ one at a time.
 **3. Gaussian Prior (BRR, RR-BLUP, BLUP)**
 
 ```R
+ nIter=6000; burnIn=1000
  fmBRR=BGLR(y=y,ETA=list( list(X=X,model='BRR')), 
             nIter=nIter,burnIn=burnIn,saveAt='brr_')
  plot(abs(fmBRR$ETA[[1]]$b),col=4,cex=.5, type='o',main='BRR');abline(v=QTL,col=2,lty=2)
