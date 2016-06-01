@@ -23,7 +23,7 @@ The examples below illustrate how to fit models for binary and ordinal traits us
 ```
 
 
-**Ordinal
+**Ordinal**
 ```R
   yOrdinal=ifelse(y<quantile(y,prob=.33),1,ifelse(y<quantile(y,prob=.66),2,3))
   table(yOrdinal)
