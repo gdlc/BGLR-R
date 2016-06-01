@@ -47,7 +47,7 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   
   - [7. Saving Samples of Effects in Binary Files](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_saveEffects.md)
   
-  - [8. Heritability Estimation: two methods]()
+  - [8. Heritability Estimation: two methods](/Users/gdeloscampos/GitHub/BGLR/inst/md/heritability.md)
 
   - [10. Heterogeneous Error Variance Models](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_heteroskedastic.md)
   
