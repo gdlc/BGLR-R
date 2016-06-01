@@ -18,7 +18,7 @@ Case               | ai  |  yi  | bi
  yNA=y
  a=rep(NA,599)
  b=rep(NA,599)
-
+ type=sample(1:4,prob=c(2/3,1/9,1/9,1/9),size=599,replace=T)
 # left-censored
  a[type==2]=-Inf
  b[type==2]=1
