@@ -31,4 +31,4 @@ For further details see Janss et al. [Genetics, 2014](http://www.ncbi.nlm.nih.go
    plot(varExplained~EVD$values[1:598])
 ```
 
-[Return to examples](https://github.com/gdlc/BGLR-R/README.md)
+[Return to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
