@@ -18,7 +18,7 @@ version beta version. The latest stable release can be downloaded from [CRAN](ht
 ```R
    install.packages(pkg='devtools',repos='https://cran.r-project.org/')  #1# install devtools
    library(devtools)                                                     #2# load the library
-   install_git('https://github.com/gdlc/BGLR/')                          #3# install BGLR from GitHub
+   install_git('https://github.com/gdlc/BGLR-R')                          #3# install BGLR from GitHub
 ```
 
 *Note*: when trying to install from github on a mac you may get the following error message
