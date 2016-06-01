@@ -1749,7 +1749,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     
     #return goodies
 
-    out = list(y = y0, whichNa = whichNa, saveAt = saveAt, nIter = nIter, 
+    out = list(y = y0, a=a,b=b,whichNa = whichNa, saveAt = saveAt, nIter = nIter, 
                burnIn = burnIn, thin = thin, 
                weights = weights, verbose = verbose, 
                response_type = response_type, df0 = df0, S0 = S0)
