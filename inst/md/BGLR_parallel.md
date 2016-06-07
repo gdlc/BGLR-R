@@ -4,20 +4,20 @@ In the followin entry we discuss two approaches for running parallel chains in B
 
 #### Running parallel chains with BGLR I
 
+ First we need a wrapper for BGLR that will set the seed of the RGN to a user-specified value
+ 
+```R
+  BGLR.wrap=function(seed,...){
+	  set.seed(seed)
+	  fm=BGLR(...)
+	  return(list(fm=fm,seed=seed))
+  }
+```
+
+Now we can call BGLR in parallel at multiple cores using the parallel package.
 
 ```R
-  myF=function(nIter,seed){
-    set.seed(seed)
-    samples=rnorm(nIter)
-    return(list(seed=seed,samples=samples))
-  }
-  
-  seeds=sample(100:200,size=4)
-  tmp=mclapply(FUN=myF,mc.cores=4,nIter=100,X=seeds)
-  
-  for(i in 1:4) {set.seed(seeds[i]);x=rnorm(100); print(all.equal(x,tmp[[i]]$samples))}
-  
-  
+ library(parallel)
 ```
 #### Rnning parallel chains with BGLR II
 
