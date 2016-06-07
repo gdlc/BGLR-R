@@ -35,7 +35,12 @@ Now we can call BGLR in parallel at multiple cores using the parallel package.
   names(fmList)=tmp
 ```
 
-**Note**: Unfortounately we are gettina an error if saveEffects=TRUE, this needs to be further explored.
+**Note 1**: Unfortounately we are gettin an error if saveEffects=TRUE, this needs to be further explored.
+
+**Note 2**: Above we we illustrate how to run parallel chains. I this case the argument that changes across processes is the seed.
+However, any aspect of the run may change. For instance, ``BGLR.wrap`` may have as an argument the prior to be used; in such case ``BGLR.wrap`` can be modified so that each processor fits the model with one prior.
+
+
 #### Rnning parallel chains with BGLR II
 
 
