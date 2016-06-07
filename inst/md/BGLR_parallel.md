@@ -9,7 +9,8 @@ In the followin entry we discuss two approaches for running parallel chains in B
 ```R
   BGLR.wrap=function(seed,...){
 	  set.seed(seed)
-	  fm=BGLR(...)
+	  fileName=paste0('seed_',seed,'_')
+	  fm=BGLR(...,saveAt=fileName)
 	  return(list(fm=fm,seed=seed))
   }
 ```
@@ -18,7 +19,23 @@ Now we can call BGLR in parallel at multiple cores using the parallel package.
 
 ```R
  library(parallel)
+ library(BGLR)
+ data(wheat)
+ X=scale(wheat.X)
+ y=wheat.Y[,1]
+ 
+ seeds=c(100,200,300,400)
+ ETA=list(list(X=X,model='BRR'))
+ fmList=mclapply(FUN=BGLR.wrap,X=seeds,mc.cores=4,y=y,ETA=ETA,nIter=6000,burnIn=1000,verbose=F)
+ list.files()
+ 
+ # Adding name to the list (the seed used is the  name)
+  tmp=rep(NA,length(fmList))
+  for(i in 1:length(fmList)){ tmp[i]=fmList[[i]]$seed }
+  names(fmList)=tmp
 ```
+
+**Note**: Unfortounately we are gettina an error if saveEffects=TRUE, this needs to be further explored.
 #### Rnning parallel chains with BGLR II
 
 
