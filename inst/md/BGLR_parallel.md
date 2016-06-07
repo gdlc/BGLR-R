@@ -1,5 +1,27 @@
 ### Running multiple parallel chains with BGLR
 
+In the followin entry we discuss two approaches for running parallel chains in BGLR. The first one is the estanard approach where multiple parallel calls to BGLR() are made. We presenten the example using the parallel package. For computationally involved problems this approach can be inefficient; thefore we introduce a 2nd approach that involves modifications of the BGLR software.
+
+#### Running parallel chains with BGLR I
+
+
+```R
+  myF=function(nIter,seed){
+    set.seed(seed)
+    samples=rnorm(nIter)
+    return(list(seed=seed,samples=samples))
+  }
+  
+  seeds=sample(100:200,size=4)
+  tmp=mclapply(FUN=myF,mc.cores=4,nIter=100,X=seeds)
+  
+  for(i in 1:4) {set.seed(seeds[i]);x=rnorm(100); print(all.equal(x,tmp[[i]]$samples))}
+  
+  
+```
+#### Rnning parallel chains with BGLR II
+
+
 For problems involving large number of predictors and large number of subjects the time per itearation of the sampler may be large (e.g, a ccouple of seconds)
 and running long chains may take too much time. In these cases, and especially when one has acces to a computing cluster, running multiple parallel short chains
 may be a better option than runnin a single long chain. 
