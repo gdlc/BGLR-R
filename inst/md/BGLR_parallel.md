@@ -13,7 +13,31 @@ To achieve this goal we propose to modify BGLR in a very simple way, we will mod
   - if specified by the user, the program can save the environment,
   - if the call provides a filename for an environment, BGLR will load the environment and start the gibbs sampler.
           
-Conceptually, the BGLR code can be divided in the following blocks
+Conceptually, the BGLR code can be divided in the following blocks of code
 
-  -
+```
+   BGLR=function(args...){
+    #1# Preliminary computations and initialization
+      ...
+    #2# Sampling, saving samples and updateing running means
+      ...
+    #3# Coputation of posterior means and preparation of outputs
+      ...
+    #4# Return
+   }
+```
+
+We will modify BGLR by:
+  - adding two new inputs (envIn=NULL and envOut=NULL, both characters) that will specify filenames that can be used to load (envIn) or save (envOut) an environment.
+  - If envIn is not null, then, the first block of code will be skipped
+  - If envOut is not null, between #2# and #3# we will insert code to save the environment.
+
+This modifications will allow users to call BGLR from a saved environment. These are examples of typical calls and the expected behavior:
+
+```R
+  BGLR(y,...) # standard call no environment is loaded/saved
+  BGLR(y,..., envOut='filename.RData') # calls BGLR, runs, saves the environment and returns..
+  BGLR(envIn='filename.RData', nIter=,...) # loads envIn and runs the specified iterations.
+  BGLR(evnIn='inputFifle.RData', envOut='outputFile.Rdata', nIter=....) # loads inputFile.RData, runs the sampler, saves the environment and reutnrs.
+```
           
