@@ -35,9 +35,19 @@ We will modify BGLR by:
 This modifications will allow users to call BGLR from a saved environment. These are examples of typical calls and the expected behavior:
 
 ```R
-  BGLR(y,...) # standard call no environment is loaded/saved
-  BGLR(y,..., envOut='filename.RData') # calls BGLR, runs, saves the environment and returns..
-  BGLR(envIn='filename.RData', nIter=,...) # loads envIn and runs the specified iterations.
-  BGLR(evnIn='inputFifle.RData', envOut='outputFile.Rdata', nIter=....) # loads inputFile.RData, runs the sampler, saves the environment and reutnrs.
+  # standard call no environment is loaded/saved
+   BGLR(y,...) 
+  
+  # calls BGLR, runs, saves the environment and returns..
+   BGLR(y,..., envOut='filename.RData') 
+   
+  # loads envIn and runs the specified iterations.
+   BGLR(envIn='filename.RData', nIter=,...) 
+  
+  # loads inputFile.RData, runs the sampler, saves the environment and reutnrs.
+   BGLR(evnIn='inputFifle.RData', envOut='outputFile.Rdata', nIter=....) 
 ```
-          
+**Important Details**   
+  - The arguments nIter, burnIn, thin and saveAt provided by the user in the call must override the ones contains in envIn
+  - Before the xampler starts, all the connections to files needs to be opened with the appropiate filenames (using saveAt provided by the user)
+  - 
