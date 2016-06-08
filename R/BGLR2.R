@@ -1021,7 +1021,7 @@ loglik_ordinal=function(y,yHat,threshold)
 BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL, 
     ETA = NULL, nIter = 1500, burnIn = 500, thin = 5, saveAt = "", 
     S0 = NULL, df0 = 5, R2 = 0.5, weights = NULL, 
-    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL) 
+    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnv=FALSE) 
 {
    
     if(verbose)
@@ -1747,6 +1747,9 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
         }
     }
     
+    if(saveEnv){
+    	save(list=ls(),file=paste0(saveAt,'_BGLR_Env.RData'))
+    }
     #return goodies
 
     out = list(y = y0, a=a,b=b,whichNa = whichNa, saveAt = saveAt, nIter = nIter, 
