@@ -68,8 +68,16 @@ Now we can call BGLR in parallel at multiple cores using the parallel package.
   X=scale(wheat.X)
   folds=sample(1:5,size=length(y),replace=T)
   ETA=list(list(X=X,model='BayesA'))
+  
   fmList=mclapply(FUN=BGLR.fold,X=1:5,folds=folds,ETA=ETA,
-                  nIter=6000,burnIn=1000,mc.cores=3,verbose=FALSE)
+                nIter=6000,burnIn=1000,mc.cores=3,verbose=FALSE)
+  yHatCV=numeric()
+  for(i in 1:length(fmList)){ yHatCV=c(yHatCV,fmList[[i]]$yHat)}
+  
+  # note the vector needs to be ordered
+  yHatCV=yHatCV[order(as.integer(factor(x=names(yHatCV),levels=names(y),ordered=TRUE)))]
+  cor(yHatCV,y)
+  
 ```
 
 **Runing parallel chains with BGLR in a cluster **
