@@ -1736,10 +1736,12 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     if (nLT > 0) {
         for (i in 1:nLT) {
             if (!is.null(ETA[[i]]$fileOut)) {
+                flush(ETA[[i]]$fileOut)                
                 close(ETA[[i]]$fileOut)
                 ETA[[i]]$fileOut = NULL
             }
             if(!is.null(ETA[[i]]$fileEffects)){
+            		flush(ETA[[i]]$fileEffects)
             		close(ETA[[i]]$fileEffects)
             		ETA[[i]]$fileEffects = NULL
             }
