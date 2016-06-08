@@ -37,6 +37,7 @@ Now we can call BGLR in parallel at multiple cores using the parallel package.
   for(i in 1:length(fmList)){ tmp[i]=fmList[[i]]$seed }
   names(fmList)=tmp
 ```
+*Note*: the samples collected at each run can be retrieved from the binary files `ETA*.bin`  using the function `readBinMat()`, see examples for further information.
 
 **1.2) Cross-validation at multiple cores**
 
@@ -67,8 +68,8 @@ Now we can call BGLR in parallel at multiple cores using the parallel package.
   X=scale(wheat.X)
   folds=sample(1:5,size=length(y),replace=T)
   ETA=list(list(X=X,model='BayesA'))
-  fmList=mclapply(FUN=BGLR.fold,X=1:5,folds=folds,ETA=ETA,nIter=6000,burnIn=1000)
-  
+  fmList=mclapply(FUN=BGLR.fold,X=1:5,folds=folds,ETA=ETA,
+                  nIter=6000,burnIn=1000,mc.cores=3,verbose=FALSE)
 ```
 
 **Runing parallel chains with BGLR in a cluster **
