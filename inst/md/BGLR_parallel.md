@@ -5,7 +5,7 @@ In the following entry we discuss two approaches for running BGLR in parallel. T
 
 **1) Multi-core computing with BGLR using the parallel package**
 
-*1.1) Parallel chains*
+**1.1) Parallel chains**
  
  First we need a wrapper for BGLR that will set the seed of the RGN to a user-specified value
  
@@ -38,7 +38,38 @@ Now we can call BGLR in parallel at multiple cores using the parallel package.
   names(fmList)=tmp
 ```
 
+**1.2) Cross-validation at multiple cores**
 
+Wrapper
+
+```R
+  BGLR.fold=function(fold,folds,...){
+	tst=which(folds==fold)
+	y[tst]=NA
+	
+	fm=BGLR(...,saveAt=paste0('fold_',fold))
+	yHat=fm$yHat[tst]
+	if(is.null(names(y))){
+		names(yHat)=tst
+	}else{
+		names(yHat)=names(y)[tst]	
+	}
+	return(list(fm=fm,yHat=yHat))
+  }
+```
+
+Execution
+
+```R
+  library(BGLR)
+  data(wheat)
+  y=wheat.Y[,1]
+  X=scale(wheat.X)
+  folds=sample(1:5,size=length(y),replace=T)
+  ETA=list(list(X=X,model='BayesA'))
+  fmList=mclapply(FUN=BGLR.fold,X=1:5,folds=folds,ETA=ETA,nIter=6000,burnIn=1000)
+  
+```
 
 **Runing parallel chains with BGLR in a cluster **
 
