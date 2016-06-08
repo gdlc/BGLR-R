@@ -25,7 +25,7 @@ Now we can call BGLR in parallel at multiple cores using the parallel package.
  y=wheat.Y[,1]
  
  seeds=c(100,200,300,400)
- ETA=list(list(X=X,model='BRR'))
+ ETA=list(list(X=X,model='BRR',saveEffects=TRUE))
  fmList=mclapply(FUN=BGLR.wrap,X=seeds,mc.cores=4,y=y,ETA=ETA,nIter=6000,burnIn=1000,verbose=F)
  list.files()
  
