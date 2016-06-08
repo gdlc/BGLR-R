@@ -1021,14 +1021,13 @@ loglik_ordinal=function(y,yHat,threshold)
 BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL, 
     ETA = NULL, nIter = 1500, burnIn = 500, thin = 5, saveAt = "", 
     S0 = NULL, df0 = 5, R2 = 0.5, weights = NULL, 
-    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnv=FALSE) 
+    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnv=FALSE,BGLR_ENV=NULL) 
 {
    
-    if(verbose)
-    {
-	welcome()
-    }
-
+    if(verbose){welcome()}
+    
+  if(is.null(BGLR_ENV)){  
+    
     IDs=names(y)
     if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
 
@@ -1221,6 +1220,25 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                               BRR_sets = setLT.BRR_sets(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn)
                               )
         }
+    }
+
+    }else{
+        nIter_call=nIter
+        burnIn_call=burnIn
+        thin_call=thin
+        saveAt_call=saveAt
+        
+    	load(BGLR_ENV)
+    	
+    	# Restore call parameters
+    	 nIter=nIter_call 
+    	 burnIn=burnIn_call
+    	 thin=thin_call
+    	 saveAt=saveAt_call
+    	 rm(nIter_call,burnIn_call,thin_call,saveAt_call)
+    	
+    	# Clean posterior means and reset connections
+    	
     }
 
     # Gibbs sampler
