@@ -1024,9 +1024,9 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnv=FALSE,BGLR_ENV=NULL) 
 {
    
-    if(verbose){welcome()}
+	if(verbose){welcome()}
     
-  if(is.null(BGLR_ENV)){  
+  if(is.null(BGLR_ENV)){  #*#
     
     IDs=names(y)
     if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
@@ -1222,7 +1222,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
         }
     }
 
-    }else{
+    }else{ #*# Block of code for the case when the environment is re-loaded
         nIter_call=nIter
         burnIn_call=burnIn
         thin_call=thin
@@ -1237,9 +1237,33 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	 saveAt=saveAt_call
     	 rm(nIter_call,burnIn_call,thin_call,saveAt_call)
     	
-    	# Clean posterior means and reset connections
+    	# Reseting Running Means
+    	if(resetRunningMeans){
+	    	tmp=ls(pattern='post_')
+			for(i in 1:length(tmp)){
+				eval(parse(text=paste(tmp[i],'[]<-0')))
+			}
+		
+			for(i in 1:length(ETA)){
+				tmp=names(ETA[[i]])[grep(names(ETA[[i]]),pattern='post_')]
+				for(j in 1:length(tmp)){
+					eval(parse(text=paste0('ETA[[i]]$',tmp[j],"[]<-0")))
+				}
+			}
+    	}
     	
-    }
+    	# Reset connections
+    	if(resetConnections){
+    		for(i in 1:length(ETA)){        	
+          		newName=paste0("\'",saveAt, basename(normalizePath(ETA[[i]]$NamefileOut)),"\'")
+          		eval(parse(text=paste0("ETA[[i]]$NamefileOut=",newName)))
+          		# open connections to .dat files
+          		# if fixed add names to the effects
+          		# if saveEffects=T open binary files
+
+    		}
+    	}
+    }#*#
 
     # Gibbs sampler
 
