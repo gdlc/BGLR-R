@@ -1,9 +1,12 @@
 ### Running multiple parallel chains with BGLR
 
-In the followin entry we discuss two approaches for running parallel chains in BGLR. The first one is the estanard approach where multiple parallel calls to BGLR() are made. We presenten the example using the parallel package. For computationally involved problems this approach can be inefficient; thefore we introduce a 2nd approach that involves modifications of the BGLR software.
+In the following entry we discuss two approaches for running BGLR in parallel. The first one is a stanard approach where multiple parallel calls to BGLR() are made using the function `mclapply()` of the `parallel` package. Using this approach we demonstrate: (i) ho to run parallel chains and (ii) cross-validation in parallel. The second approach is tailored for computationally involved problems (*big-n-with-big-p* problems) and is design for execution in clusters.
 
-#### Running parallel chains with BGLR I
 
+**1) Multi-core computing with BGLR using the parallel package**
+
+*1.1) Parallel chains*
+ 
  First we need a wrapper for BGLR that will set the seed of the RGN to a user-specified value
  
 ```R
@@ -35,13 +38,9 @@ Now we can call BGLR in parallel at multiple cores using the parallel package.
   names(fmList)=tmp
 ```
 
-**Note 1**: Unfortounately we are gettin an error if saveEffects=TRUE, this needs to be further explored.
-
-**Note 2**: Above we we illustrate how to run parallel chains. I this case the argument that changes across processes is the seed.
-However, any aspect of the run may change. For instance, ``BGLR.wrap`` may have as an argument the prior to be used; in such case ``BGLR.wrap`` can be modified so that each processor fits the model with one prior.
 
 
-#### Rnning parallel chains with BGLR II
+**Runing parallel chains with BGLR in a cluster **
 
 
 For problems involving large number of predictors and large number of subjects the time per itearation of the sampler may be large (e.g, a ccouple of seconds)
