@@ -1,6 +1,6 @@
 ### Running multiple parallel chains with BGLR
 
-In the following entry we discuss two approaches for running BGLR in parallel. The first one is a stanard approach where multiple parallel calls to BGLR() are made using the function `mclapply()` of the `parallel` package. Using this approach we demonstrate: (i) ho to run parallel chains and (ii) cross-validation in parallel. The second approach is tailored for computationally involved problems (*big-n-with-big-p* problems) and is design for execution in clusters.
+In the following entry we discuss two approaches for running BGLR in parallel. The first one is a stanard approach where multiple parallel calls to `BGLR()` are made using the function `mclapply()` of the `parallel` package. Using this approach we demonstrate: (i) ho to run parallel chains and (ii) cross-validation in parallel. The second approach is tailored for computationally involved problems (*big-n-with-big-p* problems) and is design for execution in clusters.
 
 
 **1) Multi-core computing with BGLR using the parallel package**
@@ -40,14 +40,14 @@ Now we can call BGLR in parallel at multiple cores using the parallel package.
 
 **1.2) Cross-validation at multiple cores**
 
-Wrapper
+*Wrapper*
 
 ```R
   BGLR.fold=function(fold,folds,...){
 	tst=which(folds==fold)
 	y[tst]=NA
 	
-	fm=BGLR(...,saveAt=paste0('fold_',fold))
+	fm=BGLR(y=y,...,saveAt=paste0('fold_',fold))
 	yHat=fm$yHat[tst]
 	if(is.null(names(y))){
 		names(yHat)=tst
@@ -58,7 +58,7 @@ Wrapper
   }
 ```
 
-Execution
+*Execution*
 
 ```R
   library(BGLR)
