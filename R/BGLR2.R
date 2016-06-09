@@ -222,9 +222,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	 verbose=verbose_call
     	 rmExisitingFiles=rmExistingFiles_call
     	 rm(nIter_call,burnIn_call,thin_call,saveAt_call,verbose_call,rmExistingFiles_call)
-    	
-    	# Restore seed
-    	if(restoreSeed){ .Random.seed=seed }
+   
     	
     	# Reseting Running Means
     	if(resetRunningMeans){
@@ -292,6 +290,9 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
     time = proc.time()[3]
 
+       	# Restore seed
+    if(restoreSeed){ .Random.seed=seed }
+    
     for (i in 1:nIter) {
         # intercept
 	if(!is.null(groups))
@@ -792,7 +793,8 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
             time = tmp
         }
     }#end of Gibbs sampler
-
+    seed=.Random.seed
+    
     #Closing files
     close(fileOutVarE)
     close(fileOutMu)
@@ -813,7 +815,6 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     }
     
     if(saveEnv){
-        seed=.Random.seed
     	save(list=ls(),file=paste0(saveAt,'BGLR_ENV.RData'))
     }
     #return goodies
