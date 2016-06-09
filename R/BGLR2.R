@@ -8,7 +8,8 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 	if(verbose){welcome()}
     
   if(is.null(BGLR_ENV)){  #*#
-    GIBBS_start=1
+    GIBBS_start=1 #*#
+    
     IDs=names(y)
     if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
 
@@ -221,6 +222,9 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     		nInter=GIBBS_start+nIter_call-1
     	}
     	
+    	if(!newChain){
+    		saveAt_old=saveAt
+    	}
     	# Restore call parameters
     	 burnIn=burnIn_call
     	 thin=thin_call
@@ -290,9 +294,16 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
          	}
     	}else{
     		# Openning connections
-    		
-    		
-    	
+    		fname = paste(saveAt_old, "mu.dat", sep = "")
+	    	fileOutMu = file(description = fname, open = "a")
+
+    		fname = paste(saveAt_old, "varE.dat", sep = "")
+	    	fileOutVarE = file(description = fname, open = "a")    		
+    
+    		if(response_type=="ordinal"){
+			fname = paste(saveAt_old, "thresholds.dat", sep = "")
+    						
+        		fileOutThresholds = file(description = fname, open = "a")
     	}
     }#*#
 
