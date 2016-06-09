@@ -240,6 +240,26 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	
     	# Reset connections
     	if(resetConnections){
+    		fname = paste(saveAt, "mu.dat", sep = "")
+    		if (rmExistingFiles) {
+        		unlink(fname)
+    		}
+		fileOutMu = file(description = fname, open = "w")
+    		
+    		fname = paste(saveAt, "varE.dat", sep = "")
+    		if (rmExistingFiles) {
+        		unlink(fname)
+    		}
+		fileOutVarE = file(description = fname, open = "w")    		
+    		if(response_type=="ordinal"){
+			fname = paste(saveAt, "thresholds.dat", sep = "")
+    			if (rmExistingFiles) {
+        			unlink(fname)
+    			}			
+        		fileOutThresholds = file(description = fname, open = "w")
+    		}
+
+
 		for(i in 1:length(ETA)){        	
           		fame=paste0("\'",saveAt, basename(normalizePath(ETA[[i]]$NamefileOut)),"\'")
           		ETA[[i]]$fileOut=fname
@@ -256,8 +276,8 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     					fname=paste(saveAt,ETA[[i]]$Name,"_b.bin",sep="")
     					if(rmExistingFiles){ unlink(fname) }
     					ETA[[i]]$fileEffects=file(fname,open='wb')
-    					nRow=floor((nIter-burnIn)/LT$thin)
-    					writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
+    					nRow=floor((nIter-burnIn)/thin)
+    					writeBin(object=c(nRow,ETA[[i]]$p),con=ETA[[i]]$fileEffects)
     				}
     			}
          	}
