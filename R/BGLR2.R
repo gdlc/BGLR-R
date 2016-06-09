@@ -218,6 +218,9 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	 saveAt=saveAt_call
     	 rm(nIter_call,burnIn_call,thin_call,saveAt_call)
     	
+    	# Restore seed
+    	if(restoreSeed){ .Random.seed=seed }
+    	
     	# Reseting Running Means
     	if(resetRunningMeans){
 	    	tmp=ls(pattern='post_')
@@ -771,6 +774,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     }
     
     if(saveEnv){
+        seed=.Random.seed
     	save(list=ls(),file=paste0(saveAt,'BGLR_Env.RData'))
     }
     #return goodies
