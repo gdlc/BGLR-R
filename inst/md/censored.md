@@ -10,39 +10,32 @@ Case               | ai  |  yi  | bi
  Interval-Censored | ai  |  NA  | bi
 
 
-**Right Censored data BGLR and survreg**
-
 ```R
- library(BGLR)
- n=500
- x1=rnorm(n);x2=rnorm(n)
- y=100+x1*.5-x2*.8+rnorm(n)
- yNotCensored=y
- 
+ library(BGLR); data(wheat)
+ y=wheat.Y[,1]
  
  # Introducing censoring (for simplicity done at fixed points -1 and 1)
- isCensored=sample(c(T,F),size=n,replace=T)
+ yNA=y
+ a=rep(NA,599)
+ b=rep(NA,599)
+ type=sample(1:4,prob=c(2/3,1/9,1/9,1/9),size=599,replace=T)
+# left-censored
+ a[type==2]=-Inf
+ b[type==2]=1
+ yNA[type==2]=NA
+
+
+# right-censored
+ a[type==2]=-1
+ b[type==2]=Inf
+ yNA[type==2]=NA
  
- y[isCensored]=NA
- a=rep(NA,n)
- a[isCensored]=yNotCensored[isCensored]+runif(sum(isCensored))
- b=rep(NA,n)
- b[isCensored]=Inf
- head(cbind(a,y,b))
+# right-censored
+ a[type==2]=-1
+ b[type==2]=1
+ yNA[type==2]=NA 
  
-## Survreg (Maximum Likelihood)
- library(survival)
- time=y ; time[isCensored]=a[isCensored]
- Y=Surv(time=time,event=!isCensored)
- fm0=survreg(Y~x1+x2,dist='gaussian')
- summary(fm0)
- 
-## BGLR
- Z=scale(cbind(x1,x2),center=T,scale=F) # centering helps mixing
- fm=BGLR(y=y,a=a,b=b,ETA=list(list(X=Z,model='FIXED')),nIter=5100,burnIn=100)
- 
- # Compare the following with summary(fm0)
- cbind(c(fm$mu,fm$ETA[[1]]$b), c(fm$SD.mu,fm$ETA[[1]]$SD.b))
- sqrt(fm$varE) # compare with 'scale' in summary(fm0)
+ fm=BGLR(y=yNA,a=a,b=b)
+ plot(y,fm$yHat)
 
 ```
