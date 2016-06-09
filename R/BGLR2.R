@@ -210,7 +210,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         thin_call=thin
         saveAt_call=saveAt
         verbose_call=verbose
-        rmExistingFiles_call=rmExisitingFiles
+        rmExistingFiles_call=rmExistingFiles
         
     	load(BGLR_ENV)
     	
@@ -220,8 +220,8 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	 thin=thin_call
     	 saveAt=saveAt_call
     	 verbose=verbose_call
-    	 rmExisitingFiles=rmExisitingFiles_call
-    	 rm(nIter_call,burnIn_call,thin_call,saveAt_call,verbose_call,rmExisitingFiles_call)
+    	 rmExisitingFiles=rmExistingFiles_call
+    	 rm(nIter_call,burnIn_call,thin_call,saveAt_call,verbose_call,rmExistingFiles_call)
     	
     	# Restore seed
     	#if(restoreSeed){ .Random.seed=seed }
