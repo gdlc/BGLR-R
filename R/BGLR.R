@@ -184,7 +184,6 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
     LT$X=as.vector(LT$X)
     LT$x2=as.vector(LT$x2)
     
-    #*#
     if(is.null(LT$saveEffects)){LT$saveEffects=FALSE}
     if(LT$saveEffects){
     	if(is.null(LT$thin)){ LT$thin=thin }
@@ -193,7 +192,7 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
-    }#*#
+    }
 
     return(LT)
 }
@@ -278,7 +277,6 @@ setLT.BRR_sets=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,t
     LT$fileOut=file(description=fname,open="w")
     LT$X=as.vector(LT$X)
     
-    #*#
     if(is.null(LT$saveEffects)){LT$saveEffects=FALSE}
     if(LT$saveEffects){
     	if(is.null(LT$thin)){ LT$thin=thin }
@@ -287,7 +285,7 @@ setLT.BRR_sets=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,t
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
-    }#*#
+    }
     return(LT)
 }
 
@@ -439,7 +437,6 @@ setLT.BL=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
 
     LT$X=as.vector(LT$X)
     
-    #*#
     if(is.null(LT$saveEffects)){LT$saveEffects=FALSE}
     if(LT$saveEffects){
     	if(is.null(LT$thin)){ LT$thin=thin }
@@ -448,7 +445,7 @@ setLT.BL=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
-    }#*#
+    }
     
     return(LT)
 }
@@ -716,7 +713,6 @@ setLT.BayesBandC=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles, groups
      LT$post_S2=0
   }
   
-   #*#
     if(is.null(LT$saveEffects)){LT$saveEffects=FALSE}
     if(LT$saveEffects){
     	if(is.null(LT$thin)){ LT$thin=thin }
@@ -725,7 +721,7 @@ setLT.BayesBandC=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles, groups
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
-    }#*#
+    }
   
   #return object
   return(LT) 
@@ -817,7 +813,6 @@ setLT.BayesA=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose,thi
   LT$post_S=0
   LT$post_S2=0
 
-    #*#
     if(is.null(LT$saveEffects)){LT$saveEffects=FALSE}
     if(LT$saveEffects){
     	if(is.null(LT$thin)){ LT$thin=thin }
@@ -826,7 +821,7 @@ setLT.BayesA=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose,thi
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
-    }#*#
+    }
   
   #return object
   return(LT)
