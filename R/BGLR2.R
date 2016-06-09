@@ -789,7 +789,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     
     if(saveEnv){
         seed=.Random.seed
-    	save(list=ls(),file=paste0(saveAt,'BGLR_Env.RData'))
+    	save(list=ls(),file=paste0(saveAt,'BGLR_ENV.RData'))
     }
     #return goodies
 
