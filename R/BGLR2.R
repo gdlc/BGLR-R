@@ -8,7 +8,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 	if(verbose){welcome()}
     
   if(is.null(BGLR_ENV)){  #*#
-    gibbsStart=1
+    GIBBS_start=1
     IDs=names(y)
     if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
 
