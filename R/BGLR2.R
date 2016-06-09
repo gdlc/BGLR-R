@@ -2,7 +2,8 @@
 BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL, 
     ETA = NULL, nIter = 1500, burnIn = 500, thin = 5, saveAt = "", 
     S0 = NULL, df0 = 5, R2 = 0.5, weights = NULL, 
-    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnv=FALSE,BGLR_ENV=NULL,restoreSeed=FALSE,resetRuningMeans=TRUE,resetConnections=TRUE) 
+    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,
+    saveEnv=FALSE,BGLR_ENV=NULL,restoreSeed=FALSE,resetRunningMeans=TRUE,resetConnections=TRUE) 
 {
    
 	if(verbose){welcome()}
