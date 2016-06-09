@@ -220,7 +220,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	 rm(nIter_call,burnIn_call,thin_call,saveAt_call)
     	
     	# Restore seed
-    	if(restoreSeed){ .Random.seed=seed }
+    	#if(restoreSeed){ .Random.seed=seed }
     	
     	# Reseting Running Means
     	if(resetRunningMeans){
