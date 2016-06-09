@@ -771,7 +771,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     }
     
     if(saveEnv){
-    	save(list=ls(),file=paste0(saveAt,'_BGLR_Env.RData'))
+    	save(list=ls(),file=paste0(saveAt,'BGLR_Env.RData'))
     }
     #return goodies
 
