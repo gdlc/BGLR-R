@@ -416,7 +416,7 @@ setLT.BL=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
 		}
     }
 
-    #Objects to storing information for MCMC iterations
+    #Objects to store information for MCMC iterations
 
     LT$b=rep(0,LT$p)
     LT$post_b=rep(0,LT$p)
@@ -1020,25 +1020,10 @@ loglik_ordinal=function(y,yHat,threshold)
 
 BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL, 
     ETA = NULL, nIter = 1500, burnIn = 500, thin = 5, saveAt = "", 
-    S0 = NULL, df0 = 5, R2 = 0.5, weights = NULL, 
-<<<<<<< HEAD
-    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL) 
-{
+    S0 = NULL, df0 = 5, R2 = 0.5, weights = NULL,verbose = TRUE, rmExistingFiles = TRUE, groups=NULL) {
    
-    if(verbose)
-    {
-	welcome()
-    }
+    if(verbose){	welcome() }
 
-=======
-    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnv=FALSE,BGLR_ENV=NULL) 
-{
-   
-	if(verbose){welcome()}
-    
-  if(is.null(BGLR_ENV)){  #*#
-    
->>>>>>> origin/master
     IDs=names(y)
     if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
 
@@ -1068,7 +1053,6 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
     if(response_type=="ordinal")
     {
-
     	y=factor(y,ordered=TRUE)
         lev=levels(y)
         nclass=length(lev)
@@ -1233,8 +1217,6 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
         }
     }
 
-<<<<<<< HEAD
-=======
     }else{ #*# Block of code for the case when the environment is re-loaded
         nIter_call=nIter
         burnIn_call=burnIn
@@ -1276,11 +1258,9 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
     		}
     	}
-    }#*#
-
->>>>>>> origin/master
+    }
+    
     # Gibbs sampler
-
     time = proc.time()[3]
 
     for (i in 1:nIter) {
