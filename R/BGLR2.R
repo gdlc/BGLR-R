@@ -3,13 +3,12 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     ETA = NULL, nIter = 1500, burnIn = 500, thin = 5, saveAt = "", 
     S0 = NULL, df0 = 5, R2 = 0.5, weights = NULL, 
     verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,
-    saveEnv=FALSE,BGLR_ENV=NULL,restoreSeed=FALSE,resetRunningMeans=TRUE,resetConnections=TRUE) 
-{
+    saveEnv=FALSE,BGLR_ENV=NULL,newChain=TRUE) {
    
 	if(verbose){welcome()}
     
   if(is.null(BGLR_ENV)){  #*#
-    
+    gibbsStart=1
     IDs=names(y)
     if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
 
@@ -214,8 +213,15 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         
     	load(BGLR_ENV)
     	
+    	if(newChain){
+    		nIter=nIter_call 
+  		GIBBS_start=1
+    	}else{
+    		GIBBS_start=nIter+1
+    		nInter=GIBBS_start+nIter_call-1
+    	}
+    	
     	# Restore call parameters
-    	 nIter=nIter_call 
     	 burnIn=burnIn_call
     	 thin=thin_call
     	 saveAt=saveAt_call
@@ -224,8 +230,10 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	 rm(nIter_call,burnIn_call,thin_call,saveAt_call,verbose_call,rmExistingFiles_call)
    
     	
-    	# Reseting Running Means
-    	if(resetRunningMeans){
+    	# Reseting Running 
+    	if(newChain){
+    		
+    		# Running means
 	    	tmp=ls(pattern='post_')
 		for(i in 1:length(tmp)){
 			eval(parse(text=paste(tmp[i],'[]<-0')))
@@ -238,11 +246,10 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 			}
 		}
 		nSums=0
-    	}
     	
-    	# Reset connections
-    	if(resetConnections){
+    		# Resets Connections
     		fname = paste(saveAt, "mu.dat", sep = "")
+
     		if (rmExistingFiles) {
         		unlink(fname)
     		}
@@ -260,8 +267,6 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     			}			
         		fileOutThresholds = file(description = fname, open = "w")
     		}
-
-
 		for(i in 1:length(ETA)){        	
           		fame=paste0("\'",saveAt, basename(normalizePath(ETA[[i]]$NamefileOut)),"\'")
           		ETA[[i]]$fileOut=fname
@@ -283,6 +288,11 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     				}
     			}
          	}
+    	}else{
+    		# Openning connections
+    		
+    		
+    	
     	}
     }#*#
 
@@ -293,7 +303,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
        	# Restore seed
     if(restoreSeed){ .Random.seed=seed }
     
-    for (i in 1:nIter) {
+    for (i in GIBBS_start:nIter) {
         # intercept
 	if(!is.null(groups))
 	{
