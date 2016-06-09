@@ -252,7 +252,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     				tmp=ETA[[i]]$colNames
     				write(tmp, ncolumns = ETA[[i]]$p, file = ETA[[i]]$fileOut, append = TRUE)
           		}else{
-          			if(ETAS[[i]]$saveEffects){
+          			if(ETA[[i]]$saveEffects){
     					fname=paste(saveAt,ETA[[i]]$Name,"_b.bin",sep="")
     					if(rmExistingFiles){ unlink(fname) }
     					ETA[[i]]$fileEffects=file(fname,open='wb')
