@@ -1,6 +1,6 @@
 ## BGLR: An R Package for (Bayesian) High-Dimensional Regression
 
-The BGLR Package ([Perez-Rodriguez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151])) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
+The BGLR Package ([Perez-Rodriguez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151)) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
 version beta version. The latest stable release can be downloaded from [CRAN](https://cran.r-project.org/web/packages/BGLR/index.html).
 
 #### Installation
@@ -44,22 +44,23 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   - [5. Semi-parametric regression (RKHS) using BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS.md)
   
   - [6. Fitting Models with Multiple sets of Effects ("Mixed-Effects Model")](https://github.com/gdlc/BGLR-R/blob/master/inst/md/mixedModel.md)
+  - [7. Polyomic Regression with BGLR](https://github.com/anainesvs/VAZQUEZ_etal_GENETICS_2016)
   
-  - [7. Saving Samples of Effects in Binary Files](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_saveEffects.md)
+  - [8. Saving Samples of Effects in Binary Files](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_saveEffects.md)
   
-  - [8. Heritability Estimation: two methods](https://github.com/gdlc/BGLR-R/blob/master/inst/md/heritability.md)
+  - [9. Heritability Estimation: two methods](https://github.com/gdlc/BGLR-R/blob/master/inst/md/heritability.md)
 
-  - [10. Heterogeneous Error Variance Models](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_heteroskedastic.md)
+  - [100. Heterogeneous Error Variance Models](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_heteroskedastic.md)
   
-  - [10. GxE Using Interactions](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GxE_usingInteractions.md)
+  - [11. GxE Using Interactions](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GxE_usingInteractions.md)
   
-  - [11. Modeling Genetic Heterogeneity Using Interactions](https://github.com/gdlc/BGLR-R/blob/master/inst/md/heterogeneity_interactions.md)
+  - [12. Analysis of data from Structured Populations with BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/heterogeneity_interactions.md)
   
-  - [12. Estimating the Proportion of Variance Explained by Principal Components](https://github.com/gdlc/BGLR-R/blob/master/inst/md/PC.md)
+  - [13. Estimating the Proportion of Variance Explained by Principal Components](https://github.com/gdlc/BGLR-R/blob/master/inst/md/PC.md)
   
-  - [13. Categorical (binary and ordinal) Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/categorical.md)
+  - [14. Categorical (binary and ordinal) Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/categorical.md)
   
-  - [14. Censored Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/censored.md)
+  - [15. Censored Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/censored.md)
 
 
 **Other Omics**

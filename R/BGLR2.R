@@ -1021,6 +1021,7 @@ loglik_ordinal=function(y,yHat,threshold)
 BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL, 
     ETA = NULL, nIter = 1500, burnIn = 500, thin = 5, saveAt = "", 
     S0 = NULL, df0 = 5, R2 = 0.5, weights = NULL, 
+<<<<<<< HEAD
     verbose = TRUE, rmExistingFiles = TRUE, groups=NULL) 
 {
    
@@ -1029,6 +1030,15 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 	welcome()
     }
 
+=======
+    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnv=FALSE,BGLR_ENV=NULL) 
+{
+   
+	if(verbose){welcome()}
+    
+  if(is.null(BGLR_ENV)){  #*#
+    
+>>>>>>> origin/master
     IDs=names(y)
     if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
 
@@ -1223,6 +1233,52 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
         }
     }
 
+<<<<<<< HEAD
+=======
+    }else{ #*# Block of code for the case when the environment is re-loaded
+        nIter_call=nIter
+        burnIn_call=burnIn
+        thin_call=thin
+        saveAt_call=saveAt
+        
+    	load(BGLR_ENV)
+    	
+    	# Restore call parameters
+    	 nIter=nIter_call 
+    	 burnIn=burnIn_call
+    	 thin=thin_call
+    	 saveAt=saveAt_call
+    	 rm(nIter_call,burnIn_call,thin_call,saveAt_call)
+    	
+    	# Reseting Running Means
+    	if(resetRunningMeans){
+	    	tmp=ls(pattern='post_')
+			for(i in 1:length(tmp)){
+				eval(parse(text=paste(tmp[i],'[]<-0')))
+			}
+		
+			for(i in 1:length(ETA)){
+				tmp=names(ETA[[i]])[grep(names(ETA[[i]]),pattern='post_')]
+				for(j in 1:length(tmp)){
+					eval(parse(text=paste0('ETA[[i]]$',tmp[j],"[]<-0")))
+				}
+			}
+    	}
+    	
+    	# Reset connections
+    	if(resetConnections){
+    		for(i in 1:length(ETA)){        	
+          		newName=paste0("\'",saveAt, basename(normalizePath(ETA[[i]]$NamefileOut)),"\'")
+          		eval(parse(text=paste0("ETA[[i]]$NamefileOut=",newName)))
+          		# open connections to .dat files
+          		# if fixed add names to the effects
+          		# if saveEffects=T open binary files
+
+    		}
+    	}
+    }#*#
+
+>>>>>>> origin/master
     # Gibbs sampler
 
     time = proc.time()[3]
@@ -1747,6 +1803,12 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
         }
     }
     
+<<<<<<< HEAD
+=======
+    if(saveEnv){
+    	save(list=ls(),file=paste0(saveAt,'_BGLR_Env.RData'))
+    }
+>>>>>>> origin/master
     #return goodies
 
     out = list(y = y0, a=a,b=b,whichNa = whichNa, saveAt = saveAt, nIter = nIter, 
