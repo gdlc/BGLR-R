@@ -7,7 +7,7 @@ importFrom("stats", "cor", "dbeta", "dchisq", "dexp", "dgamma",
            "var", "weighted.mean")
 importFrom("utils", "read.table")
 
-export(BGLR,BLR, 
+export(BGLR,BLR, BGLR2,
        read_bed,read_ped, write_bed,readBinMat,getVariances)
 
 exportMethods(BGLR)
