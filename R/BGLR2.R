@@ -301,7 +301,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     time = proc.time()[3]
 
        	# Restore seed
-    if(restoreSeed){ .Random.seed=seed }
+    if(!newChain){ .Random.seed=seed }
     
     for (i in GIBBS_start:nIter) {
         # intercept
