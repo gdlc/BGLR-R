@@ -2,7 +2,7 @@
 BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL, 
     ETA = NULL, nIter = 1500, burnIn = 500, thin = 5, saveAt = "", 
     S0 = NULL, df0 = 5, R2 = 0.5, weights = NULL, 
-    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnv=FALSE,BGLR_ENV=NULL,resotreSeed=FALSE,resetRuningMeans=TRUE,resetConnections=TRUE) 
+    verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,saveEnv=FALSE,BGLR_ENV=NULL,restoreSeed=FALSE,resetRuningMeans=TRUE,resetConnections=TRUE) 
 {
    
 	if(verbose){welcome()}
@@ -224,28 +224,42 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	# Reseting Running Means
     	if(resetRunningMeans){
 	    	tmp=ls(pattern='post_')
-			for(i in 1:length(tmp)){
-				eval(parse(text=paste(tmp[i],'[]<-0')))
-			}
+		for(i in 1:length(tmp)){
+			eval(parse(text=paste(tmp[i],'[]<-0')))
+		}
 		
-			for(i in 1:length(ETA)){
-				tmp=names(ETA[[i]])[grep(names(ETA[[i]]),pattern='post_')]
-				for(j in 1:length(tmp)){
-					eval(parse(text=paste0('ETA[[i]]$',tmp[j],"[]<-0")))
-				}
+		for(i in 1:length(ETA)){
+			tmp=names(ETA[[i]])[grep(names(ETA[[i]]),pattern='post_')]
+			for(j in 1:length(tmp)){
+				eval(parse(text=paste0('ETA[[i]]$',tmp[j],"[]<-0")))
 			}
+		}
+		nSums=0
     	}
     	
     	# Reset connections
     	if(resetConnections){
-    		for(i in 1:length(ETA)){        	
-          		newName=paste0("\'",saveAt, basename(normalizePath(ETA[[i]]$NamefileOut)),"\'")
-          		eval(parse(text=paste0("ETA[[i]]$NamefileOut=",newName)))
-          		# open connections to .dat files
-          		# if fixed add names to the effects
-          		# if saveEffects=T open binary files
-
-    		}
+		for(i in 1:length(ETA)){        	
+          		fame=paste0("\'",saveAt, basename(normalizePath(ETA[[i]]$NamefileOut)),"\'")
+          		ETA[[i]]$fileOut=fname
+			if(rmExistingFiles){ 
+       				unlink(fname) 
+    			}
+    			ETA[[i]]$fileOut=file(description=fname,open="w")
+    			
+    			if(ETA[[i]]$model=='FIXED'){
+    				tmp=ETA[[i]]$colNames
+    				write(tmp, ncolumns = ETA[[i]]$p, file = ETA[[i]]$fileOut, append = TRUE)
+          		}else{
+          			if(ETAS[[i]]$saveEffects){
+    					fname=paste(saveAt,ETA[[i]]$Name,"_b.bin",sep="")
+    					if(rmExistingFiles){ unlink(fname) }
+    					ETA[[i]]$fileEffects=file(fname,open='wb')
+    					nRow=floor((nIter-burnIn)/LT$thin)
+    					writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
+    				}
+    			}
+         	}
     	}
     }#*#
 
