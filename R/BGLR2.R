@@ -218,7 +218,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
   		saveAt=callParameters$saveAt
     	}else{
     		GIBBS_start=nIter+1
-    		nInter=GIBBS_start+callParameters$nIter-1
+    		nIter=GIBBS_start+callParameters$nIter-1
     	}
 
     	# Restore call parameters
