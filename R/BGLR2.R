@@ -672,7 +672,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
             #Output files
             write(x = mu, file = fileOutMu, append = TRUE)
-            print(str(fileOutVarE))
+            
             write(x = varE, ncolumns=nGroups,file = fileOutVarE, append = TRUE)
 
 	    if (response_type == "ordinal") {
