@@ -45,10 +45,61 @@ illsutrates some of the features of `BGLR2`, relative to BGLR these are some of 
  - `BGLR_ENV` (character) a path and the name of a file containing a snapshot of a BGLR environment. If provided this environment is used to run a sampler. Since this environment contains all the elements of model specification (y, ETA, etc. ) these arguments do not need to be provided. However, a few arguments `saveAt`, `nIter`, `burnIn`,  `thin`, `rmExistingFiles`, are over-written by the call (that is, BGLR uses the values provided in the call and not the ones saved in the environment.
  - `newChain` (TRUE/FALSE) if FALSE the chain is continued (with the seed saved in `BGLR_ENV`) and samples are appended to already existing files. Otherwise, a new chain is generated. In this case the strarting values are the last ones collected in the run that generated `BGLR_ENV`, however new seed and new output files are generated.
  
-**BGLR2-Examples**
+**(1) Saving a snapshot of the environment at the end of the sampler.**
 
 ```R
+rm(list=ls())
+ dir.create('~/testBGLR2')
+ setwd('~/testBGLR2')
+ 
+ library(devtools)
+ install_git('https://github.com/gdlc/BGLR-R')
+ library(BGLR)
+ data(wheat)
+ X=wheat.X[,1:100]
 
+
+ set.seed(1203)
+ fm1a=BGLR2(y=wheat.Y[,1],ETA=list(list(X=X,model='BayesB',saveEffects=TRUE)),
+        saveEnv=TRUE,saveAt='firstRun_',nIter=12000,burnIn=2000,thin=1)
+ list.files()
+```
+
+**Let's now recover BGLR from sleep and run additional iterations**
+
+```R
+ fm1b=BGLR2(BGLR_ENV='firstRun_BGLR_ENV.RData',nIter=10000,thin=1,burnIn=0,newChain=FALSE)
+ list.files()
+ varE1=scan('firstRun_vare.dat')
+ # Note that the number of samples in file are 22000=12000+1000
+```
+
+We can now check wheather the run in two-steps done above is equivalent to a single chain.
+
+```R
+ set.seed(1203)
+ fm2=BGLR(y=wheat.Y[,1],ETA=list(list(X=X,model='BayesB',saveEffects=TRUE)),saveAt='secondRun_',nIter=22000,burnIn=2000,thin=1)
+ c(fm1b$varE,fm2$varE)
+ 
+ plot(fm1b$yHat,fm2$yHat)
+ plot(scan('firstRun_mu.dat'),scan('secondRun_mu.dat'))
+```
+
+Note that you can also start a new chain (with different seed) using the saved environment. This will allow, for instance
+running parallel chains all with starting values provided by a saved environment that may have been run for burn-in.
+
+
+```R
+ fm1c=BGLR2(BGLR_ENV='firstRun_BGLR_ENV.RData',nIter=10000,thin=1,burnIn=0,newChain=TRUE,saveAt='thirdRun_')
+ list.files()
+ varE1=scan('firstRun_varE.dat')[-c(1:12000)]
+ varE3=scan('thirdRun_varE.dat')[1:10000]
+ plot(varE1,varE3)
+ 
+```
+
+set.seed(1203)
+fm3=BGLR2(y=wheat.Y[,1],ETA=list(list(X=X,model='BayesB',saveEffects=TRUE)),saveAt='longRun_',nIter=30,burnIn=10,thin=1)
 ```
 
 [Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
