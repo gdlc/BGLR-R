@@ -286,7 +286,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     		# if we just continue the chain, we re-open connections in mode 'append'
     		fname = paste(saveAt_old, "mu.dat", sep = "")
 	    	fileOutMu = file(description = fname, open = "a")
-
+		stop('hello')
     		fname = paste(saveAt_old, "varE.dat", sep = "")
 	    	fileOutVarE = file(description = fname, open = "a")    		
     
