@@ -93,13 +93,10 @@ running parallel chains all with starting values provided by a saved environment
  fm1c=BGLR2(BGLR_ENV='firstRun_BGLR_ENV.RData',nIter=10000,thin=1,burnIn=0,newChain=TRUE,saveAt='thirdRun_')
  list.files()
  varE1=scan('firstRun_varE.dat')[-c(1:12000)]
- varE3=scan('thirdRun_varE.dat')[1:10000]
+ varE3=scan('thirdRun_varE.dat')
  plot(varE1,varE3)
  
 ```
 
-set.seed(1203)
-fm3=BGLR2(y=wheat.Y[,1],ETA=list(list(X=X,model='BayesB',saveEffects=TRUE)),saveAt='longRun_',nIter=30,burnIn=10,thin=1)
-```
 
 [Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
