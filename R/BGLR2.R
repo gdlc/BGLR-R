@@ -206,7 +206,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
     }else{ #*# Block of code for the case when the environment is re-loaded
         callParameters=list(nIter=nIter, burnIn=burnIn, thin=thin, saveAt=saveAt, verbose=verbose,rmExistingFiles=rmExistingFiles)
-        
+        print('hello')
     	load(BGLR_ENV)
     	
     	if(newChain){
