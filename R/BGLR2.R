@@ -5,7 +5,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     verbose = TRUE, rmExistingFiles = TRUE, groups=NULL,
     saveEnv=FALSE,BGLR_ENV=NULL,newChain=TRUE) {
    
-	if(verbose){welcome()}
+  if(verbose){welcome()}
     
   if(is.null(BGLR_ENV)){  #*#
     GIBBS_start=1 #*#
@@ -91,7 +91,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         unlink(fname)
     }
     else {
-        cat(" Note: samples will be appended to existing files. \n")
+        if(verbose) {cat(" Note: samples will be appended to existing files. \n") }
     }
 
     fileOutMu = file(description = fname, open = "w")
@@ -205,38 +205,29 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     }
 
     }else{ #*# Block of code for the case when the environment is re-loaded
-        nIter_call=nIter
-        burnIn_call=burnIn
-        thin_call=thin
-        saveAt_call=saveAt
-        verbose_call=verbose
-        rmExistingFiles_call=rmExistingFiles
+        callParameters=list(nIter=nIter, burnIn=burnIn, thin=thin, saveAt=saveAt, verbose=verbose,rmExistingFiles=rmExistingFiles)
         
     	load(BGLR_ENV)
     	
     	if(newChain){
-    		nIter=nIter_call 
+    		nIter=callParameters$nIter
   		GIBBS_start=1
+  		saveAt=callParameters$saveAt
     	}else{
     		GIBBS_start=nIter+1
-    		nInter=GIBBS_start+nIter_call-1
+    		nInter=GIBBS_start+callParameters$nIter-1
     	}
-    	
-    	if(!newChain){
-    		saveAt_old=saveAt
-    	}
+
     	# Restore call parameters
-    	 burnIn=burnIn_call
-    	 thin=thin_call
-    	 saveAt=saveAt_call
-    	 verbose=verbose_call
-    	 rmExisitingFiles=rmExistingFiles_call
-    	 rm(nIter_call,burnIn_call,thin_call,saveAt_call,verbose_call,rmExistingFiles_call)
-   
-    	
-    	# Reseting Running 
+    	 burnIn=callParameters$burnIn
+    	 thin=callParameters$thin
+    	 verbose=callParameters$verbose
+    	 rmExisitingFiles=callParameters$rmExistingFiles
+    	 rm(callParameters)
+  
+    	# Reseting Running means and connections
     	if(newChain){
-    		
+ 		nSums=0   		
     		# Running means
 	    	tmp=ls(pattern='post_')
 		for(i in 1:length(tmp)){
@@ -249,7 +240,6 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 				eval(parse(text=paste0('ETA[[i]]$',tmp[j],"[]<-0")))
 			}
 		}
-		nSums=0
     	
     		# Resets Connections
     		fname = paste(saveAt, "mu.dat", sep = "")
@@ -293,7 +283,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     			}
          	}
     	}else{
-    		# Openning connections
+    		# if we just continue the chain, we re-open connections in mode 'append'
     		fname = paste(saveAt_old, "mu.dat", sep = "")
 	    	fileOutMu = file(description = fname, open = "a")
 
@@ -302,11 +292,26 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     
     		if(response_type=="ordinal"){
 			fname = paste(saveAt_old, "thresholds.dat", sep = "")
-    						
         		fileOutThresholds = file(description = fname, open = "a")
-    	}
-    }#*#
-
+    		}
+    		
+    		for(i in 1:length(ETA)){
+    			fname=switch(ETA[[i]]$model, 
+    				FIXED=paste(saveAt,ETA[[i]]$Name,"_b.dat",sep=""),
+    				BRR=paste(saveAt,ETA[[i]]$Name,"_varB.dat",sep=""),
+    				BRR_sets=paste(saveAt,ETA[[i]]$Name,"_varB.dat",sep=""),
+    				BL=paste(saveAt,ETA[[i]]$Name,"_varB.dat",sep=""),
+    				RKHS=paste(saveAt,ETA[[i]]$Name,"_varU.dat",sep=""),
+    				BayesA=paste(saveAt,ETA[[i]]$Name,"_ScaleBayesA.dat",sep=""),
+    				BayesB=paste(saveAt,ETA[[i]]$Name,"_parBayesB.dat",sep=""),    				
+    				BayesC=paste(saveAt,ETA[[i]]$Name,"_parBayesC.dat",sep=""),   
+    			      )
+    			ETA[[i]]$NamefileOut=fname
+			if(rmExistingFiles){  unlink(fname)  }
+			ETA[[i]]$fileOut=file(description=fname,open="a")
+		}
+	}
+    }
     # Gibbs sampler
 
     time = proc.time()[3]
