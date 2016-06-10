@@ -267,7 +267,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         		fileOutThresholds = file(description = fname, open = "w")
     		}
 		for(i in 1:length(ETA)){        	
-          		fame=paste0("\'",saveAt, basename(normalizePath(ETA[[i]]$NamefileOut)),"\'")
+          		fname=paste0("\'",saveAt, basename(normalizePath(ETA[[i]]$NamefileOut)),"\'")
           		ETA[[i]]$fileOut=fname
 			if(rmExistingFiles){ 
        				unlink(fname) 
