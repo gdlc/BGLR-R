@@ -258,6 +258,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         		unlink(fname)
     		}
 		fileOutVarE = file(description = fname, open = "w")    		
+
     		if(response_type=="ordinal"){
 			fname = paste(saveAt, "thresholds.dat", sep = "")
     			if (rmExistingFiles) {
