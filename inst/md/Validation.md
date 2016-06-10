@@ -49,7 +49,7 @@
 
 ```
 
-**(4)** Cross-validation using a loop
+**(4) Cross-validation using a loop**
 
 ```R
  folds=sample(1:5,size=n,replace=T)
@@ -68,7 +68,7 @@
 ```
 
 
-**(5)** Cross-validation in parallel at multiple cores
+**(5) Cross-validation in parallel at multiple cores**
 
 ```R
   # First create a function that fits one fold
