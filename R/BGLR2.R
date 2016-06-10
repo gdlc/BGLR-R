@@ -206,7 +206,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
     }else{ #*# Block of code for the case when the environment is re-loaded
         callParameters=list(nIter=nIter, burnIn=burnIn, thin=thin, saveAt=saveAt, verbose=verbose,rmExistingFiles=rmExistingFiles)
-        print('hello')
+        print('hello_1')
     	load(BGLR_ENV)
     	
     	if(newChain){
@@ -227,6 +227,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
   
     	# Reseting Running means and connections
     	if(newChain){
+    	        print('hello_2')
  		nSums=0   		
     		# Running means
 	    	tmp=ls(pattern='post_')
@@ -283,10 +284,11 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     			}
          	}
     	}else{
+        	print('hello_3')
     		# if we just continue the chain, we re-open connections in mode 'append'
     		fname = paste(saveAt_old, "mu.dat", sep = "")
 	    	fileOutMu = file(description = fname, open = "a")
-		stop('hello')
+
     		fname = paste(saveAt_old, "varE.dat", sep = "")
 	    	fileOutVarE = file(description = fname, open = "a")    		
     
