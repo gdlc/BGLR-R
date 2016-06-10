@@ -1,6 +1,6 @@
 ### Parallel Computations with BGLR
 
-**(1) Multi core computing using the parallel package **
+**(1) Multi-core computing using the parallel package**
 
 One can easily generate prallel chains at multiple cores using the ``parallel`` package. This can be conviniently done generating a wrapper to 
 ``BGLR``.
@@ -30,4 +30,4 @@ Now we can run multiple chains in parallel.
   
 ```
 
-Using a similar approach we can conduct a cross-validation in parallel.
+Using a similar approach we can conduct a [cross-validation in parallel](https://github.com/gdlc/BGLR-R/blob/master/inst/md/Validation.md).
