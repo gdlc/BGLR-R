@@ -313,6 +313,11 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     			ETA[[i]]$NamefileOut=fname
 			if(rmExistingFiles){  unlink(fname)  }
 			ETA[[i]]$fileOut=file(description=fname,open="a")
+			
+			if(ETA[[i]]$saveEffects){
+				fname=paste(saveAt,ETA[[i]]$Name,"_b.bin",sep="")
+    				ETA[[i]]$fileEffects=file(fname,open='ab')
+			}
 		}
 	}
     }
