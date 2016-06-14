@@ -61,7 +61,7 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   
   - [14. Censored Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/censored.md)
 
-
+  - [15. BRR-sets: Guassian prior with set-specific variances](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BRR_sets)
 **Other Omics**
 ----------------------------------------------------------------
 
