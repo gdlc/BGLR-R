@@ -1,4 +1,4 @@
-### Gausian Regression Grouping Markers into Sets (`BRR_sets`)
+#### Gausian Regression Grouping Markers into Sets: `BRR_sets`
 
 The method `BRR_sets` allows users to group markers into set each of which will have its own variance of effects. Markers can be 
 grouped in many different ways, including LD-blocks, pathway information, or simply results from GWAS. In the following example we illustrate
