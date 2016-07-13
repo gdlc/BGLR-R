@@ -66,11 +66,9 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
 ```
 **NOTES**:
 
-  - Similar models can be fitted using G-matrices or PCs, for this see [GBLUP](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GBLUP.md)
-  
-  - Similar models can be fitted using G-matrices or PCs, for this see: [GBLUP](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GBLUP.md)
- 
-  - A similar approach used to deal with [GxE](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GxE_usingInteractions.md)
+  - The above example uses a Gaussian prior, for information on other priors implemented in BGLR see [Bayesian Alphabet](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BayesianAlphabet.md)
+  - Within Gaussian contexts, the models described above can also be fitted using kinship matrices or marker-derived PCs, for this see [GBLUP](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GBLUP.md)
+   - Random effects interactions can also be used to deal with [GxE](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GxE_usingInteractions.md)
 
 
 [Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
