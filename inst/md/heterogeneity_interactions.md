@@ -30,18 +30,18 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
  		  int=list(X=Z2, model='FIXED'),
  		  list(X=X0,model='BRR') 
  	      ),
-	  nIter=6000,burnIn=1000)
+	  nIter=6000,burnIn=1000,saveAt='m0_')
 ```
 
 **(2) Stratified Analysis**
 ```R
  fm1=BGLR( y=y[group==1],
  	   ETA=list( list(X=X0[group==1,],model='BRR') ),
-	   nIter=6000,burnIn=1000)
+	   nIter=6000,burnIn=1000, saveAt='m1_')
 	   
  fm2=BGLR( y=y[group==2],
  	   ETA=list( list(X=X0[group==2,],model='BRR') ),
-	   nIter=6000,burnIn=1000,groups=group)
+	   nIter=6000,burnIn=1000,groups=group, saveAt='m2_')
 ```
 
 **(3) Now the interaction model**
@@ -52,7 +52,7 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
                   int1=list(X=X1,model='BRR'),
                   int2=list(X=X2,model='BRR')
 		),
-	     nIter=6000,burnIn=1000,groups=group)
+	     nIter=6000,burnIn=1000,groups=group, saveAt='m12_')
 
   varU1=fm12$ETA[[2]]$varB+fm$ETA[[3]]$varB
   varU2=fm12$ETA[[2]]$varB+fm$ETA[[4]]$varB
