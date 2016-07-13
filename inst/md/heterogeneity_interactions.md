@@ -18,6 +18,7 @@ For further details see [de los Campos et al., (JABES, 2015)](http://www.ncbi.nl
   X0=X # for main effects
   X1=X; X1[group==2,]=0 #interactions
   X2=X; X2[group==1,]=0 #interactions
+  Z2=as.matrix(as.integer(group==2)) # a dummy variable for group 2
 ```
 
 Next we will fit 3 models: (1) a model assuming that effects are homogeneous across clusters, (2) a statified analysis, and (3) a model with interactions. 
@@ -26,7 +27,7 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
 
 ```R
  fm0=BGLR( y=y,ETA=list( 
- 		  int=list(X=as.matrix(as.integer(group==2)), model='FIXED'),
+ 		  int=list(X=Z2, model='FIXED'),
  		  list(X=X0,model='BRR') 
  	      ),
 	  nIter=6000,burnIn=1000)
@@ -46,7 +47,7 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
 **(3) Now the interaction model**
 ```R
   fm12=BGLR(y=y,ETA=list(
-  		  int=list(X=as.matrix(as.integer(group==2)), model='FIXED'),
+  		  int=list(X=Z2, model='FIXED'),
                   main=list(X=X0,model='BRR'),
                   int1=list(X=X1,model='BRR'),
                   int2=list(X=X2,model='BRR')
