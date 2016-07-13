@@ -41,7 +41,7 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
 	   
  fm2=BGLR( y=y[group==2],
  	   ETA=list( list(X=X0[group==2,],model='BRR') ),
-	   nIter=6000,burnIn=1000,groups=group, saveAt='m2_')
+	   nIter=6000,burnIn=1000, saveAt='m2_')
 ```
 
 **(3) Now the interaction model**
