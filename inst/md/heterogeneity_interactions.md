@@ -1,4 +1,4 @@
-#####Modeling Genetic Heterogenity using Random-effects Interactions
+## Modeling Genetic Heterogenity using Random-effects Interactions
 
 For further details see [de los Campos et al., (JABES, 2015)](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666286) and references therein.
 
