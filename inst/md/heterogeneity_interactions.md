@@ -54,16 +54,15 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
 		),
 	     nIter=6000,burnIn=1000,groups=group, saveAt='m12_')
 
-  varU1=fm12$ETA[[2]]$varB+fm$ETA[[3]]$varB
-  varU2=fm12$ETA[[2]]$varB+fm$ETA[[4]]$varB
+  varU1=fm12$ETA[[2]]$varB+fm12$ETA[[3]]$varB
+  varU2=fm12$ETA[[2]]$varB+fm12$ETA[[4]]$varB
   varE1=fm12$varE[1] 
   varE2=fm12$varE[2]
 
   h2_1=varU1/(varU1+varE1)
   h2_2=varU2/(varU2+varE2)
   
-  fm$ETA[[1]]$varB/sqrt(varU1*varU2) #correlation of effects
-
+  fm12$ETA[[2]]$varB/sqrt(varU1*varU2) #correlation of effects
 ```
 
 **NOTES**:
