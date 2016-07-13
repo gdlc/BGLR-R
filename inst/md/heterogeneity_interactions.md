@@ -64,13 +64,9 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
   
   fm12$ETA[[2]]$varB/sqrt(varU1*varU2) #correlation of effects
 ```
-
 **NOTES**:
-
 	- Similar models can be fitted using G-matrices or PCs, for this see [GBLUP](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GBLUP.md)
-
 	- For implementations using other priors see [Bayesian Alphabet](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BayesianAlphabet.md)
-	
 	- For a similar approach to deal with GxE see [GxE](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GxE_usingInteractions.md)
 
 
