@@ -64,6 +64,58 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
   
   fm12$ETA[[2]]$varB/sqrt(varU1*varU2) #correlation of effects
 ```
+
+**Evaluation in trainint-testing**
+
+Note: since this involves 50 training-testing partitions, running the example will take time.
+
+```R
+
+  nRep=50
+  COR=matrix(nrow=nRep,ncol=3); colnames(COR)=c('across','within','interaction')
+  group1=which(groups==1)
+  group2=which(groups==2)
+  
+  for(i in 1:nRep){
+    yNA=y
+    tst1=sample(group1,size=86)
+    tst2=sample(group2,size=64)
+    yNA[c(tst1,tst2)]=NA
+    
+    # Across
+    fm0=BGLR( y=yNA,ETA=list( 
+ 		  int=list(X=Z2, model='FIXED'),
+ 		  list(X=X0,model='BRR') 
+ 	      ),
+	  nIter=6000,burnIn=1000,saveAt='m0_',verbose=FALSE)
+    # Within
+    fm1=BGLR( y=yNA[group==1],
+ 	   ETA=list( list(X=X0[group==1,],model='BRR') ),
+	   nIter=6000,burnIn=1000, saveAt='m1_',verbose=FALSE)
+	   
+    fm2=BGLR( y=yNA[group==2],
+ 	   ETA=list( list(X=X0[group==2,],model='BRR') ),
+	   nIter=6000,burnIn=1000, saveAt='m2_',verbose=FALSE)
+
+    # Interaction	  
+    fm12=BGLR(y=yNA,ETA=list(
+  		  int=list(X=Z2, model='FIXED'),
+                  main=list(X=X0,model='BRR'),
+                  int1=list(X=X1,model='BRR'),
+                  int2=list(X=X2,model='BRR')
+		),
+	     nIter=6000,burnIn=1000,groups=group, saveAt='m12_',verbose=FALSE)
+     COR1[i,1]=cor(y[tst1],fm0$yHat[tst1])
+     COR1[i,2]=cor(y[tst1],fm1$yHat[which(group1%in%tst1)])
+     COR1[i,3]=cor(y[tst1],fm12$yHat[tst1])
+
+     COR2[i,1]=cor(y[tst2],fm0$yHat[tst2])
+     COR2[i,2]=cor(y[tst2],fm2$yHat[which(group2%in%tst2)])
+     COR2[i,3]=cor(y[tst2],fm12$yHat[tst2])
+     cat('Done with parititon ',i,'\n')   
+    }
+
+```
 **NOTES**:
 
   - The above example uses a Gaussian prior, for information on other priors implemented in BGLR see [Bayesian Alphabet](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BayesianAlphabet.md)
