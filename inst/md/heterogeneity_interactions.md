@@ -44,7 +44,7 @@ Next we will fit 3 models: (1) a model assuming that effects are homogeneous acr
 	   nIter=6000,burnIn=1000, saveAt='m2_')
 ```
 
-**(3) Now the interaction model**
+**(3) Interaction model**
 ```R
   fm12=BGLR(y=y,ETA=list(
   		  int=list(X=Z2, model='FIXED'),
