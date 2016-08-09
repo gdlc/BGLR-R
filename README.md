@@ -5,6 +5,9 @@ version beta version. The latest stable release can be downloaded from [CRAN](ht
 
 #### Installation
 
+```LINUX
+ wc -l tmp.txt
+```
 
 **From CRAN (stable release)**.
 
