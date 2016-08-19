@@ -844,7 +844,7 @@ welcome=function()
   cat("#                      Bayesian Generalized Linear Regression        #\n");
   cat("#                      Gustavo de los Campos, gdeloscampos@gmail.com #\n");
   cat("#    .oooO     Oooo.   Paulino Perez, perpdgo@gmail.com              #\n");
-  cat("#    (   )     (   )   Agust, 2015                                   #\n");
+  cat("#    (   )     (   )   Agust, 2016                                   #\n");
   cat("#_____\\ (_______) /_________________________________________________ #\n");
   cat("#      \\_)     (_/                                                   #\n");
   cat("#                                                                    #\n");
@@ -902,8 +902,8 @@ metropLambda=function (tau2, lambda, shape1 = 1.2, shape2 = 1.2, max = 200, ncp 
 .onAttach = function(library, pkg)
 {
   Rv = R.Version()
-  if(!exists("getRversion", baseenv()) || (getRversion() < "2.0.0"))
-    stop("This package requires R 2.0.0 or later")
+  if(!exists("getRversion", baseenv()) || (getRversion() < "2.10"))
+    stop("This package requires R 2.10 or later")
   assign(".BGLR.home", file.path(library, pkg),
          pos=match("package:BGLR", search()))
   BGLR.version = "1.0.5 Beta (GitHub)"
