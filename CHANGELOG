@@ -37,4 +37,4 @@ version 1.0.4
 
 version 1.0.5
   using BRR_sets (BRR_windows removed)
-  saving effects in binary files & computing windos
+  saving effects in binary files & computing windows
