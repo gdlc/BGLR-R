@@ -278,8 +278,7 @@ setLT.BRR_sets=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,t
     LT$NamefileOut=fname
     LT$fileOut=file(description=fname,open="w")
     LT$X=as.vector(LT$X)
-    
-    #*#
+
     if(is.null(LT$saveEffects)){LT$saveEffects=FALSE}
     if(LT$saveEffects){
     	if(is.null(LT$thin)){ LT$thin=thin }
@@ -288,7 +287,7 @@ setLT.BRR_sets=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,t
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
-    }#*#
+    }
     return(LT)
 }
 
@@ -1301,7 +1300,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 			SS=tapply(X=ETA[[j]]$b^2,INDEX=ETA[[j]]$sets,FUN=sum)+ETA[[j]]$S0
 				   
                    	ETA[[j]]$varSets=SS/rchisq(df=ETA[[j]]$DF1,n=ETA[[j]]$n_sets)
-                   	ETA[[j]]$varB=tmp[ETA[[j]]$sets]
+                   	ETA[[j]]$varB=ETA[[j]]$varSets[ETA[[j]]$sets]
                 }
 
 
