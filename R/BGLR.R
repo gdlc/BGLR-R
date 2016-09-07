@@ -1541,7 +1541,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                     write(ETA[[j]]$varB, file = ETA[[j]]$fileOut, append = TRUE)
                   }
                   if (ETA[[j]]$model == "BRR_sets") {
-                    write(ETA[[j]]$varSets, ncol=ETA[[j]]$nSets,file = ETA[[j]]$fileOut, append = TRUE)
+                    write(ETA[[j]]$varSets, ncol=ETA[[j]]$n_sets,file = ETA[[j]]$fileOut, append = TRUE)
                   }
                   if (ETA[[j]]$model == "BL") {
                     write(ETA[[j]]$lambda, file = ETA[[j]]$fileOut, append = TRUE)
