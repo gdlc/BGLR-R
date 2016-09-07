@@ -263,8 +263,9 @@ setLT.BRR_sets=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,t
     LT$post_b=rep(0,LT$p)
     LT$post_b2=rep(0,LT$p)
     LT$varB=rep(LT$S0/(LT$df0+2),LT$p)
-	LT$post_varSets=rep(0,LT$n_sets)
-	LT$post_varSets2<-rep(0,LT$n_sets)
+    LT$varSets=rep(0,LT$n_sets)
+    LT$post_varSets=rep(0,LT$n_sets)
+    LT$post_varSets2<-rep(0,LT$n_sets)
     LT$post_varB=rep(0 ,LT$p)                
     LT$post_varB2=rep(0,LT$p)
 
@@ -1293,15 +1294,14 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                 }# END BRR
                 
                 if(ETA[[j]]$model=="BRR_sets"){
-                   ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
+                   	ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
                                              e, ETA[[j]]$varB, varE, 1e-9)
 		  		   ETA[[j]]$b = ans[[1]]
-                   e = ans[[2]]
-				   SS=tapply(X=ETA[[j]]$b^2,INDEX=ETA[[j]]$sets,FUN=sum)+ETA[[j]]$S0
+                   	e = ans[[2]]
+			SS=tapply(X=ETA[[j]]$b^2,INDEX=ETA[[j]]$sets,FUN=sum)+ETA[[j]]$S0
 				   
-                   tmp=SS/rchisq(df=ETA[[j]]$DF1,n=ETA[[j]]$n_sets)
-              
-                   ETA[[j]]$varB=tmp[ETA[[j]]$sets]
+                   	ETA[[j]]$varSets=SS/rchisq(df=ETA[[j]]$DF1,n=ETA[[j]]$n_sets)
+                   	ETA[[j]]$varB=tmp[ETA[[j]]$sets]
                 }
 
 
@@ -1541,7 +1541,9 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                   if (ETA[[j]]$model == "BRR") {
                     write(ETA[[j]]$varB, file = ETA[[j]]$fileOut, append = TRUE)
                   }
-
+                  if (ETA[[j]]$model == "BRR_sets") {
+                    write(ETA[[j]]$varSets, ncol=ETA[[j]]$nSets,file = ETA[[j]]$fileOut, append = TRUE)
+                  }
                   if (ETA[[j]]$model == "BL") {
                     write(ETA[[j]]$lambda, file = ETA[[j]]$fileOut, append = TRUE)
                   }
@@ -1600,8 +1602,8 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$post_b2 = ETA[[j]]$post_b2 * k + (ETA[[j]]$b^2)/nSums
                       ETA[[j]]$post_varB = ETA[[j]]$post_varB * k + (ETA[[j]]$varB)/nSums
                       ETA[[j]]$post_varB2 = ETA[[j]]$post_varB2 * k + (ETA[[j]]$varB^2)/nSums
-                      ETA[[j]]$post_varSets<-ETA[[j]]$post_varSets*k+tmp/nSums
-                      ETA[[j]]$post_varSets2<-ETA[[j]]$post_varSets2*k+(tmp^2)/nSums
+                      ETA[[j]]$post_varSets<-ETA[[j]]$post_varSets*k+ETA[[j]]$varSets/nSums
+                      ETA[[j]]$post_varSets2<-ETA[[j]]$post_varSets2*k+(ETA[[j]]$varSets^2)/nSums
                       if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#
                     }
                     
