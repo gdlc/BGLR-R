@@ -7,11 +7,11 @@ The following examples implement ideas described in *Genomic Heritabilit: What i
  library(BGLR); data(wheat)
  X=scale(wheat.X)/sqrt(ncol(wheat.X))
  
- h20=.5
+ h2_0=.5
  nQTL=10; n=nrow(X)
  QTL=seq(from=100, to=1200,length=nQTL)
  
- b=rep(1,nQTL)
+ b=rnorm(nQTL)
  signal=X[,QTL]%*%b
  signal=signal/sd(signal)*sqrt(h20)
  error=rnorm(n=n)
@@ -22,7 +22,7 @@ The following examples implement ideas described in *Genomic Heritabilit: What i
 **Estimation using variance components**
 
 ```R
- fm=BGLR(y=y,ETA=list(list(X=X,model='BRR',saveEffects=T)),nIter=6000,burnIn=1000)
+ fm=BGLR(y=y,ETA=list(list(X=X,model='BRR',saveEffects=T)),nIter=6000,burnIn=1000,verbose=F)
  varU=scan('ETA_1_varB.dat')
  varE=scan('varE.dat')
  h2=varU/(varU+varE)
@@ -34,13 +34,19 @@ The following examples implement ideas described in *Genomic Heritabilit: What i
 ```R
  B=readBinMat('ETA_1_b.bin')
  h2_new=rep(NA,nrow(B))
+ varU_new=h2_new
+ varE_new=h2_new
  for(i in 1:length(h2_new)){
    u=X%*%B[i,]	
-   h2_new[i]=var(u)
+   varU_new[i]=var(u)
+   varE_new[i]=var(y-u)
+   h2_new[i]=varU_new[i]/(varU_new[i]+varE_new[i])
  }
   plot(h2_new,type='o',cex=.5,col=4);abline(h=c(h20,mean(h2_new)),lty=2,col=c(1,2),lwd=2)
+ mean(varU)
+ mean(varU+varE)
+ mean(varU_new+varE_new)
 ```
-
 
 ```R
   d_h2=density(h2[-c(1:200)])
