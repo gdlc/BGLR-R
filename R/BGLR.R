@@ -5,8 +5,7 @@
 #It returns the incidence matrix
 set.X=function(LT)
 {
-	
-	print("hello Deniz")
+
 	flag=TRUE
 	n_elements=length(LT)
 	i=0
