@@ -48,7 +48,7 @@ The following examples illustrate how to implement marker-by-environments intera
 **Note**: similar models can be fitted using G-matrices (or factorizations of it) with off-diagnoal blocks zeroed out for interactions, for further detials see [Lopez-Cruz et al., 2015](http://www.g3journal.org/content/5/4/569.full?sid=81d404b6-7d0f-4ace-8556-936393eb829d).
 
 
-**Incomplete, unbalanced designs**
+**(2) Incomplete, unbalanced designs**
 
 In the example presented above, as in [Lopez-Cruz et al. (2015)](http://www.g3journal.org/content/5/4/569.full?sid=81d404b6-7d0f-4ace-8556-936393eb829d), the data is assumed to be complete and balanced (i.e., all gentoypes on all environment), but this is not needed. The example below illustrates how to fit the interaction model with unbalanced data.
 
