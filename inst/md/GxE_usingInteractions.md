@@ -48,4 +48,45 @@ The following examples illustrate how to implement marker-by-environments intera
 **Note**: similar models can be fitted using G-matrices (or factorizations of it) with off-diagnoal blocks zeroed out for interactions, for further detials see [Lopez-Cruz et al., 2015](http://www.g3journal.org/content/5/4/569.full?sid=81d404b6-7d0f-4ace-8556-936393eb829d).
 
 
+***Incomplete, unbalanced designs**
+
+In the example presented above, as in [Lopez-Cruz et al., 2015](http://www.g3journal.org/content/5/4/569.full?sid=81d404b6-7d0f-4ace-8556-936393eb829d), the data is assumed to be complete and balanced (i.e., all gentoypes on all environment), but this is not needed. The example below illustrates how to fit the interaction model with unbalanced data.
+
+
+```R
+library(BGLR)
+data(wheat)
+Y=wheat.Y
+X=scale(wheat.X)/sqrt(ncol(wheat.X))
+rownames(X)<-1:nrow(X)# use your IDs, don't need to be 1:n
+rownames(Y)<-1:nrow(Y) # Y has data from 4 env (each col=1 env) 
+n1=150
+n2=305
+y=c(sample(Y[,1],size=n1),sample(Y[,2],size=n2)) #unbalanced data from 2 env
+env=c(rep(1,n1),rep(2,n2))
+
+# Method 1: using SNPs explicitly
+
+X0=X[names(y),] # Matrix for main effects
+stopifnot(all(rownames(X0)==names(y)))
+
+# now interactions
+X1=X0
+X2=X0
+for(i in 1:nrow(X0)){
+	X1[i,]<-(env[i]==1)*X0[i,]
+	X2[i,]<-(env[i]==2)*X0[i,]	
+}
+fm=BGLR(y=y,ETA=list(list(X=X0,model='BRR'),
+                     list(X=X1,model='BRR'),
+                     list(X=X2,model='BRR'))
+        ,groups=env)
+
+ fm$varE
+ fm$ETA[[1]]$varB
+ fm$ETA[[2]]$varB
+ fm$ETA[[3]]$varB
+ 
+```
+
 [Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
