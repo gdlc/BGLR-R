@@ -25,4 +25,30 @@ single-marker regressions are used to classify SNPs into sets.
   burnIn=1000
  detach(pheno)
 ```
-**
+
+** Single Marker Regressions**
+
+The following code performs an association analyses, the resulting z-scores are used to classify SNPs into sets.
+
+```R
+library(BGData)
+ PC=svd(x=X,nu=5,nv=0)$u
+ TMP=GWAS(y~PC,data=new('BGData',geno=X,pheno=data.frame(y=y),map=data.frame()),method='lm')
+ thresholds=c(.99,.95,.9,.75,.66,.5,.33)
+
+ par(mfrow=c(2,1))
+ x=-log10(TMP[,4])
+
+ plot(x,cex=.5,col=8)
+ points(x=QTL,col=2,cex=.7,pch=19,y=x[QTL])
+ 
+ x= abs(TMP[,3])
+ tmp=sort(c(max(x)+.1,min(x)-.1,quantile(x,prob=thresholds)))
+
+ groups=cut(x,breaks=tmp)
+```
+
+```R
+
+
+```
