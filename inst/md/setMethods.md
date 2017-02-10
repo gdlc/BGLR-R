@@ -36,19 +36,22 @@ library(BGData)
  TMP=GWAS(y~PC,data=new('BGData',geno=X,pheno=data.frame(y=y),map=data.frame()),method='lm')
  thresholds=c(.99,.95,.9,.75,.66,.5,.33)
 
- par(mfrow=c(2,1))
- x=-log10(TMP[,4])
-
- plot(x,cex=.5,col=8)
- points(x=QTL,col=2,cex=.7,pch=19,y=x[QTL])
+ zSq=TMP[,3]^2
+ tmp=sort(c(max(zSq)+.1,min(zSq)-.1,quantile(zSq,prob=thresholds)))
+ groups=cut(zSq,breaks=tmp)
+ plot(zSq,cex=.5,col=groups)
  
- x= abs(TMP[,3])
- tmp=sort(c(max(x)+.1,min(x)-.1,quantile(x,prob=thresholds)))
-
- groups=cut(x,breaks=tmp)
 ```
+**Bayesian Regression with SNP sets**
 
 ```R
+ETA=list()
+groups=as.integer(groups)
 
+for(i in 1:length(unique(groups))){
+   ETA[[i]]=list(X=X[,groups==i],model='BayesB')
+}
+
+fm=BGLR(y=y,ETA=ETA,nIter=nIter,burnIn=burnIn)
 
 ```
