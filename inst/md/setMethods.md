@@ -1,6 +1,6 @@
 ### Set Methods
 
-In genomic regressions often one may want to consider to group SNPs (or other predictors) into sets and then assign set-specific priors.
+In genomic regressions often one wants to consider to group SNPs (or other predictors) into sets and then assign set-specific priors.
 This treatment allows set-specific rates of variable selection as well as set-specific shrinkage of estimates. For example, one may wish to
 group SNPs based on bioinformatic categories, or based on allele frequencies or some other type of information. 
 
