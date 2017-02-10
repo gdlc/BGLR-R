@@ -1,12 +1,8 @@
 ### Set Methods
 
-In genomic regressions often one wants to consider to group SNPs (or other predictors) into sets and then assign set-specific priors.
-This treatment allows set-specific rates of variable selection as well as set-specific shrinkage of estimates. For example, one may wish to
-group SNPs based on bioinformatic categories, or based on allele frequencies or some other type of information. 
+In genomic regressions one may want to group SNPs (or other predictors) into sets each of which is then assigned set-specific prior distributions of effects. This treatment allows set-specific rates of variable selection as well as set-specific shrinkage of estimates. Groupings can be based on prior information (e.g., bioinformatics categories), allele frequencies or some other type of information. 
+In `BGLR` models are specified using a list-interface: each element of the list is assigned a user-specified prior. This interface is particularly convenient for implementing set methods. The following examples illustrate this. In the example results from single-marker regressions are used to group SNPs based on their z-scores.
 
-In `BGLR` models are specified using a list-interface, each element of the list is assigned a user-specified prior, this interface is very 
-flexible and particularly convinient for implementing set methods. The following examples illustrate this. In the example results from
-single-marker regressions are used to classify SNPs into sets.
 
 **A simple simulation**
 ```R
@@ -42,7 +38,7 @@ library(BGData)
  plot(zSq,cex=.5,col=groups)
  
 ```
-**Bayesian Regression with SNP sets**
+**Bayesian Regression with SNP sets (using `BayesB` as an example)**
 
 ```R
 ETA=list()
@@ -53,5 +49,12 @@ for(i in 1:length(unique(groups))){
 }
 
 fm=BGLR(y=y,ETA=ETA,nIter=nIter,burnIn=burnIn)
+
+# collecting estimates
+bHat=numeric()
+for(i in 1:length(ETA)){ bHat=c(bHat,fm$ETA[[i]]$b) }
+bHat=bHat[match(colnames(X),names(bHat)]
+plot(abs(bHat),col=4,cex=.5)
+abline(v=QTL,lty=2,lwd=.5)
 
 ```
