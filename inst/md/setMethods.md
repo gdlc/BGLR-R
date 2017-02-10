@@ -26,7 +26,7 @@ single-marker regressions are used to classify SNPs into sets.
  detach(pheno)
 ```
 
-** Single Marker Regressions**
+**Single Marker Regressions**
 
 The following code performs an association analyses, the resulting z-scores are used to classify SNPs into sets.
 
