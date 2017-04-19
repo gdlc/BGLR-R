@@ -42,7 +42,7 @@ The following examples implement ideas described in *Genomic Heritabilit: What i
    varE_new[i]=var(y-u)
    h2_new[i]=varU_new[i]/(varU_new[i]+varE_new[i])
  }
-  plot(h2_new,type='o',cex=.5,col=4);abline(h=c(h20,mean(h2_new)),lty=2,col=c(1,2),lwd=2)
+  plot(h2_new,type='o',cex=.5,col=4);abline(h=c(h2_0,mean(h2_new)),lty=2,col=c(1,2),lwd=2)
  mean(varU)
  mean(varU+varE)
  mean(varU_new+varE_new)
