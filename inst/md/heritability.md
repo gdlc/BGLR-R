@@ -13,9 +13,9 @@ The following examples implement ideas described in *Genomic Heritabilit: What i
  
  b=rnorm(nQTL)
  signal=X[,QTL]%*%b
- signal=signal/sd(signal)*sqrt(h20)
+ signal=signal/sd(signal)*sqrt(h2_0)
  error=rnorm(n=n)
- error=error/sd(error)*sqrt(1-h20)
+ error=error/sd(error)*sqrt(1-h2_0)
  y=signal+error
 ```
 
