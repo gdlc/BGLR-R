@@ -845,7 +845,7 @@ welcome=function()
   cat("#                      Bayesian Generalized Linear Regression        #\n");
   cat("#                      Gustavo de los Campos, gdeloscampos@gmail.com #\n");
   cat("#    .oooO     Oooo.   Paulino Perez, perpdgo@gmail.com              #\n");
-  cat("#    (   )     (   )   Agust, 2016                                   #\n");
+  cat("#    (   )     (   )   May, 2017                                   #\n");
   cat("#_____\\ (_______) /_________________________________________________ #\n");
   cat("#      \\_)     (_/                                                   #\n");
   cat("#                                                                    #\n");
@@ -932,12 +932,20 @@ metropLambda=function (tau2, lambda, shape1 = 1.2, shape2 = 1.2, max = 200, ncp 
 #NOTES: 1) This routine was taken from bayesm package, December 18, 2012
 #       2) The inputs are not checked, 
 #It is assumed that are ok.
-rtrun=function (mu, sigma, a, b) 
+#rtrun=function (mu, sigma, a, b) 
+#{
+#    FA = pnorm(((a - mu)/sigma))
+#    FB = pnorm(((b - mu)/sigma))
+#    return(mu + sigma * qnorm(runif(length(mu)) * (FB - FA) + FA))
+#}
+
+#Using the rtruncnorm function in the truncnorm package
+rtrun=function(mu,sigma,a,b)
 {
-    FA = pnorm(((a - mu)/sigma))
-    FB = pnorm(((b - mu)/sigma))
-    return(mu + sigma * qnorm(runif(length(mu)) * (FB - FA) + FA))
+        n=max(c(length(mu),length(sigma),length(a),length(b)))
+	rtruncnorm(n,a,b,mu,sigma)
 }
+
 
 #Extract the values of z such that y[i]=j
 #z,y vectors, j integer
@@ -1126,6 +1134,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
         threshold=qnorm(p=c(0,cumsum(as.vector(countsZ)/n)))
           
         y = rtrun(mu =0, sigma = 1, a = threshold[z], b = threshold[ (z + 1)])
+
         mu=0
         #posterior for thresholds
         post_threshold = 0
