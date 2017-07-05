@@ -69,7 +69,7 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
 
 
 **(5) Using the Cholesky decompositon and `model='BRR'`**
-  This approach won't work if G is not positive definite. To avodi this problem we add a small constant in the diagonal.
+  This approach won't work if G is not positive definite; in our case the matrix is positive semi-definite, we can make it positive definite by adding a small constant to the diagonal.
   
 ```R
  diag(G)=diag(G)+1/1e4
