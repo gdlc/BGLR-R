@@ -6,3 +6,6 @@ src/BGLR.so
 vignettes/*.aux
 vignettes/*.log
 vignettes/*.out
+vignettes/*.bbl
+vignettes/*.blg
+
