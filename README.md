@@ -7,6 +7,7 @@ version beta version. The latest stable release can be downloaded from [CRAN](ht
 ### Stability/Builds
 
 [![CRAN status](http://www.r-pkg.org/badges/version/BGLR)](https://cran.r-project.org/package=BGLR)
+[![](http://cranlogs.r-pkg.org/badges/BGLR)](http://cran.rstudio.com/web/packages/BGLR/index.html)
 
 [`gdlc`](https://github.com/gdlc/BGLR-R) badges:
 [![Travis build status](https://travis-ci.org/gdlc/BGLR-R.svg?branch=master)](https://travis-ci.org/gdlc/BGLR-R)
