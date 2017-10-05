@@ -1,5 +1,6 @@
 .Rproj.user
 inst/doc
+inst/doc/*.pdf
 src/*.o
 src/*.so
 src/BGLR.so
