@@ -1,0 +1,3 @@
+#!/bin/sh
+############### still a WIP ###############
+rm -f -r src/*.o src/*.so

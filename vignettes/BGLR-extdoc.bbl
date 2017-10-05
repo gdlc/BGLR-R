@@ -1,0 +1,368 @@
+\begin{thebibliography}{49}
+\newcommand{\enquote}[1]{``#1''}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{Albert and Chib(1993)}]{Albert:1993}
+Albert JH, Chib S (1993).
+\newblock \enquote{Bayesian Analysis of Binary and Polychotomous Response
+  Data.}
+\newblock \emph{Journal of the American Statistical Association},
+  \textbf{88}(422), 669--679.
+
+\bibitem[{Andrews and Mallows(1974)}]{Andrews:1974}
+Andrews DF, Mallows CL (1974).
+\newblock \enquote{{Scale Mixtures of Normal Distributions}.}
+\newblock \emph{Journal of the Royal Statistical Society. Series B
+  (Methodological)}, \textbf{36}(1), 99--102.
+\newblock ISSN 00359246.
+\newblock \doi{10.2307/2984774}.
+\newblock \urlprefix\url{http://dx.doi.org/10.2307/2984774}.
+
+\bibitem[{Bates and Vazquez(2009)}]{Bates:2009}
+Bates D, Vazquez AI (2009).
+\newblock \emph{pedigreemm: Pedigree-based mixed-effects models}.
+\newblock R package version 0.2-4,
+  \urlprefix\url{http://CRAN.R-project.org/package=pedigreemm}.
+
+\bibitem[{Bellman(1961)}]{Bellman:1961}
+Bellman RE (1961).
+\newblock \emph{Adaptive control processes - A Guided Tour}.
+\newblock Princeton University Press, Princeton, New Jersey, U.S.A.
+
+\bibitem[{Casella and George(1992)}]{Casella:1992}
+Casella G, George EI (1992).
+\newblock \enquote{Explaining the Gibbs Sampler.}
+\newblock \emph{The American Statistician}, \textbf{46}(3), 167--174.
+
+\bibitem[{Cressie(1988)}]{Cressie:1988}
+Cressie N (1988).
+\newblock \enquote{Spatial prediction and ordinary kriging.}
+\newblock \emph{Mathematical Geology}, \textbf{20}(4), 405--421.
+\newblock ISSN 0882-8121.
+\newblock \doi{10.1007/BF00892986}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1007/BF00892986}.
+
+\bibitem[{Crossa \emph{et~al.}(2010)Crossa, de~los Campos, P\'erez, Gianola,
+  Burgueno, Araus, Makumbi, Singh, Dreisigacker, Yan, Arief, Banziger, and
+  Braun}]{Crossa:2010}
+Crossa J, de~los Campos G, P\'erez P, Gianola D, Burgueno J, Araus JL, Makumbi
+  D, Singh RP, Dreisigacker S, Yan JB, Arief V, Banziger M, Braun HJ (2010).
+\newblock \enquote{Prediction of Genetic Values of Quantitative Traits in Plant
+  Breeding Using Pedigree and Molecular Markers.}
+\newblock \emph{Genetics}, \textbf{186}(2), 713--U406.
+
+\bibitem[{de~los Campos \emph{et~al.}(2009{\natexlab{a}})de~los Campos,
+  Gianola, and Rosa}]{delosCampos:2009b}
+de~los Campos G, Gianola D, Rosa GJM (2009{\natexlab{a}}).
+\newblock \enquote{Reproducing Kernel Hilbert Spaces Regression: A General
+  Framework for Genetic Evaluation.}
+\newblock \emph{Journal of Animal Science}, \textbf{87}(6), 1883--1887.
+
+\bibitem[{de~los Campos \emph{et~al.}(2010)de~los Campos, Gianola, Rosa,
+  Weigel, and Crossa}]{delosCampos:2010b}
+de~los Campos G, Gianola D, Rosa GJM, Weigel KA, Crossa J (2010).
+\newblock \enquote{Semi-parametric Genomic-enabled Prediction of Genetic Values
+  Using Reproducing Kernel Hilbert Spaces Methods.}
+\newblock \emph{Genetics Research}, \textbf{92}, 295--308.
+
+\bibitem[{de~los Campos \emph{et~al.}(2013{\natexlab{a}})de~los Campos, Hickey,
+  Pong-Wong, Daetwyler, and Calus}]{delosCampos:2013b}
+de~los Campos G, Hickey JM, Pong-Wong R, Daetwyler HD, Calus MPL
+  (2013{\natexlab{a}}).
+\newblock \enquote{Whole Genome Regression and Prediction Methods Applied to
+  Plant and Animal Breeding.}
+\newblock \emph{Genetics}, \textbf{193}, 327--345.
+\newblock \doi{10.1534/genetics.112.143313}.
+
+\bibitem[{de~los Campos \emph{et~al.}(2009{\natexlab{b}})de~los Campos, Naya,
+  Gianola, Crossa, Legarra, Manfredi, Weigel, and Cotes}]{delosCampos:2009a}
+de~los Campos G, Naya H, Gianola D, Crossa J, Legarra A, Manfredi E, Weigel K,
+  Cotes JM (2009{\natexlab{b}}).
+\newblock \enquote{Predicting Quantitative Traits with Regression Models for
+  Dense Molecular Markers and Pedigree.}
+\newblock \emph{Genetics}, \textbf{182}(1), 375--385.
+
+\bibitem[{de~los Campos and P\'erez(2010)}]{delosCampos:2010a}
+de~los Campos G, P\'erez P (2010).
+\newblock \enquote{BLR: Bayesian Linear Regression R package, version 1.2.}
+\newblock R package version 1.2.
+
+\bibitem[{de~los Campos and P\'erez(2013)}]{delosCampos:2013a}
+de~los Campos G, P\'erez P (2013).
+\newblock \enquote{BGLR: Bayesian Generalized Regression R package, version
+  1.0.}
+\newblock R package version 1.0,
+  \urlprefix\url{https://r-forge.r-project.org/projects/bglr/}.
+
+\bibitem[{de~los Campos \emph{et~al.}(2013{\natexlab{b}})de~los Campos,
+  Vazquez, Fernando, C., and Daniel}]{delosCampos:2013c}
+de~los Campos G, Vazquez AI, Fernando RL, C KY, Daniel S (2013{\natexlab{b}}).
+\newblock \enquote{Prediction of Complex Human Traits Using the Genomic Best
+  Linear Unbiased Predictor.}
+\newblock \emph{PLoS Genetics}, \textbf{7}(7), e1003608.
+\newblock \doi{10.1371/journal.pgen.1003608}.
+
+\bibitem[{Endelman(2011)}]{Endelman:2011}
+Endelman JB (2011).
+\newblock \enquote{Ridge regression and other kernels for genomic selection
+  with R package rrBLUP.}
+\newblock \emph{Plant Genome}, \textbf{4}, 250--255.
+
+\bibitem[{Geman and Geman(1984)}]{Geman:1984}
+Geman S, Geman D (1984).
+\newblock \enquote{Stochastic Relaxation, Gibbs Distributions and the Bayesian
+  Restoration of Images.}
+\newblock \emph{IEEE Transactions on Pattern Analysis and Machine
+  Intelligence}, \textbf{6}(6), 721--741.
+
+\bibitem[{Gianola(2013)}]{Gianola:2013}
+Gianola D (2013).
+\newblock \enquote{Priors in Whole-Genome Regression: The Bayesian Alphabet
+  Returns.}
+\newblock \emph{Genetics}, \textbf{90}, 525--540.
+\newblock ISSN 1469-5073.
+
+\bibitem[{Gianola and de~los Campos(2008)}]{Gianola:2008b}
+Gianola D, de~los Campos G (2008).
+\newblock \enquote{Inferring genetic values for quantitative traits
+  non-parametrically.}
+\newblock \emph{Genetics Research}, \textbf{90}, 525--540.
+\newblock ISSN 1469-5073.
+\newblock \doi{10.1017/S0016672308009890}.
+\newblock
+  \urlprefix\url{http://journals.cambridge.org/article_S0016672308009890}.
+
+\bibitem[{Gianola \emph{et~al.}(2006)Gianola, Fernando, and
+  Stella}]{Gianola:2006}
+Gianola D, Fernando RL, Stella A (2006).
+\newblock \enquote{Genomic-assisted Prediction of Genetic Value with
+  Semiparametric Procedures.}
+\newblock \emph{Genetics}, \textbf{173}(3), 1761--1776.
+
+\bibitem[{Gianola and van Kaam(2008)}]{Gianola:2008}
+Gianola D, van Kaam JBCHM (2008).
+\newblock \enquote{Reproducing Kernel Hilbert Spaces Regression Methods for
+  Genomic Assisted Prediction of Quantitative Traits.}
+\newblock \emph{Genetics}, \textbf{178}(4), 2289--2303.
+
+\bibitem[{Gonz\'alez-Recio \emph{et~al.}(2008)Gonz\'alez-Recio, Gianola, Long,
+  Weigel, Rosa, and Avendano}]{Gonzalez:2008}
+Gonz\'alez-Recio O, Gianola D, Long N, Weigel KA, Rosa GJM, Avendano S (2008).
+\newblock \enquote{Nonparametric Methods for Incorporating Genomic Information
+  Into Genetic Evaluations: An Application to Mortality in Broilers.}
+\newblock \emph{Genetics}, \textbf{178}(4), 2305--2313.
+\newblock \doi{10.1534/genetics.107.084293}.
+\newblock \eprint{http://www.genetics.org/content/178/4/2305.full.pdf+html},
+  \urlprefix\url{http://www.genetics.org/content/178/4/2305.abstract}.
+
+\bibitem[{Habier \emph{et~al.}(2011)Habier, Fernando, Kizilkaya, and
+  Garrick}]{Habier:2011}
+Habier D, Fernando R, Kizilkaya K, Garrick D (2011).
+\newblock \enquote{Extension of the Bayesian Alphabet for Genomic Selection.}
+\newblock \emph{BMC Bioinformatics}, \textbf{12}(1), 186.
+
+\bibitem[{Hayes \emph{et~al.}(2009)Hayes, Bowman, Chamberlain, and
+  Goddard}]{Hayes:2009}
+Hayes B, Bowman P, Chamberlain A, Goddard M (2009).
+\newblock \enquote{Invited review: Genomic selection in dairy cattle: Progress
+  and challenges.}
+\newblock \emph{Journal of Dairy Science}, \textbf{92}(2), 433 -- 443.
+\newblock ISSN 0022-0302.
+
+\bibitem[{Henderson(1975)}]{Henderson:1975}
+Henderson CR (1975).
+\newblock \enquote{Best linear Unbiased Estimation and Prediction Under a
+  Selection Model.}
+\newblock \emph{Biometrics}, \textbf{31}(2), 423--447.
+
+\bibitem[{Hoerl and Kennard(1970)}]{Hoerl:1970}
+Hoerl AE, Kennard RW (1970).
+\newblock \enquote{Ridge Regression: Biased Estimation for Nonorthogonal
+  Problems.}
+\newblock \emph{Technometrics}, \textbf{42}(1), 80--86.
+
+\bibitem[{Janss \emph{et~al.}(2012)Janss, de~los Campos, Sheehan, and
+  Sorensen}]{Janss:2012}
+Janss L, de~los Campos G, Sheehan N, Sorensen D (2012).
+\newblock \enquote{Inferences from Genomic Models in Stratified Populations.}
+\newblock \emph{Genetics}, \textbf{192}(2), 693--704.
+\newblock \doi{10.1534/genetics.112.141143}.
+\newblock \eprint{http://www.genetics.org/content/192/2/693.full.pdf+html},
+  \urlprefix\url{http://www.genetics.org/content/192/2/693.abstract}.
+
+\bibitem[{Legarra \emph{et~al.}(2008)Legarra, Robert-Grani\'e, Manfredi, and
+  Elsen}]{Legarra:2008}
+Legarra A, Robert-Grani\'e C, Manfredi E, Elsen JM (2008).
+\newblock \enquote{Performance of Genomic Selection in Mice.}
+\newblock \emph{Genetics}, \textbf{180}(1), 611--618.
+
+\bibitem[{Makowsky \emph{et~al.}(2011)Makowsky, Pajewski, Klimentidis, Vazquez,
+  Duarte, Allison, and de~los Campos}]{Makowsky:2011}
+Makowsky R, Pajewski NM, Klimentidis YC, Vazquez AI, Duarte CW, Allison DB,
+  de~los Campos G (2011).
+\newblock \enquote{Beyond Missing Heritability: Prediction of Complex Traits.}
+\newblock \emph{PLoS Genet}, \textbf{7}(4), e1002051.
+
+\bibitem[{Meuwissen \emph{et~al.}(2001)Meuwissen, Hayes, and
+  Goddard}]{Meuwissen:2001}
+Meuwissen THE, Hayes BJ, Goddard ME (2001).
+\newblock \enquote{Prediction of Total Genetic Value Using Genome-Wide Dense
+  Marker Maps.}
+\newblock \emph{Genetics}, \textbf{157}(4), 1819--1829.
+
+\bibitem[{Okut \emph{et~al.}(2011)Okut, Gianola, Rosa, and Weigel}]{Okut:2011}
+Okut H, Gianola D, Rosa GJM, Weigel KA (2011).
+\newblock \enquote{Prediction of Body Mass Index in Mice Using Dense Molecular
+  Markers and a Regularized Neural Network.}
+\newblock \emph{Genetics Research}, \textbf{93}, 189--201.
+
+\bibitem[{Park and Casella(2008)}]{Park:2008}
+Park T, Casella G (2008).
+\newblock \enquote{The Bayesian Lasso.}
+\newblock \emph{Journal of the American Statistical Association},
+  \textbf{103}(482), 681--686.
+
+\bibitem[{P\'erez \emph{et~al.}(2010)P\'erez, de~los Campos, Crossa, and
+  Gianola}]{Perez:2010}
+P\'erez P, de~los Campos G, Crossa J, Gianola D (2010).
+\newblock \enquote{Genomic-Enabled Prediction Based on Molecular Markers and
+  Pedigree Using the Bayesian Linear Regression Package in R.}
+\newblock \emph{Plant Genome}, \textbf{3}(2), 106--116.
+
+\bibitem[{Plummer \emph{et~al.}(2006)Plummer, Best, Cowles, and
+  Vines}]{Plummer:2006}
+Plummer M, Best N, Cowles K, Vines K (2006).
+\newblock \enquote{CODA: Convergence Diagnosis and Output Analysis for MCMC.}
+\newblock \emph{R News}, \textbf{6}(1), 7--11.
+\newblock \urlprefix\url{http://CRAN.R-project.org/doc/Rnews/}.
+
+\bibitem[{Purcell \emph{et~al.}(2007)Purcell, Neale, Todd-Brown, Thomas,
+  Ferreira, Bender, Maller, Sklar, de~Bakker, Daly, and Sham}]{Purcell:2007}
+Purcell S, Neale B, Todd-Brown K, Thomas L, Ferreira MAR, Bender D, Maller J,
+  Sklar P, de~Bakker PIW, Daly MJ, Sham PC (2007).
+\newblock \enquote{PLINK: A Tool Set for Whole-Genome Association and
+  Population-Based Linkage Analyses.}
+\newblock \emph{The American Journal of Human Genetics}, \textbf{81}, 559 --
+  575.
+
+\bibitem[{Quaas and Pollak(1980)}]{Quaas:1980}
+Quaas RL, Pollak EJ (1980).
+\newblock \enquote{Mixed Model Methodology for Farm and Ranch Beef Cattle
+  Testing Programs.}
+\newblock \emph{Journal of Animal Science}, \textbf{51}(6), 1277--1287.
+\newblock
+  \eprint{http://www.journalofanimalscience.org/content/51/6/1277.full.pdf+html},
+  \urlprefix\url{http://www.journalofanimalscience.org/content/51/6/1277.short}.
+
+\bibitem[{{R Core Team}(2012)}]{Rsoft}
+{R Core Team} (2012).
+\newblock \emph{R: A Language and Environment for Statistical Computing}.
+\newblock R Foundation for Statistical Computing, Vienna, Austria.
+\newblock {ISBN} 3-900051-07-0, \urlprefix\url{http://www.R-project.org/}.
+
+\bibitem[{Spiegelhalter \emph{et~al.}(2002)Spiegelhalter, Best, Carlin, and Van
+  Der~Linde}]{Spiegelhalter:2002}
+Spiegelhalter DJ, Best NG, Carlin BP, Van Der~Linde A (2002).
+\newblock \enquote{Bayesian Measures of Model Complexity and Fit.}
+\newblock \emph{Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, \textbf{64}(4), 583--639.
+
+\bibitem[{Tanner and Wong(1987)}]{Tanner:1987}
+Tanner MA, Wong WH (1987).
+\newblock \enquote{The Calculation of Posterior Distributions by Data
+  Augmentation.}
+\newblock \emph{Journal of the American Statistical Association},
+  \textbf{82}(398), 528--540.
+
+\bibitem[{Valdar \emph{et~al.}(2006{\natexlab{a}})Valdar, Solberg, Gauguier,
+  Burnett, Klenerman, Cookson, Taylor, Rawlins, Mott, and Flint}]{Valdar:2006a}
+Valdar W, Solberg LC, Gauguier D, Burnett S, Klenerman P, Cookson WO, Taylor
+  MS, Rawlins JNP, Mott R, Flint J (2006{\natexlab{a}}).
+\newblock \enquote{Genome-Wide Genetic Association of Complex Traits in
+  Heterogeneous Stock Mice.}
+\newblock \emph{Nature Genetics}, \textbf{38}, 879--887.
+
+\bibitem[{Valdar \emph{et~al.}(2006{\natexlab{b}})Valdar, Solberg, Gauguier,
+  Cookson, Rawlins, Mott, and Flint}]{Valdar:2006b}
+Valdar W, Solberg LC, Gauguier D, Cookson WO, Rawlins JNP, Mott R, Flint J
+  (2006{\natexlab{b}}).
+\newblock \enquote{Genetic and Environmental Effects on Complex Traits in
+  Mice.}
+\newblock \emph{Genetics}, \textbf{174}(2), 959--984.
+
+\bibitem[{VanRaden \emph{et~al.}(2009)VanRaden, Tassell, Wiggans, Sonstegard,
+  Schnabel, Taylor, and Schenkel}]{VanRaden:2009}
+VanRaden P, Tassell CV, Wiggans G, Sonstegard T, Schnabel R, Taylor J, Schenkel
+  F (2009).
+\newblock \enquote{Invited Review: Reliability of genomic predictions for North
+  American Holstein bulls.}
+\newblock \emph{Journal of Dairy Science}, \textbf{92}(1), 16 -- 24.
+\newblock ISSN 0022-0302.
+
+\bibitem[{VanRaden(2008)}]{VanRaden:2008}
+VanRaden PM (2008).
+\newblock \enquote{Efficient Methods to Compute Genomic Predictions.}
+\newblock \emph{Journal of Dairy Science}, \textbf{91}(11), 4414--23.
+
+\bibitem[{Vapnik(1998)}]{Vapnik:1998}
+Vapnik V (1998).
+\newblock \emph{Statistical learning theory}.
+\newblock 1 edition. Wiley.
+\newblock ISBN 0471030031.
+
+\bibitem[{Vazquez \emph{et~al.}(2010)Vazquez, Bates, Rosa, Gianola, and
+  Weigel}]{Vazquez:2010}
+Vazquez AI, Bates DM, Rosa GJM, Gianola D, Weigel KA (2010).
+\newblock \enquote{Technical Note: An R package for Fitting Generalized Linear
+  Mixed Models in Animal Breeding.}
+\newblock \emph{Journal of Animal Science}, \textbf{88}(2), 497--504.
+
+\bibitem[{Vazquez \emph{et~al.}(2012)Vazquez, de~los Campos, Klimentidis, Rosa,
+  Gianola, Yi, and Allison}]{Vazquez:2012}
+Vazquez AI, de~los Campos G, Klimentidis YC, Rosa GJM, Gianola D, Yi N, Allison
+  DB (2012).
+\newblock \enquote{A Comprehensive Genetic Approach for Improving Prediction of
+  Skin Cancer Risk in Humans.}
+\newblock \emph{Genetics}, \textbf{192}(4), 1493--1502.
+
+\bibitem[{Wahba(1990)}]{Wahba:1990}
+Wahba G (1990).
+\newblock \emph{Spline Models for Observational Data}.
+\newblock Society for Industrial and Applied Mathematics.
+\newblock \doi{10.1137/1.9781611970128}.
+\newblock \eprint{http://epubs.siam.org/doi/pdf/10.1137/1.9781611970128},
+  \urlprefix\url{http://epubs.siam.org/doi/abs/10.1137/1.9781611970128}.
+
+\bibitem[{Wimmer \emph{et~al.}(2012)Wimmer, Albrecht, Auinger, and
+  Schoen}]{Wimmer:2012}
+Wimmer V, Albrecht T, Auinger HJ, Schoen CC (2012).
+\newblock \enquote{synbreed: a framework for the analysis of genomic prediction
+  data using R.}
+\newblock \emph{Bioinformatics}, \textbf{28}(15), 2086--2087.
+
+\bibitem[{Yang \emph{et~al.}(2010)Yang, Benyamin, McEvoy, Gordon, Henders,
+  Nyholt, Madden, Heath, Martin, Montgomery, Goddard, and Visscher}]{Yang:2010}
+Yang J, Benyamin B, McEvoy BP, Gordon S, Henders AK, Nyholt DR, Madden PA,
+  Heath AC, Martin NG, Montgomery GW, Goddard ME, Visscher PM (2010).
+\newblock \enquote{Common SNPs explain a large proportion of the heritability
+  for human height.}
+\newblock \emph{Nature Genetics}, \textbf{42}(7), 565--569.
+\newblock \doi{10.1038/ng.608}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1038/ng.608}.
+
+\bibitem[{Zhou and Stephens(2012)}]{Zhou:2012}
+Zhou X, Stephens M (2012).
+\newblock \enquote{Genome-wide efficient mixed-model analysis for association
+  studies.}
+\newblock \emph{Nature Genetics}, \textbf{44}(7), 821--824.
+\newblock \doi{10.1038/ng.2310}.
+\newblock \urlprefix\url{http://dx.doi.org/10.1038/ng.2310}.
+
+\end{thebibliography}

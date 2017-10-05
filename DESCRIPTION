@@ -17,3 +17,5 @@ Date/Publication: 2015-04-07 19:14:48
 NeedsCompilation: yes
 Suggests: 
     covr
+RoxygenNote: 6.0.1.9000
+Encoding: UTF-8
