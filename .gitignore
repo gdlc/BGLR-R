@@ -9,4 +9,5 @@ vignettes/*.log
 vignettes/*.out
 vignettes/*.bbl
 vignettes/*.blg
+vignettes/*.tex
 
