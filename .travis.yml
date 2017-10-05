@@ -1,6 +1,9 @@
 language: R
-sudo: no
+sudo: false
 cache: packages
+osx:
+  - linux
+  - osx
 after_success: if [ "$TRAVIS_OS_NAME" == "linux" ]; then Rscript -e 'covr::coveralls(type
   = "all")'; fi
 warnings_are_errors: yes
