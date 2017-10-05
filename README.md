@@ -1,8 +1,19 @@
-
 ## BGLR: An R Package for (Bayesian) High-Dimensional Regression
+
 
 The BGLR Package ([Perez-Rodriguez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151])) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
 version beta version. The latest stable release can be downloaded from [CRAN](https://cran.r-project.org/web/packages/BGLR/index.html).
+
+### Stability/Builds
+[`muschellij2`](https://github.com/muschellij2/BGLR-R) badges:
+[![Travis build status](https://travis-ci.org/muschellij2/BGLR-R.svg?branch=master)](https://travis-ci.org/muschellij2/BGLR-R)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/BGLR-R?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/BGLR-R)
+[![Coverage status](https://coveralls.io/repos/github/muschellij2/BGLR-R/badge.svg)](https://coveralls.io/r/muschellij2/BGLR-R?branch=master)
+
+[`gdlc`](https://github.com/gdlc/BGLR-R) badges:
+[![Travis build status](https://travis-ci.org/gdlc/BGLR-R.svg?branch=master)](https://travis-ci.org/gdlc/BGLR-R)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/gdlc/BGLR-R?branch=master&svg=true)](https://ci.appveyor.com/project/gdlc/BGLR-R)
+[![Coverage status](https://coveralls.io/repos/github/gdlc/BGLR-R/badge.svg)](https://coveralls.io/r/gdlc/BGLR-R?branch=master)
 
 #### Installation
 
