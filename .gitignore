@@ -1,1 +1,8 @@
 .Rproj.user
+inst/doc
+src/*.o
+src/*.so
+src/BGLR.so
+vignettes/*.aux
+vignettes/*.log
+vignettes/*.out

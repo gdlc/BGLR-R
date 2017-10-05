@@ -15,7 +15,10 @@ Repository/R-Forge/Revision: 78
 Repository/R-Forge/DateTimeStamp: 2013-10-22 13:52:58
 Date/Publication: 2015-04-07 19:14:48
 NeedsCompilation: yes
-Suggests: 
-    covr
+Suggests:
+    covr,
+    knitr,
+    rmarkdown
 RoxygenNote: 6.0.1.9000
 Encoding: UTF-8
+VignetteBuilder: knitr
