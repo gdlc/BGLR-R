@@ -144,6 +144,17 @@ fm6=BGLR( y=y,ETA=list(list(X=Rt,model='BRR')),nIter=nIter,
  varE=scan( 'qr_varE.dat')
  varU=scan('qr_ETA_1_varB.dat')
  h2_6=varU/(varU+varE)
+
+#Speeding up computations
+
+fm7=BGLR( y=y,ETA=list(list(X=Rt,model='BRR',lower_tri=TRUE)),nIter=nIter,
+           burnIn=burnIn,saveAt='qr2_')
+
+ varE=scan( 'qr2_varE.dat')
+ varU=scan('qr2_ETA_1_varB.dat')
+ h2_7=varU/(varU+varE)
+
+
 ```
 [Menu](#menu)
 
