@@ -95,7 +95,7 @@ setLT.Fixed=function(LT,n,j,y,weights,nLT,saveAt,rmExistingFiles,groups,nGroups)
 ## Gaussian Regression ############################################################
 #Function for initializing regression coefficients for Ridge Regression.
 #All the arguments are defined in the function BGLR
-setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups,verbose,thin,nIter,burnIn){ #*#
+setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups,verbose,thin,nIter,burnIn,lower_tri){ #*#
 
     #Check inputs
 
@@ -182,7 +182,22 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
 
     LT$NamefileOut=fname
     LT$fileOut=file(description=fname,open="w")
-    LT$X=as.vector(LT$X)
+
+    if(is.null(LT$lower_tri)) LT$lower_tri=FALSE;
+
+    if(LT$lower_tri)
+    {
+	cat(paste("You have provided a lower triangular matrix for LP ", j,"\n"))
+	cat("Checking dimmensions...\n")
+	if(ncol(LT$X)==nrow(LT$X))
+	{
+		cat("Ok.")
+		LT$X=LT$X[lower.tri(LT$X,diag=TRUE)]
+        }
+    }else{
+   	 LT$X=as.vector(LT$X)
+    }
+
     LT$x2=as.vector(LT$x2)
     
     #*#
@@ -1222,7 +1237,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
             ETA[[i]] = switch(ETA[[i]]$model, 
 			      FIXED = setLT.Fixed(LT = ETA[[i]],  n = n, j = i, weights = weights, y = y, nLT = nLT, saveAt = saveAt, rmExistingFiles = rmExistingFiles,groups=groups,nGroups=nGroups), 
-                              BRR = setLT.BRR(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,groups=groups,nGroups=nGroups,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn),#*# 
+                              BRR = setLT.BRR(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,groups=groups,nGroups=nGroups,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn,lower_tri=ETA[[i]]$lower_tri),#*#
                               BL = setLT.BL(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn), 
                               RKHS = setLT.RKHS(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,verbose=verbose), 
                               BayesC = setLT.BayesBandC(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,groups=groups,nGroups=nGroups,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn),
@@ -1275,8 +1290,14 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                         ans = .Call("sample_beta_groups", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
                                              e, varBj, varE, 1e-9,ggg,nGroups)
 		  }else{
-                  	ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
-                                             e, varBj, varE, 1e-9)
+			if(!(ETA[[j]]$lower_tri))
+			{
+                  		ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
+                                	             e, varBj, varE, 1e-9)
+			}else{
+				ans = .Call("sample_beta_lower_tri", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
+                                                     e, varBj, varE, 1e-9)
+			}
 		  }
                   ETA[[j]]$b = ans[[1]]
                   e = ans[[2]]
