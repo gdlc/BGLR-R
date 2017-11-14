@@ -1,6 +1,18 @@
 
 ### Various Ways of fitting a 'GBLUP' model using BGLR
 
+In the following example we show how to fit a GBLUP model (i.e., a Gaussian process) using different parametrizations.
+
+   *[Using oringial inputs (e.g., SNPs)](#BRR)
+   *[Using a G-matrix (or kenrel)](#RKHS)
+   *[Using eigenvalues and eigenvectors](#RKHS2)
+   *[Using scaled-principal components)](#PC)
+   *[Using a Cholesky decomposition](#CHOL)
+   *[Using a QR decomposition](#QR)
+   
+
+<div id="BRR" />
+
 **(i) Providing the markers, using `model='BRR'`**
 
 In this case BGLR asigns iid normal priors to the marker effects.
@@ -24,6 +36,8 @@ In this case BGLR asigns iid normal priors to the marker effects.
  h2_1=varU/(varU+varE)
 ```
 
+
+<div id="RKHS" />
 **(2) Providing the G-matrix**
 
 BGLR Fits these Gaussian models using the eigenvalue decomposition og G. The eigenvalue decomposition is computed internally using 
@@ -38,6 +52,11 @@ BGLR Fits these Gaussian models using the eigenvalue decomposition og G. The eig
  varU=scan('eig_ETA_G_varU.dat')
  h2_2=varU/(varU+varE)
 ```
+
+
+
+<div id="RKHS2" />
+
 **(3) Providing eigenvalues and eigenvectors**
 
 This strategy can be used to avoid computing the eigen-decomposition internally. This can be useful if a model will be fitted several times (e.g., cross-validation).
@@ -52,6 +71,8 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  h2_3=varU/(varU+varE)
 ```
 
+
+<div id="PC" />
 **(4) Providing scaled-eigenvectors and using `model='BRR'`**
 
 ```R
@@ -68,6 +89,7 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
 ```
 
 
+<div id="CHOL" />
 **(5) Using the Cholesky decompositon and `model='BRR'`**
   This approach won't work if G is not positive definite; in our case the matrix is positive semi-definite, we can make it positive definite by adding a small constant to the diagonal.
   
@@ -83,7 +105,7 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  h2_5=varU/(varU+varE)
 ```
 
-
+<div id="QR" />
 **(6)Using QR-factorization**
 
 ```r
