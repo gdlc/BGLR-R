@@ -1,8 +1,9 @@
 
-### Various Ways of fitting a 'GBLUP' model using BGLR
+## Various Ways of fitting a 'GBLUP' model using BGLR
 
 In the following example we show how to fit a GBLUP model (i.e., a Gaussian process) using different parametrizations.
 
+<div id="menue" />
    * [Using oringial inputs (e.g., SNPs)](#BRR)
    
    * [Using a G-matrix (or kenrel)](#RKHS)
@@ -15,6 +16,7 @@ In the following example we show how to fit a GBLUP model (i.e., a Gaussian proc
 
 <div id="BRR" />
 
+---------------------------------------------
 **(i) Providing the markers, using `model='BRR'`**
 
 In this case BGLR asigns iid normal priors to the marker effects.
@@ -37,8 +39,10 @@ In this case BGLR asigns iid normal priors to the marker effects.
  varU=scan('brr_ETA_mrk_varB.dat')
  h2_1=varU/(varU+varE)
 ```
+[Menu](#menu)
 
 
+---------------------------------------------
 <div id="RKHS" />
 **(2) Providing the G-matrix**
 
@@ -54,11 +58,13 @@ BGLR Fits these Gaussian models using the eigenvalue decomposition og G. The eig
  varU=scan('eig_ETA_G_varU.dat')
  h2_2=varU/(varU+varE)
 ```
-
+[Menu](#menu)
 
 
 <div id="RKHS2" />
 
+
+---------------------------------------------
 **(3) Providing eigenvalues and eigenvectors**
 
 This strategy can be used to avoid computing the eigen-decomposition internally. This can be useful if a model will be fitted several times (e.g., cross-validation).
@@ -72,9 +78,13 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  varU=scan('eigb_ETA_G_varU.dat')
  h2_3=varU/(varU+varE)
 ```
+[Menu](#menu)
 
 
 <div id="PC" />
+
+
+---------------------------------------------
 **(4) Providing scaled-eigenvectors and using `model='BRR'`**
 
 ```R
@@ -89,9 +99,14 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  varU=scan('pc_ETA_pc_varB.dat')
  h2_4=varU/(varU+varE)
 ```
+[Menu](#menu)
+
 
 
 <div id="CHOL" />
+
+
+---------------------------------------------
 **(5) Using the Cholesky decompositon and `model='BRR'`**
   This approach won't work if G is not positive definite; in our case the matrix is positive semi-definite, we can make it positive definite by adding a small constant to the diagonal.
   
@@ -106,8 +121,14 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  varU=scan('chol_ETA_1_varB.dat')
  h2_5=varU/(varU+varE)
 ```
+[Menu](#menu)
+
 
 <div id="QR" />
+
+
+
+---------------------------------------------
 **(6)Using QR-factorization**
 
 ```r
@@ -122,6 +143,6 @@ fm6=BGLR( y=y,ETA=list(list(X=Rt,model='BRR')),nIter=nIter,
  varU=scan('qr_ETA_1_varB.dat')
  h2_6=varU/(varU+varE)
 ```
-
+[Menu](#menu)
 
 [Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
