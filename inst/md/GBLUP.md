@@ -3,7 +3,8 @@
 
 In the following example we show how to fit a GBLUP model (i.e., a Gaussian process) using different parametrizations.
 
-<div id="menue" />
+<div id="menu" />
+  
    * [Using oringial inputs (e.g., SNPs)](#BRR)
    
    * [Using a G-matrix (or kenrel)](#RKHS)
@@ -44,6 +45,7 @@ In this case BGLR asigns iid normal priors to the marker effects.
 
 ---------------------------------------------
 <div id="RKHS" />
+
 **(2) Providing the G-matrix**
 
 BGLR Fits these Gaussian models using the eigenvalue decomposition og G. The eigenvalue decomposition is computed internally using 
