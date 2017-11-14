@@ -82,4 +82,22 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  varU=scan('chol_ETA_1_varB.dat')
  h2_5=varU/(varU+varE)
 ```
+
+
+**(6)Using QR-factorization**
+
+```r
+QR=qr(t(X))
+
+Rt=t(qr.R(QR))
+
+fm6=BGLR( y=y,ETA=list(list(X=Rt,model='BRR')),nIter=nIter,
+	   burnIn=burnIn,saveAt='qr_')
+			
+ varE=scan( 'qr_varE.dat')
+ varU=scan('qr_ETA_1_varB.dat')
+ h2_6=varU/(varU+varE)
+```
+
+
 [Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
