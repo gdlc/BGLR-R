@@ -36,7 +36,7 @@ BGLR Fits these Gaussian models using the eigenvalue decomposition og G. The eig
 	 )
  varE=scan( 'eig_varE.dat')
  varU=scan('eig_ETA_G_varU.dat')
- h2_2b=varU/(varU+varE)
+ h2_2=varU/(varU+varE)
 ```
 **(3) Providing eigenvalues and eigenvectors**
 
