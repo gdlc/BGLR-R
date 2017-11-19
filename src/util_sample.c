@@ -112,13 +112,13 @@ SEXP sample_beta(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varBj
       return(list);
 }
 
-SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varBj, SEXP varE, SEXP minAbsBeta)
+SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varB, SEXP varE, SEXP minAbsBeta)
 {
     double *xj;
-    double *pXL, *pxL2, *pbL, *pe, *pvarBj;
+    double *pXL, *pxL2, *pbL, *pe;
     double b;
     int inc=1;
-    double rhs,c,sigma2e, smallBeta;
+    double rhs,c, sigma2b, sigma2e, smallBeta;
     int j, rows, cols;
 
     SEXP list;	
@@ -127,6 +127,7 @@ SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, 
 	
     rows=INTEGER_VALUE(n);
     cols=INTEGER_VALUE(pL);
+    sigma2b=NUMERIC_VALUE(varB);
     sigma2e=NUMERIC_VALUE(varE);
     smallBeta=NUMERIC_VALUE(minAbsBeta);
 	
@@ -142,9 +143,6 @@ SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, 
     PROTECT(e=AS_NUMERIC(e));
     pe=NUMERIC_POINTER(e);
 
-    PROTECT(varBj=AS_NUMERIC(varBj));
-    pvarBj=NUMERIC_POINTER(varBj);
-    
     xj=pXL;
 
     int r=rows;
@@ -158,7 +156,7 @@ SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, 
 
           rhs=F77_NAME(ddot)(&r,xj,&inc,pe1,&inc)/sigma2e;
           rhs+=pxL2[j]*b/sigma2e;
-  	  c=pxL2[j]/sigma2e + 1.0/pvarBj[j];
+  	  c=pxL2[j]/sigma2e + 1.0/sigma2b;
 	  pbL[j]=rhs/c + sqrt(1.0/c)*norm_rand();
 
           b-=pbL[j];
@@ -190,7 +188,7 @@ SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, 
 
       PutRNGstate();
 
-      UNPROTECT(6);
+      UNPROTECT(5);
 
       return(list);
 }

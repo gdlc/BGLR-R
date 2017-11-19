@@ -1312,7 +1312,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                                 	             e, varBj, varE, 1e-9)
 			}else{
 				ans = .Call("sample_beta_lower_tri", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
-                                                     e, varBj, varE, 1e-9)
+                                                     e, ETA[[j]]$varB, varE, 1e-9)
 			}
 		  }
                   ETA[[j]]$b = ans[[1]]
