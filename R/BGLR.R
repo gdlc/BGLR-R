@@ -45,12 +45,12 @@ setLT.Fixed=function(LT,n,j,y,weights,nLT,saveAt,rmExistingFiles,groups,nGroups)
 	
     if(any(is.na(LT$X)))
     { 
-	stop(paste(" LP ",j," has NAs in X",sep=""))
+	stop(" LP ",j," has NAs in X")
     }
 
     if(nrow(LT$X)!=n)
     {
-        stop(paste(" Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))
+        stop(" Number of rows of LP ",j,"  not equal to the number of phenotypes.")
     }
 
     #weight inputs if necessary
@@ -107,12 +107,12 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
 	
     if(any(is.na(LT$X)))
     { 
-      stop(paste(" LP ",j," has NAs in X",sep=""))
+      stop(" LP ",j," has NAs in X")
     }
     
     if(nrow(LT$X)!=n)
     {
-      stop(paste(" Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))
+      stop(" Number of rows of LP ",j,"  not equal to the number of phenotypes.")
     }   
 
     #Weight inputs if necessary
@@ -239,11 +239,11 @@ setLT.BRR_sets=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,t
   	if(LT$n_sets>=LT$p){ stop("The number of sets is greater or equal than the number of effects!") }
     
     if(any(is.na(LT$X))){ 
-      stop(paste(" LP ",j," has NAs in X",sep=""))
+      stop(" LP ",j," has NAs in X")
     }
     
     if(nrow(LT$X)!=n){
-      stop(paste(" Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))
+      stop(" Number of rows of LP ",j,"  not equal to the number of phenotypes.")
     }   
 
     #Weight inputs if necessary
@@ -325,12 +325,12 @@ setLT.BL=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
 		
     if(any(is.na(LT$X)))
     {
-       stop(paste("LP ",j," has NAs in X",sep=""))
+       stop("LP ",j," has NAs in X")
     }
 
     if(nrow(LT$X)!=n)
     {
-        stop(paste(" Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))
+        stop(" Number of rows of LP ",j,"  not equal to the number of phenotypes.")
     } 
 
     #Wheight inputs if necessary
@@ -481,13 +481,13 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
     #Checking inputs
     if(is.null(LT$V))
     {
-        if(is.null(LT$K)) stop(paste(" Kernel for linear term ",j, " was not provided, specify it with list(K=?,model='RKHS'), where ? is the kernel matrix",sep=""))
+        if(is.null(LT$K)) stop(" Kernel for linear term ",j, " was not provided, specify it with list(K=?,model='RKHS'), where ? is the kernel matrix")
 
 	LT$K = as.matrix(LT$K)
 
-        if(class(LT$K)!="matrix") stop(paste(" Kernel for linear term ",j, " should be a matrix, the kernel provided is of class ", class(LT$K),sep=" "))
+        if(class(LT$K)!="matrix") stop(" Kernel for linear term ",j, " should be a matrix, the kernel provided is of class ", class(LT$K))
 
-        if(nrow(LT$K)!=ncol(LT$K)) stop(paste(" Kernel for linear term ",j, " is not a square matrix",sep=""))
+        if(nrow(LT$K)!=ncol(LT$K)) stop(" Kernel for linear term ",j, " is not a square matrix")
 
 	#This code was rewritten to speed up computations
         #T = diag(weights)   
@@ -619,8 +619,8 @@ setLT.BayesBandC=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles, groups
   LT$MSx=sum(LT$x2)/n-sumMeanXSq
 
   
-  if(any(is.na(LT$X))){ stop(paste("LP ",j," has NAs in X",sep=""))}
-  if(nrow(LT$X)!=n){stop(paste("   Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))}
+  if(any(is.na(LT$X))){ stop("LP ",j," has NAs in X")}
+  if(nrow(LT$X)!=n){stop("   Number of rows of LP ",j,"  not equal to the number of phenotypes.")}
   
   if(is.null(LT$R2))
   {
@@ -671,7 +671,7 @@ setLT.BayesBandC=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles, groups
   #marker effects
   if(is.null(LT$S0))
   {
-     if(LT$df0<=0) stop(paste("df0>0 in ",model," in order to set S0",sep=""));
+     if(LT$df0<=0) stop("df0>0 in ",model," in order to set S0");
      LT$S0=var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
      if(verbose)
      {
@@ -926,7 +926,7 @@ metropLambda=function (tau2, lambda, shape1 = 1.2, shape2 = 1.2, max = 200, ncp 
   assign(".BGLR.version", BGLR.version, pos=match("package:BGLR", search()))
   if(interactive())
   {
-    packageStartupMessage(paste("# Package Bayesian Generalized Regression (BGLR), ", BGLR.version, ". ",sep=""),appendLF=TRUE)
+    packageStartupMessage("# Package Bayesian Generalized Regression (BGLR), ", BGLR.version, ".",appendLF=TRUE)
     packageStartupMessage("# Gustavo de los Campos & Paulino Perez-Rodriguez",appendLF=TRUE)
     packageStartupMessage("# Support provided by the U.S., National Institutes of Health (NIH)", appendLF=TRUE)
     packageStartupMessage("# (Grant: R01GM101219, NIGMS)", appendLF=TRUE)
@@ -1145,7 +1145,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
        
         countsZ=table(z)
 
-        if (nclass <= 1) stop(paste(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values"))
+        if (nclass <= 1) stop(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values")
         threshold=qnorm(p=c(0,cumsum(as.vector(countsZ)/n)))
           
         y = rtrun(mu =0, sigma = 1, a = threshold[z], b = threshold[ (z + 1)])
@@ -1225,13 +1225,13 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
             if (!(ETA[[i]]$model %in% c("FIXED", "BRR", "BL", "BayesA", "BayesB","BayesC", "RKHS","BRR_sets"))) 
             {
-                stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented (note: evaluation is case sensitive).", sep = ""))
+                stop(" Error in ETA[[", i, "]] model ", ETA[[i]]$model, " not implemented (note: evaluation is case sensitive).")
                 
             }
 
             if(!is.null(groups))
             {
-		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups", sep = ""))
+		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(" Error in ETA[[", i, "]] model ", ETA[[i]]$model, " not implemented for groups")
             }
 
 
@@ -1353,11 +1353,11 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$tau2 = 1/tmp
                     }
                     else {
-                      warning(paste("tau2 was not updated in iteration",i, "due to numeric problems with beta\n",sep=" "),immediate. = TRUE)
+                      warning("tau2 was not updated in iteration ",i, " due to numeric problems with beta",immediate. = TRUE)
                     }
                   }
                   else {
-                    warning(paste("tau2 was not updated  in iteration",i,"due to numeric problems with beta\n",sep=" "),immediate. = TRUE)
+                    warning("tau2 was not updated  in iteration ",i," due to numeric problems with beta",immediate. = TRUE)
                   }
 
                   #Update lambda 
@@ -1369,7 +1369,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$lambda = sqrt(ETA[[j]]$lambda2)
                     }
                     else {
-                      warning(paste("lambda was not updated in iteration",i, "due to numeric problems with beta\n",sep=" "),immediate. = TRUE)
+                      warning("lambda was not updated in iteration ",i, " due to numeric problems with beta",immediate. = TRUE)
                     }
                   }
 
@@ -1941,7 +1941,7 @@ BLR=function (y, XF = NULL, XR = NULL, XL = NULL, GF = list(ID = NULL,
     cat("This implementation is a simplified interface for the more general\n")
     cat("function BGLR, we keep it for backward compatibility with our package BLR\n")
 
-    warning("thin2 parameter is not used any more and will be deleted in next releases\n",immediate. = TRUE);
+    warning("thin2 parameter is not used any more and will be deleted in next releases",immediate. = TRUE);
    
     cat("Setting parameters for BGLR...\n")
     if (is.null(prior)) {
@@ -1994,7 +1994,7 @@ BLR=function (y, XF = NULL, XR = NULL, XL = NULL, GF = list(ID = NULL,
         nLT = nLT + 1
         ETA[[nLT]] = list(K = GF$A, model = "RKHS", df0 = prior$varU$df, 
             S0 = prior$varU$S)
-        warning("IDs are not used any more and will be deleted in next releases...\n",immediate. = TRUE) 
+        warning("IDs are not used any more and will be deleted in next releases...",immediate. = TRUE) 
     }
 
     cat("Finish setting parameters for BGLR\n")

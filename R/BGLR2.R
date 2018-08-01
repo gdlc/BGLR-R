@@ -102,7 +102,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
        
         countsZ=table(z)
 
-        if (nclass <= 1) stop(paste(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values"))
+        if (nclass <= 1) stop(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values")
         threshold=qnorm(p=c(0,cumsum(as.vector(countsZ)/n)))
           
         y = rtrun(mu =0, sigma = 1, a = threshold[z], b = threshold[ (z + 1)])
@@ -181,13 +181,13 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
             if (!(ETA[[i]]$model %in% c("FIXED", "BRR", "BL", "BayesA", "BayesB","BayesC", "RKHS","BRR_sets"))) 
             {
-                stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented (note: evaluation is case sensitive).", sep = ""))
+                stop(" Error in ETA[[", i, "]] model ", ETA[[i]]$model, " not implemented (note: evaluation is case sensitive).")
                 
             }
 
             if(!is.null(groups))
             {
-		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups", sep = ""))
+		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(" Error in ETA[[", i, "]] model ", ETA[[i]]$model, " not implemented for groups")
             }
 
 
@@ -425,11 +425,11 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$tau2 = 1/tmp
                     }
                     else {
-                      warning(paste("tau2 was not updated in iteration",i, "due to numeric problems with beta\n",sep=" "),immediate. = TRUE)
+                      warning("tau2 was not updated in iteration ",i, " due to numeric problems with beta",immediate. = TRUE)
                     }
                   }
                   else {
-                    warning(paste("tau2 was not updated  in iteration",i,"due to numeric problems with beta\n",sep=" "),immediate. = TRUE)
+                    warning("tau2 was not updated  in iteration ",i," due to numeric problems with beta",immediate. = TRUE)
                   }
 
                   #Update lambda 
@@ -441,7 +441,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$lambda = sqrt(ETA[[j]]$lambda2)
                     }
                     else {
-                      warning(paste("lambda was not updated in iteration",i, "due to numeric problems with beta\n",sep=" "),immediate. = TRUE)
+                      warning("lambda was not updated in iteration ",i, " due to numeric problems with beta",immediate. = TRUE)
                     }
                   }
 
