@@ -91,13 +91,13 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         unlink(fname)
     }
     else {
-        if(verbose) {cat(" Note: samples will be appended to existing files. \n") }
+        if(verbose) {message(" Note: samples will be appended to existing files.") }
     }
 
     fileOutMu = file(description = fname, open = "w")
 
     if (response_type == "ordinal") {
-        if(verbose){ cat(" Prior for residual is not necessary, if you provided it, it will be ignored\n")}
+        if(verbose){ message(" Prior for residual is not necessary, if you provided it, it will be ignored")}
         if (any(weights != 1)) stop(" Weights are not supported")
        
         countsZ=table(z)
@@ -361,7 +361,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
             for (j in 1:nLT) {
                 ## Fixed effects ####################################################################
                 if (ETA[[j]]$model == "FIXED") {
-                  #cat("varB=",ETA[[j]]$varB,"\n");
+                  #message("varB=",ETA[[j]]$varB);
                   varBj = rep(ETA[[j]]$varB, ETA[[j]]$p)
                   if(!is.null(groups)){
                         ans = .Call("sample_beta_groups", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
@@ -823,10 +823,10 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         }#end of saving samples and computing running means
 
         if (verbose) {
-            cat("---------------------------------------\n")
+            message("---------------------------------------")
             tmp = proc.time()[3]
-            cat(c(paste(c("  Iter=", "Time/Iter="), round(c(i, c(tmp - time)), 3), sep = "")), "\n")
-            cat("  VarE=",round(varE,3),"\n")
+            message("  Iter=", i, " Time/Iter=", round(tmp - time, 3))
+            message("  VarE=",round(varE,3))
             time = tmp
         }
     }#end of Gibbs sampler

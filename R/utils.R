@@ -52,7 +52,7 @@ getVariances<-function(X,B,sets,verbose=TRUE)
 			yHat=yHat+uHat
 		}
 
-		if(verbose){ cat(' Working iteration',i,'(out of',nIter,')\n')}
+		if(verbose){ message(' Working iteration ',i,' (out of ',nIter,' )')}
 		VAR[i,(nSets+1)]<-var(yHat)
 	}
 	return(VAR)
