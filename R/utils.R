@@ -52,7 +52,7 @@ getVariances<-function(X,B,sets,verbose=TRUE)
 			yHat=yHat+uHat
 		}
 
-		if(verbose){ cat(' Working iteration',i,'(out of',nIter,')\n')}
+		if(verbose){ message(' Working iteration ',i,' (out of ',nIter,' )')}
 		VAR[i,(nSets+1)]<-var(yHat)
 	}
 	return(VAR)
@@ -124,9 +124,9 @@ write_bed=function(x,n,p,bed_file)
 {
    	#Check inputs
 
-   	if(!is.numeric(x)) stop("x should be an integer and numeric\n");
-   	if(min(x)<0) stop("Supported codes are 0,1,2,3\n");
-   	if(max(x)>3) stop("Supported codes are 0,1,2,3\n");
+   	if(!is.numeric(x)) stop("x should be an integer and numeric");
+   	if(min(x)<0) stop("Supported codes are 0,1,2,3");
+   	if(max(x)>3) stop("Supported codes are 0,1,2,3");
    	if(n<=0) stop("n should be bigger than 0");
    	if(p<=0) stop("p should be bigger than 0");
    	if(length(x)!=n*p) stop("length of x is not equal to n*p");

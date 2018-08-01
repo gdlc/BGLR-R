@@ -11,7 +11,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     GIBBS_start=1 #*#
     
     IDs=names(y)
-    if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
+    if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed")
 
     if (saveAt == "") {
         saveAt = paste(getwd(), "/", sep = "")
@@ -34,7 +34,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 		groupLabels=names(countGroups)
                 groups=as.integer(groups)
                 ggg=as.integer(groups-1);  #In C we begin to count in 0
-		if(sum(countGroups)!=n) stop("length of groups and y differs, NA's not allowed in groups\n");	
+		if(sum(countGroups)!=n) stop("length of groups and y differs, NA's not allowed in groups");	
     }
 
     if(response_type=="ordinal")
@@ -43,7 +43,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	y=factor(y,ordered=TRUE)
         lev=levels(y)
         nclass=length(lev)
-        if(nclass==n) stop("The number of classes in y must be smaller than the number of observations\n");
+        if(nclass==n) stop("The number of classes in y must be smaller than the number of observations");
 
         y=as.integer(y)
         z=y  
@@ -77,8 +77,8 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         if ((!is.null(a)) | (!is.null(b))) 
         {
             Censored = TRUE
-            if ((length(a) != n) | (length(b) != n)) stop(" y, a and b must have the same dimension\n")
-            if (any(weights != 1)) stop(" Weights are only implemented for Gausian uncensored responses\n")
+            if ((length(a) != n) | (length(b) != n)) stop(" y, a and b must have the same dimension")
+            if (any(weights != 1)) stop(" Weights are only implemented for Gausian uncensored responses")
         }
         mu = weighted.mean(x = y, w = weights, na.rm = TRUE)
     }
@@ -91,18 +91,18 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         unlink(fname)
     }
     else {
-        if(verbose) {cat(" Note: samples will be appended to existing files. \n") }
+        if(verbose) {message(" Note: samples will be appended to existing files.") }
     }
 
     fileOutMu = file(description = fname, open = "w")
 
     if (response_type == "ordinal") {
-        if(verbose){ cat(" Prior for residual is not necessary, if you provided it, it will be ignored\n")}
-        if (any(weights != 1)) stop(" Weights are not supported \n")
+        if(verbose){ message(" Prior for residual is not necessary, if you provided it, it will be ignored")}
+        if (any(weights != 1)) stop(" Weights are not supported")
        
         countsZ=table(z)
 
-        if (nclass <= 1) stop(paste(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values\n"))
+        if (nclass <= 1) stop(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values")
         threshold=qnorm(p=c(0,cumsum(as.vector(countsZ)/n)))
           
         y = rtrun(mu =0, sigma = 1, a = threshold[z], b = threshold[ (z + 1)])
@@ -181,13 +181,13 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
             if (!(ETA[[i]]$model %in% c("FIXED", "BRR", "BL", "BayesA", "BayesB","BayesC", "RKHS","BRR_sets"))) 
             {
-                stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented (note: evaluation is case sensitive).", sep = ""))
+                stop(" Error in ETA[[", i, "]] model ", ETA[[i]]$model, " not implemented (note: evaluation is case sensitive).")
                 
             }
 
             if(!is.null(groups))
             {
-		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups\n", sep = ""))
+		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(" Error in ETA[[", i, "]] model ", ETA[[i]]$model, " not implemented for groups")
             }
 
 
@@ -361,7 +361,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
             for (j in 1:nLT) {
                 ## Fixed effects ####################################################################
                 if (ETA[[j]]$model == "FIXED") {
-                  #cat("varB=",ETA[[j]]$varB,"\n");
+                  #message("varB=",ETA[[j]]$varB);
                   varBj = rep(ETA[[j]]$varB, ETA[[j]]$p)
                   if(!is.null(groups)){
                         ans = .Call("sample_beta_groups", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
@@ -425,11 +425,11 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$tau2 = 1/tmp
                     }
                     else {
-                      warning(paste("tau2 was not updated in iteration",i, "due to numeric problems with beta\n",sep=" "),immediate. = TRUE)
+                      warning("tau2 was not updated in iteration ",i, " due to numeric problems with beta",immediate. = TRUE)
                     }
                   }
                   else {
-                    warning(paste("tau2 was not updated  in iteration",i,"due to numeric problems with beta\n",sep=" "),immediate. = TRUE)
+                    warning("tau2 was not updated  in iteration ",i," due to numeric problems with beta",immediate. = TRUE)
                   }
 
                   #Update lambda 
@@ -441,7 +441,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$lambda = sqrt(ETA[[j]]$lambda2)
                     }
                     else {
-                      warning(paste("lambda was not updated in iteration",i, "due to numeric problems with beta\n",sep=" "),immediate. = TRUE)
+                      warning("lambda was not updated in iteration ",i, " due to numeric problems with beta",immediate. = TRUE)
                     }
                   }
 
@@ -823,10 +823,10 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         }#end of saving samples and computing running means
 
         if (verbose) {
-            cat("---------------------------------------\n")
+            message("---------------------------------------")
             tmp = proc.time()[3]
-            cat(c(paste(c("  Iter=", "Time/Iter="), round(c(i, c(tmp - time)), 3), sep = "")), "\n")
-            cat("  VarE=",round(varE,3),"\n")
+            message("  Iter=", i, " Time/Iter=", round(tmp - time, 3))
+            message("  VarE=",round(varE,3))
             time = tmp
         }
     }#end of Gibbs sampler
