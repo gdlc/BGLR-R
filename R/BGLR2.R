@@ -11,7 +11,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     GIBBS_start=1 #*#
     
     IDs=names(y)
-    if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
+    if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed")
 
     if (saveAt == "") {
         saveAt = paste(getwd(), "/", sep = "")
@@ -34,7 +34,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 		groupLabels=names(countGroups)
                 groups=as.integer(groups)
                 ggg=as.integer(groups-1);  #In C we begin to count in 0
-		if(sum(countGroups)!=n) stop("length of groups and y differs, NA's not allowed in groups\n");	
+		if(sum(countGroups)!=n) stop("length of groups and y differs, NA's not allowed in groups");	
     }
 
     if(response_type=="ordinal")
@@ -43,7 +43,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	y=factor(y,ordered=TRUE)
         lev=levels(y)
         nclass=length(lev)
-        if(nclass==n) stop("The number of classes in y must be smaller than the number of observations\n");
+        if(nclass==n) stop("The number of classes in y must be smaller than the number of observations");
 
         y=as.integer(y)
         z=y  
@@ -77,8 +77,8 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
         if ((!is.null(a)) | (!is.null(b))) 
         {
             Censored = TRUE
-            if ((length(a) != n) | (length(b) != n)) stop(" y, a and b must have the same dimension\n")
-            if (any(weights != 1)) stop(" Weights are only implemented for Gausian uncensored responses\n")
+            if ((length(a) != n) | (length(b) != n)) stop(" y, a and b must have the same dimension")
+            if (any(weights != 1)) stop(" Weights are only implemented for Gausian uncensored responses")
         }
         mu = weighted.mean(x = y, w = weights, na.rm = TRUE)
     }
@@ -98,11 +98,11 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
     if (response_type == "ordinal") {
         if(verbose){ cat(" Prior for residual is not necessary, if you provided it, it will be ignored\n")}
-        if (any(weights != 1)) stop(" Weights are not supported \n")
+        if (any(weights != 1)) stop(" Weights are not supported")
        
         countsZ=table(z)
 
-        if (nclass <= 1) stop(paste(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values\n"))
+        if (nclass <= 1) stop(paste(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values"))
         threshold=qnorm(p=c(0,cumsum(as.vector(countsZ)/n)))
           
         y = rtrun(mu =0, sigma = 1, a = threshold[z], b = threshold[ (z + 1)])
@@ -187,7 +187,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
             if(!is.null(groups))
             {
-		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups\n", sep = ""))
+		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups", sep = ""))
             }
 
 
