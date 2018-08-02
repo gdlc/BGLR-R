@@ -4,7 +4,8 @@ Date: 2016-08-19
 Title: Bayesian Generalized Linear Regression
 Author: Gustavo de los Campos, Paulino Perez Rodriguez,
 Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
-Depends: R (>= 2.10), truncnorm
+Depends: R (>= 2.10)
+Imports: truncnorm
 Description: Bayesian Generalized Linear Regression.
 LazyLoad: true
 License: GPL-3
