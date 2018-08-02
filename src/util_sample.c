@@ -44,7 +44,7 @@
  */
 
 
-SEXP sample_beta(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varBj, SEXP varE, SEXP minAbsBeta)
+SEXP C_sample_beta(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varBj, SEXP varE, SEXP minAbsBeta)
 {
     double *xj;
     double *pXL, *pxL2, *pbL, *pe, *pvarBj;
@@ -112,7 +112,7 @@ SEXP sample_beta(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varBj
       return(list);
 }
 
-SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varB, SEXP varE, SEXP minAbsBeta)
+SEXP C_sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varB, SEXP varE, SEXP minAbsBeta)
 {
     double *xj;
     double *pXL, *pxL2, *pbL, *pe;
@@ -199,7 +199,7 @@ SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, 
   Routine for sampling coefficients for BayesCpi and BayesB
 */
 
-SEXP sample_beta_BB_BCp(SEXP n, SEXP p, SEXP X, SEXP x2, SEXP b, SEXP d, SEXP error, SEXP varBj, SEXP varE, SEXP minAbsBeta, SEXP probInside)
+SEXP C_sample_beta_BB_BCp(SEXP n, SEXP p, SEXP X, SEXP x2, SEXP b, SEXP d, SEXP error, SEXP varBj, SEXP varE, SEXP minAbsBeta, SEXP probInside)
 {
   int j,rows,cols;
   double sigma2e, probIn, logOdds,tmp,betaj;
@@ -324,7 +324,7 @@ SEXP sample_beta_BB_BCp(SEXP n, SEXP p, SEXP X, SEXP x2, SEXP b, SEXP d, SEXP er
   FIXME: Work in progress, it is not yet finished neither well tested
 */
 
-SEXP sample_beta_BB_BCp_groups(SEXP n, SEXP p, SEXP X, SEXP x2, SEXP b, SEXP d, SEXP error, SEXP varBj, SEXP varE, SEXP minAbsBeta, SEXP probInside, SEXP groups, SEXP nGroups)
+SEXP C_sample_beta_BB_BCp_groups(SEXP n, SEXP p, SEXP X, SEXP x2, SEXP b, SEXP d, SEXP error, SEXP varBj, SEXP varE, SEXP minAbsBeta, SEXP probInside, SEXP groups, SEXP nGroups)
 {
   int i, j, k, rows, cols;
   int ngroups;  //Number of groups
@@ -577,7 +577,7 @@ void weighted_ddot(int n, double *dx, double *dy, int *groups, double *rhs)
  */
 
 
-SEXP sample_beta_groups(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varBj, SEXP varE, SEXP minAbsBeta, SEXP groups, SEXP nGroups)
+SEXP C_sample_beta_groups(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varBj, SEXP varE, SEXP minAbsBeta, SEXP groups, SEXP nGroups)
 {
     double *xj;
     double *xj2;

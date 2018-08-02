@@ -364,10 +364,10 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                   #cat("varB=",ETA[[j]]$varB,"\n");
                   varBj = rep(ETA[[j]]$varB, ETA[[j]]$p)
                   if(!is.null(groups)){
-                        ans = .Call("sample_beta_groups", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
+                        ans = .Call("C_sample_beta_groups", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
                                              e, varBj, varE, 1e-9,ggg,nGroups)
 		  }else{
-                  	ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
+                  	ans = .Call("C_sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
                                              e, varBj, varE, 1e-9)
 		  }
                   ETA[[j]]$b = ans[[1]]
@@ -380,10 +380,10 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
                   if(!is.null(groups))
 		  {
-                        ans = .Call("sample_beta_groups",n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
+                        ans = .Call("C_sample_beta_groups",n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
                                     e, varBj, varE, 1e-9,ggg,nGroups)
 	          }else{
-                  	ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
+                  	ans = .Call("C_sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
                                              e, varBj, varE, 1e-9)
 		  }
                   ETA[[j]]$b = ans[[1]]
@@ -395,7 +395,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                 }# END BRR
                 
                 if(ETA[[j]]$model=="BRR_sets"){
-                   ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
+                   ans = .Call("C_sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b,
                                              e, ETA[[j]]$varB, varE, 1e-9)
 		  		   ETA[[j]]$b = ans[[1]]
                    e = ans[[2]]
@@ -411,7 +411,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                 if (ETA[[j]]$model == "BL") {
                   
                    varBj = ETA[[j]]$tau2 * varE
-                   ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
+                   ans = .Call("C_sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
                                 e, varBj, varE, ETA[[j]]$minAbsBeta)
 
                   ETA[[j]]$b = ans[[1]]
@@ -482,7 +482,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                 ## BayesA ##############################################################################
                 if (ETA[[j]]$model == "BayesA") {
                   varBj = ETA[[j]]$varB
-                  ans = .Call("sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
+                  ans = .Call("C_sample_beta", n, ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, 
                                              e, varBj, varE, 1e-9)
                   ETA[[j]]$b = ans[[1]]
                   e = ans[[2]]
@@ -509,16 +509,16 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                         {
                           if(!is.null(groups))
                           {
-                             ans=.Call("sample_beta_BB_BCp_groups",n,ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, ETA[[j]]$d, e, ETA[[j]]$varB, varE, 1e-9, ETA[[j]]$probIn,ggg,nGroups);
+                             ans=.Call("C_sample_beta_BB_BCp_groups",n,ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, ETA[[j]]$d, e, ETA[[j]]$varB, varE, 1e-9, ETA[[j]]$probIn,ggg,nGroups);
                           }else{
-                             ans=.Call("sample_beta_BB_BCp",n,ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, ETA[[j]]$d, e, ETA[[j]]$varB, varE, 1e-9, ETA[[j]]$probIn);
+                             ans=.Call("C_sample_beta_BB_BCp",n,ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, ETA[[j]]$d, e, ETA[[j]]$varB, varE, 1e-9, ETA[[j]]$probIn);
                           }
                         }else{
                           if(!is.null(groups))
                           {
-                             ans=.Call("sample_beta_BB_BCp_groups",n,ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, ETA[[j]]$d, e, rep(ETA[[j]]$varB,ETA[[j]]$p), varE, 1e-9, ETA[[j]]$probIn,ggg,nGroups);
+                             ans=.Call("C_sample_beta_BB_BCp_groups",n,ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, ETA[[j]]$d, e, rep(ETA[[j]]$varB,ETA[[j]]$p), varE, 1e-9, ETA[[j]]$probIn,ggg,nGroups);
                           }else{   
-                             ans=.Call("sample_beta_BB_BCp",n,ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, ETA[[j]]$d, e, rep(ETA[[j]]$varB,ETA[[j]]$p), varE, 1e-9, ETA[[j]]$probIn);
+                             ans=.Call("C_sample_beta_BB_BCp",n,ETA[[j]]$p, ETA[[j]]$X, ETA[[j]]$x2, ETA[[j]]$b, ETA[[j]]$d, e, rep(ETA[[j]]$varB,ETA[[j]]$p), varE, 1e-9, ETA[[j]]$probIn);
                           }
                         }
 
