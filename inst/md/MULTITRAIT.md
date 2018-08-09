@@ -1,7 +1,7 @@
 ## Multi-trait prediction using SVD and univariate regressions on eigenvectors
 
 
-#### Deriving Eigenvectors of the phenotype matrix
+### Deriving Eigenvectors of the phenotype matrix
 ```r
  library(BGLR)
  data(wheat)
@@ -19,7 +19,7 @@
   V=SVD$v
 ```
 
-#### Obtaining regression coefficients
+### Obtaining regression coefficients
 
 ```r
  B=matrix(nrow=ncol(X),ncol=ncol(Y))
@@ -41,7 +41,7 @@
 ```
 
 
-#### Training-testing comparing single and multi-trait
+### Training-testing comparing single and multi-trait
 
 
 **Training/Testing partition**
@@ -61,41 +61,38 @@
 **Prediction using single-trait models**
 
 ```r
-	YHAT.ST=matrix(nrow=nrow(Y.TST),ncol=4)
+  YHAT.ST=matrix(nrow=nrow(Y.TST),ncol=4)
 	
-	for(i in 1:4){
-		fm=BGLR(y=Y.TRN[,i],ETA=ETA,verbose=F) #use more iterations!
-		YHAT.ST[,i]=X.TST%*%fm$ETA[[1]]$b
-	}	
+  for(i in 1:4){
+    fm=BGLR(y=Y.TRN[,i],ETA=ETA,verbose=F) #use more iterations!
+    YHAT.ST[,i]=X.TST%*%fm$ETA[[1]]$b
+  }	
 ```
 
 
 **Prediction using eigenvectors**
 
 ```r
-    SVD=svd(Y.TRN)
-    U=SVD$u
-    D=diag(SVD$d)
-    V=SVD$v
+  SVD=svd(Y.TRN)
+  U=SVD$u
+  D=diag(SVD$d)
+  V=SVD$v
 
-	B=matrix(nrow=ncol(X), ncol=ncol(U))
+  B=matrix(nrow=ncol(X), ncol=ncol(U))
 	
-	for(i in 1:4){
-		fm=BGLR(y=U[,i],ETA=ETA,verbose=F) #use more iterations!
-
-		B[,i]=fm$ETA[[1]]$b
-	}	
-	BETA=B%*%D%*%t(V)
-	
-	YHAT.EV=X.TST%*%BETA
+  for(i in 1:4){
+     fm=BGLR(y=U[,i],ETA=ETA,verbose=F) #use more iterations!
+     B[,i]=fm$ETA[[1]]$b
+  }	
+  BETA=B%*%D%*%t(V)
+  YHAT.EV=X.TST%*%BETA
 ```
 
-
-#### Comparison
+**Comparison**
 
 ```r
   for(i in 1:4){
-  	   message( round(cor(Y.TST[,i],YHAT.ST[,i]),3),"   ",round(cor(Y.TST[,i],YHAT.EV[,i]),3))
+     message( round(cor(Y.TST[,i],YHAT.ST[,i]),3),"   ",round(cor(Y.TST[,i],YHAT.EV[,i]),3))
   }
 ```
 
