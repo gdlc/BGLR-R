@@ -65,6 +65,8 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   - [15. Bayesian regressions with markers sets: an example of how BGLR can be used to fit models with set-specific priors](https://github.com/gdlc/BGLR-R/blob/master/inst/md/setMethods.md)
   
   - [16. BRR-sets: Guassian prior with set-specific variances](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BRR_sets.md)
+  
+  - [17. Multi-trait prediction using eigenvectors](https://github.com/gdlc/BGLR-R/edit/master/inst/md/MULTITRAIT.md)
 
 
 **Other Omics**
