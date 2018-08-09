@@ -44,7 +44,7 @@
 ### Training-testing comparing single and multi-trait
 
 
-**Training/Testing partition**
+*Training/Testing partition*
 
 ```r
   set.seed(195021)
@@ -58,7 +58,7 @@
   ETA=list(list(X=X[-tst,],model='BayesB'))
 ```
 
-**Prediction using single-trait models**
+*Prediction using single-trait models*
 
 ```r
   YHAT.ST=matrix(nrow=nrow(Y.TST),ncol=4)
@@ -70,7 +70,7 @@
 ```
 
 
-**Prediction using eigenvectors**
+*Prediction using eigenvectors*
 
 ```r
   SVD=svd(Y.TRN)
@@ -88,7 +88,7 @@
   YHAT.EV=X.TST%*%BETA
 ```
 
-**Comparison**
+*Comparison*
 
 ```r
   for(i in 1:4){
