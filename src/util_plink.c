@@ -98,7 +98,7 @@ Some improvementes: 	Better way to know the number of individuals and snps (no w
 			Detect snps that are non biallelic
 */
 
-SEXP read_ped(SEXP Ped)
+SEXP read_ped_(SEXP Ped)
 {
 	FILE *input;
         char *Line;
@@ -365,7 +365,7 @@ Recode snp to 0,1,2 Format using allele "1" as reference
 
 */
 
-void read_bed(char **bed_file, int *n, int *p, int *out, int *verbose)
+void read_bed_(char **bed_file, int *n, int *p, int *out, int *verbose)
 {
  	FILE *input;
         unsigned char magic[3];   // First three bytes in the file
@@ -469,7 +469,7 @@ Int code        Genotype
 
 */
 
-void write_bed(char **bed_file, int *n, int *p, int *out)
+void write_bed_(char **bed_file, int *n, int *p, int *out)
 {
 	FILE *output;
         const unsigned char recode[4] = {0x00, 0x02, 0x01, 0x03};

@@ -1,4 +1,4 @@
-useDynLib(BGLR)
+useDynLib(BGLR, .registration=TRUE)
 
 importFrom("graphics", "abline", "plot")
 importFrom("stats", "cor", "dbeta", "dchisq", "dexp", "dgamma",
