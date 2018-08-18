@@ -27,7 +27,7 @@ set.X=function(LT)
     		if(Xint > 0L) X = X[, -Xint, drop=FALSE]
 	   }
 	}
-	if(flag) stop("Unable to build incidence matrix, wrong formula or data\n")
+	if(flag) stop("Unable to build incidence matrix, wrong formula or data")
 	return(X)
 }
 
@@ -45,12 +45,12 @@ setLT.Fixed=function(LT,n,j,y,weights,nLT,saveAt,rmExistingFiles,groups,nGroups)
 	
     if(any(is.na(LT$X)))
     { 
-	stop(paste(" LP ",j," has NAs in X",sep=""))
+	stop("LP ",j," has NAs in X")
     }
 
     if(nrow(LT$X)!=n)
     {
-        stop(paste(" Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))
+        stop("Number of rows of LP ",j,"  not equal to the number of phenotypes")
     }
 
     #weight inputs if necessary
@@ -107,12 +107,12 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
 	
     if(any(is.na(LT$X)))
     { 
-      stop(paste(" LP ",j," has NAs in X",sep=""))
+      stop("LP ",j," has NAs in X")
     }
     
     if(nrow(LT$X)!=n)
     {
-      stop(paste(" Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))
+      stop("Number of rows of LP ",j,"  not equal to the number of phenotypes")
     }   
 
     #Weight inputs if necessary
@@ -153,7 +153,7 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
     #Default scale parameter for the prior assigned to the variance of marker effects
     if(is.null(LT$S0))
     {
-        if(LT$df0<=0) stop("df0>0 in BRR in order to set S0\n")
+        if(LT$df0<=0) stop("df0>0 in BRR in order to set S0")
 
 	LT$MSx=sum(LT$x2)/n-sumMeanXSq       
 	LT$S0=((var(y,na.rm=TRUE)*LT$R2)/(LT$MSx))*(LT$df0+2)  
@@ -229,21 +229,21 @@ setLT.BRR_sets=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,t
     LT$p=ncol(LT$X)
     LT$colNames=colnames(LT$X)
 
-    if(is.null(LT$sets)) stop("Argument sets (a vector grouping effects into sets) is required in BRR_sets\n");
-  	if(length(LT$sets)!=LT$p){ stop(" The length of sets must be equal to the number of predictors\n") }
+    if(is.null(LT$sets)) stop("Argument sets (a vector grouping effects into sets) is required in BRR_sets");
+  	if(length(LT$sets)!=LT$p){ stop("The length of sets must be equal to the number of predictors") }
 	
 	LT$sets<-as.integer(factor(LT$sets,ordered=TRUE,levels=unique(LT$sets)))
 		
 	LT$n_sets=length(unique(LT$sets))	
   	
-  	if(LT$n_sets>=LT$p){ stop("The number of sets is greater or equal than the number of effects!\n") }
+  	if(LT$n_sets>=LT$p){ stop("The number of sets is greater or equal than the number of effects!") }
     
     if(any(is.na(LT$X))){ 
-      stop(paste(" LP ",j," has NAs in X",sep=""))
+      stop("LP ",j," has NAs in X")
     }
     
     if(nrow(LT$X)!=n){
-      stop(paste(" Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))
+      stop("Number of rows of LP ",j,"  not equal to the number of phenotypes")
     }   
 
     #Weight inputs if necessary
@@ -264,7 +264,7 @@ setLT.BRR_sets=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,t
     }
 
     if(is.null(LT$S0))    {
-        if(LT$df0<=0) stop("df0 must be greater than 0 \n")
+        if(LT$df0<=0) stop("df0 must be greater than 0")
 
 		LT$MSx=sum(LT$x2)/n-sumMeanXSq       
 		LT$S0=((var(y,na.rm=TRUE)*LT$R2)/(LT$MSx))*(LT$df0+2) 
@@ -325,12 +325,12 @@ setLT.BL=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
 		
     if(any(is.na(LT$X)))
     {
-       stop(paste("LP ",j," has NAs in X",sep=""))
+       stop("LP ",j," has NAs in X")
     }
 
     if(nrow(LT$X)!=n)
     {
-        stop(paste(" Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))
+        stop("Number of rows of LP ",j,"  not equal to the number of phenotypes")
     } 
 
     #Wheight inputs if necessary
@@ -351,7 +351,7 @@ setLT.BL=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
     { 
     	if(LT$lambda<0)
         {
-		stop(" lambda should be positive\n")
+		stop("lambda should be positive")
 	}  
     }
     if(is.null(LT$lambda))
@@ -363,7 +363,7 @@ setLT.BL=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
 			cat(paste(" Initial value of lambda in LP ",j," was set to default value (",LT$lambda,")\n",sep=""))
 		}
     }else{
-	if(LT$lambda<0) stop(" lambda should be positive\n");
+	if(LT$lambda<0) stop("lambda should be positive");
         LT$lambda2=LT$lambda^2
     }
 	
@@ -376,7 +376,7 @@ setLT.BL=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
 			cat(paste("  By default, the prior density of lambda^2 in the LP ",j,"  was set to gamma.\n",sep=""))
 		}
     }else{
-		if(!LT$type%in%c("gamma","beta","FIXED")) stop(" The prior for lambda^2 should be gamma, beta or a point of mass (i.e., fixed lambda).\n")
+		if(!LT$type%in%c("gamma","beta","FIXED")) stop("The prior for lambda^2 should be gamma, beta or a point of mass (i.e., fixed lambda)")
     }
     if(LT$type=="gamma")
     {
@@ -481,13 +481,13 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
     #Checking inputs
     if(is.null(LT$V))
     {
-        if(is.null(LT$K)) stop(paste(" Kernel for linear term ",j, " was not provided, specify it with list(K=?,model='RKHS'), where ? is the kernel matrix\n",sep=""))
+        if(is.null(LT$K)) stop("Kernel for linear term ",j, " was not provided, specify it with list(K=?,model='RKHS'), where ? is the kernel matrix")
 
 	LT$K = as.matrix(LT$K)
 
-        if(class(LT$K)!="matrix") stop(paste(" Kernel for linear term ",j, " should be a matrix, the kernel provided is of class ", class(LT$K),"\n",sep=" "))
+        if(class(LT$K)!="matrix") stop("Kernel for linear term ",j, " should be a matrix, the kernel provided is of class ", class(LT$K))
 
-        if(nrow(LT$K)!=ncol(LT$K)) stop(paste(" Kernel for linear term ",j, " is not a square matrix\n",sep=""))
+        if(nrow(LT$K)!=ncol(LT$K)) stop("Kernel for linear term ",j, " is not a square matrix")
 
 	#This code was rewritten to speed up computations
         #T = diag(weights)   
@@ -548,7 +548,7 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
 
     if (is.null(LT$S0)) 
     {
-          if(LT$df0<=0) stop("df0>0 in RKHS in order to set S0\n");
+          if(LT$df0<=0) stop("df0>0 in RKHS in order to set S0");
 
 	  LT$S0=((var(y,na.rm=TRUE)*LT$R2)/(mean(LT$d)))*(LT$df0+2)
 
@@ -619,8 +619,8 @@ setLT.BayesBandC=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles, groups
   LT$MSx=sum(LT$x2)/n-sumMeanXSq
 
   
-  if(any(is.na(LT$X))){ stop(paste("LP ",j," has NAs in X",sep=""))}
-  if(nrow(LT$X)!=n){stop(paste("   Number of rows of LP ",j,"  not equal to the number of phenotypes.",sep=""))}
+  if(any(is.na(LT$X))){ stop("LP ",j," has NAs in X") }
+  if(nrow(LT$X)!=n){ stop("Number of rows of LP ",j,"  not equal to the number of phenotypes") }
   
   if(is.null(LT$R2))
   {
@@ -671,7 +671,7 @@ setLT.BayesBandC=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles, groups
   #marker effects
   if(is.null(LT$S0))
   {
-     if(LT$df0<=0) stop(paste("df0>0 in ",model," in order to set S0\n",sep=""));
+     if(LT$df0<=0) stop("df0>0 in ",model," in order to set S0");
      LT$S0=var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
      if(verbose)
      {
@@ -788,7 +788,7 @@ setLT.BayesA=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose,thi
   #Defuault scale parameter for the prior assigned to the variance of markers
   if(is.null(LT$S0))
   {
-     if(LT$df0<=0) stop("df0>0 in BayesA in order to set S0\n")
+     if(LT$df0<=0) stop("df0>0 in BayesA in order to set S0")
      LT$S0 = var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)
      if(verbose)
      {
@@ -1054,7 +1054,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     }
 
     IDs=names(y)
-    if (!(response_type %in% c("gaussian", "ordinal")))  stop(" Only gaussian and ordinal responses are allowed\n")
+    if (!(response_type %in% c("gaussian", "ordinal")))  stop("Only gaussian and ordinal responses are allowed")
 
     if (saveAt == "") {
         saveAt = paste(getwd(), "/", sep = "")
@@ -1077,7 +1077,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 		groupLabels=names(countGroups)
                 groups=as.integer(groups)
                 ggg=as.integer(groups-1);  #In C we begin to count in 0
-		if(sum(countGroups)!=n) stop("length of groups and y differs, NA's not allowed in groups\n");	
+		if(sum(countGroups)!=n) stop("length of groups and y differs, NA's not allowed in groups");
     }
 
     if(response_type=="ordinal")
@@ -1086,7 +1086,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     	y=factor(y,ordered=TRUE)
         lev=levels(y)
         nclass=length(lev)
-        if(nclass==n) stop("The number of classes in y must be smaller than the number of observations\n");
+        if(nclass==n) stop("The number of classes in y must be smaller than the number of observations");
 
         y=as.integer(y)
         z=y  
@@ -1120,8 +1120,8 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
         if ((!is.null(a)) | (!is.null(b))) 
         {
             Censored = TRUE
-            if ((length(a) != n) | (length(b) != n)) stop(" y, a and b must have the same dimension\n")
-            if (any(weights != 1)) stop(" Weights are only implemented for Gausian uncensored responses\n")
+            if ((length(a) != n) | (length(b) != n)) stop("y, a and b must have the same dimension")
+            if (any(weights != 1)) stop("Weights are only implemented for Gausian uncensored responses")
         }
         mu = weighted.mean(x = y, w = weights, na.rm = TRUE)
     }
@@ -1141,11 +1141,11 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
     if (response_type == "ordinal") {
         if(verbose){ cat(" Prior for residual is not necessary, if you provided it, it will be ignored\n")}
-        if (any(weights != 1)) stop(" Weights are not supported \n")
+        if (any(weights != 1)) stop("Weights are not supported")
        
         countsZ=table(z)
 
-        if (nclass <= 1) stop(paste(" Data vector y has only ", nclass, " differente values, it should have at least 2 different values\n"))
+        if (nclass <= 1) stop("Data vector y has only ", nclass, " differente values, it should have at least 2 different values")
         threshold=qnorm(p=c(0,cumsum(as.vector(countsZ)/n)))
           
         y = rtrun(mu =0, sigma = 1, a = threshold[z], b = threshold[ (z + 1)])
@@ -1225,13 +1225,13 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
             if (!(ETA[[i]]$model %in% c("FIXED", "BRR", "BL", "BayesA", "BayesB","BayesC", "RKHS","BRR_sets"))) 
             {
-                stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented (note: evaluation is case sensitive).", sep = ""))
+                stop("Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented (note: evaluation is case sensitive)")
                 
             }
 
             if(!is.null(groups))
             {
-		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups\n", sep = ""))
+		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop("Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups")
             }
 
 
@@ -2033,5 +2033,3 @@ BLR=function (y, XF = NULL, XR = NULL, XL = NULL, GF = list(ID = NULL,
     return(out)
 }
 
-
- 
