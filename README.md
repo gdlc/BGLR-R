@@ -84,6 +84,6 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   
 **Image Data**
 ----------------------------------------------------------------
-  -[Aguate et al. (IBC, 2016)]()
+  -Maize (Image data): [Aguate et al. (IBC, 2016)](https://dl.sciencesocieties.org/publications/cs/articles/57/5/2517)
   
   
