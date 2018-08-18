@@ -6,7 +6,7 @@
   This function reads genotype information stored in  binary PED (BED) files used in plink.
   These files save space and time. The pedigree/phenotype information is stored in a separate file (*.fam) 
   and the map information is stored in an extededed MAP file (*.bim) that contains information about the allele names, 
-  which would otherwise be lost in the BED file. More details \url{http://pngu.mgh.harvard.edu/~purcell/plink/binary.shtml}.
+  which would otherwise be lost in the BED file. More details \url{http://zzz.bwh.harvard.edu/plink/binary.shtml}.
 }
 \usage{
   read_bed(bed_file,bim_file,fam_file,na.strings,verbose)

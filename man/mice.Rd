@@ -23,10 +23,6 @@ here is body mass index (BMI), and additional information about body weight, sea
 
 }
 
-\source{
-   \url{http://gscan.well.ox.ac.uk} 
- }
-
 \references{
 
 Legarra A., Robert-Granie, E. Manfredi, and J. M. Elsen, 2008 Performance of genomic selection in mice. Genetics 180:611-618.

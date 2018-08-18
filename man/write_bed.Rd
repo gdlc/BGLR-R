@@ -4,7 +4,7 @@
 \description{
 
   This function writes genotype information into  a binary PED (BED) filed used in plink.
-  For more details about this format see  \url{http://pngu.mgh.harvard.edu/~purcell/plink/binary.shtml}.
+  For more details about this format see  \url{http://zzz.bwh.harvard.edu/plink/binary.shtml}.
 }
 \usage{
   write_bed(x,n,p,bed_file)
