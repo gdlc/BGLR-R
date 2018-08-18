@@ -1,17 +1,12 @@
 Package: BGLR
-Version: 1.0.5
-Date: 2016-08-19
+Version: 1.0.6
+Date: 2018-08-17
 Title: Bayesian Generalized Linear Regression
 Author: Gustavo de los Campos, Paulino Perez Rodriguez,
 Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
-Depends: R (>= 2.10), truncnorm
+Depends: R (>= 2.10)
 Description: Bayesian Generalized Linear Regression.
 LazyLoad: true
 License: GPL-3
-Packaged: 2015-04-07 15:09:41 UTC; paulino
-Repository: CRAN
-Repository/R-Forge/Project: bglr
-Repository/R-Forge/Revision: 78
-Repository/R-Forge/DateTimeStamp: 2013-10-22 13:52:58
-Date/Publication: 2015-04-07 19:14:48
 NeedsCompilation: yes
+Packaged: 2018-08-17 20:16:32 UTC; pperez
