@@ -855,12 +855,12 @@ welcome=function()
   cat("\n");
   cat("#--------------------------------------------------------------------#\n");
   cat("#        _\\\\|//_                                                     #\n");
-  cat("#       (` o-o ')      BGLR v1.0.6 beta                            #\n");
+  cat("#       (` o-o ')      BGLR v1.0.6 beta                             #\n");
   cat("#------ooO-(_)-Ooo---------------------------------------------------#\n");
   cat("#                      Bayesian Generalized Linear Regression        #\n");
   cat("#                      Gustavo de los Campos, gdeloscampos@gmail.com #\n");
-  cat("#    .oooO     Oooo.   Paulino Perez-Rodriguez, perpdgo@gmail.com     #\n");
-  cat("#    (   )     (   )   August, 2018                                   #\n");
+  cat("#    .oooO     Oooo.   Paulino Perez-Rodriguez, perpdgo@gmail.com    #\n");
+  cat("#    (   )     (   )   August, 2018                                  #\n");
   cat("#_____\\ (_______) /_________________________________________________ #\n");
   cat("#      \\_)     (_/                                                   #\n");
   cat("#                                                                    #\n");
