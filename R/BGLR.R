@@ -926,12 +926,11 @@ metropLambda=function (tau2, lambda, shape1 = 1.2, shape2 = 1.2, max = 200, ncp 
   assign(".BGLR.version", BGLR.version, pos=match("package:BGLR", search()))
   if(interactive())
   {
-    packageStartupMessage(paste("# Package Bayesian Generalized Regression (BGLR), ", BGLR.version, ". ",sep=""),appendLF=TRUE)
-    packageStartupMessage("# Gustavo de los Campos & Paulino Perez-Rodriguez",appendLF=TRUE)
-    packageStartupMessage("# Support provided by the U.S., National Institutes of Health (NIH)", appendLF=TRUE)
-    packageStartupMessage("# (Grant: R01GM101219, NIGMS)", appendLF=TRUE)
-    packageStartupMessage("# and by the International Maize and Wheat Improvement Center (CIMMyT).",appendLF=TRUE)                        
-    packageStartupMessage("# Type 'help(BGLR)' for summary information",appendLF=TRUE)
+    packageStartupMessage("# Gustavo de los Campos & Paulino Perez-Rodriguez")
+    packageStartupMessage("# Support provided by the U.S., National Institutes of Health (NIH)")
+    packageStartupMessage("# (Grant: R01GM101219, NIGMS)")
+    packageStartupMessage("# and by the International Maize and Wheat Improvement Center (CIMMyT).")                        
+    packageStartupMessage("# Type 'help(BGLR)' for summary information")
   }
   invisible()
 }
