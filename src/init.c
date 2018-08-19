@@ -8,10 +8,6 @@
 #include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
 
-/* FIXME: 
- *    Check these declarations against the C/Fortran source code.
- *    */
-
 /* .C calls */
 extern void read_bed_(void *, void *, void *, void *, void *);
 extern void write_bed_(void *, void *, void *, void *);
