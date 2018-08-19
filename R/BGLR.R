@@ -1753,7 +1753,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
         if (verbose) {
             message("---------------------------------------")
             tmp = proc.time()[3]
-            message("Iter=",i,"Time/Iter=",round(tmp-time,3))
+            message("Iter=",i," Time/Iter=",round(tmp-time,3))
             message("VarE=",round(varE,3))
             time = tmp
         }
