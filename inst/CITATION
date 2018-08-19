@@ -1,0 +1,21 @@
+citHeader("To cite BGLR in publications use:")
+
+citEntry(
+    entry = "Article",
+    title = "Genome-Wide Regression and Prediction with the BGLR Statistical Package",
+    author = c(
+        person("Paulino", "Perez"),
+        person("Gustavo", "de los Campos")
+    ),
+    journal = "Genetics",
+    year = "2014",
+    volume = "198",
+    number = "2",
+    pages = "483--495",
+    url = "http://www.genetics.org/content/198/2/483",
+    textVersion = paste(
+        "Perez, P., and de los Campos, G., 2014 ",
+        "Genome-Wide Regression and Prediction with the BGLR Statistical Package.",
+        "Genetics 198 (2): 483-495."
+    )
+)
