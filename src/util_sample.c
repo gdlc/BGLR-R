@@ -79,7 +79,7 @@ SEXP sample_beta(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varBj
 
     for(j=0; j<cols;j++)
     {
-          xj=pXL+j*rows;
+          xj=pXL+(long long)j*rows;
           b=pbL[j];
           //F77_NAME(daxpy)(&rows, &b,xj,&inc, pe, &inc);
           rhs=F77_NAME(ddot)(&rows,xj,&inc,pe,&inc)/sigma2e;
@@ -246,7 +246,7 @@ SEXP sample_beta_BB_BCp(SEXP n, SEXP p, SEXP X, SEXP x2, SEXP b, SEXP d, SEXP er
 
   for(j=0; j<cols; j++)
   {
-     xj=pX+j*rows;
+     xj=pX+(long long)j*rows;
      Xe=F77_NAME(ddot)(&rows,perror,&inc,xj,&inc);
 
      if(pd[j])
@@ -390,8 +390,8 @@ SEXP sample_beta_BB_BCp_groups(SEXP n, SEXP p, SEXP X, SEXP x2, SEXP b, SEXP d, 
 
   for(j=0; j<cols; j++)
   {
-     xj=pX+j*rows;   //Pointer to the j-th column
-     xj2=pX2+j*ngroups; //Pointer to the sum of squares of the j-th column
+     xj=pX+(long long)j*rows;   //Pointer to the j-th column
+     xj2=pX2+(long long)j*ngroups; //Pointer to the sum of squares of the j-th column
      
 
      //Clean initialization
@@ -629,7 +629,7 @@ SEXP sample_beta_groups(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEX
 
           c=0;
 
-          xj=pXL+j*rows;
+          xj=pXL+(long long)j*rows;
           b=pbL[j];
 
           //rhs=F77_NAME(ddot)(&rows,xj,&inc,pe,&inc)/sigma2e;
@@ -661,7 +661,7 @@ SEXP sample_beta_groups(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEX
 
           //weighted_ddot(rows, xj, pe, g, rhs);
 
-          xj2=pXL2+j*ngroups;
+          xj2=pXL2+(long long)j*ngroups;
 
           for(k=0;k<ngroups;k++)
 	  {
