@@ -17,6 +17,9 @@
 #Authors: Gustavo de los Campos & Paulino Perez Rodriguez
 #Birmingaham, Alabama, 2013, 2014
 
+#DO NOT REPLACE cat here since this are S3 methods
+#use cat() when making the print.* functions for S3 object
+
 summary.BGLR=function(object,...)
 {
     
