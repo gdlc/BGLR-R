@@ -918,8 +918,8 @@ metropLambda=function (tau2, lambda, shape1 = 1.2, shape2 = 1.2, max = 200, ncp 
 .onAttach = function(library, pkg)
 {
   Rv = R.Version()
-  if(!exists("getRversion", baseenv()) || (getRversion() < "2.10"))
-    stop("This package requires R 2.10 or later")
+  if(!exists("getRversion", baseenv()) || (getRversion() < "3.5.0"))
+    stop("This package requires R 3.5.0 or later")
   assign(".BGLR.home", file.path(library, pkg),
          pos=match("package:BGLR", search()))
   BGLR.version = "1.0.8 Beta (GitHub)"
