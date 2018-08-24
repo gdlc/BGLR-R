@@ -12,7 +12,7 @@ citEntry(
     volume = "198",
     number = "2",
     pages = "483--495",
-    url = "http://www.genetics.org/content/198/2/483",
+    url = "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4196607/",
     textVersion = paste(
         "Perez, P., and de los Campos, G., 2014 ",
         "Genome-Wide Regression and Prediction with the BGLR Statistical Package.",
