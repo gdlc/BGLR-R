@@ -40,9 +40,15 @@ version 1.0.5
   saving effects in binary files & computing windows
 
 version 1.0.6
+  never released, problems with reverse depencies
+
+version 1.0.7
+  Removing OpenMP Flags, C code for registring routines added
+  Update urls
+
+version 1.0.8
   Bayesian Ridge Regression now supports (square) triangular matrices and samples effects efficiently
   Sampling from truncated normal distribution is performed using the truncnorm library
-  C code for registration of routines added
   Fixes in C code for avoiding integer overflow in sampling functions with large datasets
   CITATION added
   Several fixes for displaying messages when using stop(), cat(), etc.
