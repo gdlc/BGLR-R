@@ -96,5 +96,4 @@
   }
 ```
 
-
 [Return to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
