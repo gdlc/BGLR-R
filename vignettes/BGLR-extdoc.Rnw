@@ -353,11 +353,11 @@ from the data are given in the Appendix.
                                         &                            & $\frac{\lambda}{\max} \sim Beta ^2$ \\                                        
   \hline
   Gaussian Mixture                                    &$\pi$ (prop. of non-null effects) & $\pi \sim Beta$ \\
-   (BayesB)                               &$df_\beta$                       & User-specified (default value, 5) \\
+   (BayesC)                               &$df_\beta$                       & User-specified (default value, 5) \\
                                         &$S_\beta$                        & $S_\beta \sim Gamma$ \\                                            
   \hline
    Scaled-t Mixture                                     &$\pi$ (prop. of non-null effects) & $\pi \sim Beta$ \\
-   (BayesC)                               &$df_\beta$                       & User-specified (default value, 5) \\
+   (BayesB)                               &$df_\beta$                       & User-specified (default value, 5) \\
                                         &$S_\beta$                        & $S_\beta \sim Gamma$ \\     
   \hline
   \end{tabular}
