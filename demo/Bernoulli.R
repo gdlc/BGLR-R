@@ -25,13 +25,11 @@ fit_Bernoulli_BGLR$ETA[[1]]$b
 fit_Bernoulli_BGLR$ETA[[1]]$SD.b
 
 #In our parameterization, mu is set to 0 and it is estimated as a threshold
--fit_Bernoulli_BGLR$threshold
+fit_Bernoulli_BGLR$threshold
 fit_Bernoulli_BGLR$SD.threshold 
 
 fit_mle=glm(y~v+r,family=binomial(link="probit")) 
 summary(fit_mle)
-
-readline("Press <return> to continue with next example: ") 
 
 #Example of prediction for missing values
 rm(list=ls())
