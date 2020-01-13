@@ -494,15 +494,20 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
         #LT$K = T %*% LT$K %*% T 
         
         #Weight kernels
-	for(i in 1:nrow(LT$K))
-        {
-		#j can not be used as subindex because its value is overwritten
-		for(m in i:ncol(LT$K))
-                {    
-				LT$K[i,m]=LT$K[i,m]*weights[i]*weights[m];
-                                LT$K[m,i]=LT$K[i,m]
-		}
-	}
+	#for(i in 1:nrow(LT$K))
+        #{
+	#	#j can not be used as subindex because its value is overwritten
+	#	for(m in i:ncol(LT$K))
+        #        {    
+	#			LT$K[i,m]=LT$K[i,m]*weights[i]*weights[m];
+        #                        LT$K[m,i]=LT$K[i,m]
+	#	}
+	#}
+	
+	#Added January 10/2020
+	#This is faster the the for loop
+	LT$K=sweep(sweep(LT$K,1L,weights,"*"),2L,weights,"*")
+	    
         tmp =eigen(LT$K)
         LT$V =tmp$vectors
         LT$d =tmp$values
