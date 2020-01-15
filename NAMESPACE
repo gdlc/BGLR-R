@@ -4,12 +4,15 @@ importFrom("graphics", "abline", "plot")
 importFrom("stats", "cor", "dbeta", "dchisq", "dexp", "dgamma",
            "dnorm", "model.frame", "model.matrix", "pnorm", "qnorm",
            "rbeta", "rbinom", "rchisq", "rgamma", "rnorm", "runif",
-           "var", "weighted.mean")
+           "var", "weighted.mean",
+           "sd")
 importFrom("utils", "read.table")
 importFrom("truncnorm", "rtruncnorm")
 
-export(BGLR,BLR, BGLR2,
-       read_bed,read_ped, write_bed,readBinMat,getVariances)
+export(BGLR,BLR,
+       read_bed,read_ped, write_bed,readBinMat,getVariances,
+       BLRCross,
+       BLRXy)
 
 exportMethods(BGLR)
 
