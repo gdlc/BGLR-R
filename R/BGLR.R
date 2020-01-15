@@ -483,39 +483,41 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
     {
         if(is.null(LT$K)) stop("Kernel for linear term ",j, " was not provided, specify it with list(K=?,model='RKHS'), where ? is the kernel matrix")
 
-	LT$K = as.matrix(LT$K)
+		LT$K = as.matrix(LT$K)
 
         if(class(LT$K)!="matrix") stop("Kernel for linear term ",j, " should be a matrix, the kernel provided is of class ", class(LT$K))
 
         if(nrow(LT$K)!=ncol(LT$K)) stop("Kernel for linear term ",j, " is not a square matrix")
 
-	#This code was rewritten to speed up computations
-        #T = diag(weights)   
-        #LT$K = T %*% LT$K %*% T 
+		#This code was rewritten to speed up computations
+    	#T = diag(weights)   
+    	#LT$K = T %*% LT$K %*% T 
         
-        #Weight kernels
-	#for(i in 1:nrow(LT$K))
-        #{
-	#	#j can not be used as subindex because its value is overwritten
-	#	for(m in i:ncol(LT$K))
-        #        {    
-	#			LT$K[i,m]=LT$K[i,m]*weights[i]*weights[m];
-        #                        LT$K[m,i]=LT$K[i,m]
-	#	}
-	#}
+    	#Weight kernels
+		#for(i in 1:nrow(LT$K))
+    	#{
+		#	#j can not be used as subindex because its value is overwritten
+		#	for(m in i:ncol(LT$K))
+    	#    {    
+		#			LT$K[i,m]=LT$K[i,m]*weights[i]*weights[m];
+    	#            LT$K[m,i]=LT$K[i,m]
+		#	}
+		#}
+		
+		#Added January 10/2020
+		#This is faster than the for loop
+		
+		LT$K=sweep(sweep(LT$K,1L,weights,"*"),2L,weights,"*")
+    
+    	tmp =eigen(LT$K)
+    	LT$V =tmp$vectors
+    	LT$d =tmp$values
+		rm(tmp)
 	
-	#Added January 10/2020
-	#This is faster the the for loop
-	LT$K=sweep(sweep(LT$K,1L,weights,"*"),2L,weights,"*")
-	    
-        tmp =eigen(LT$K)
-        LT$V =tmp$vectors
-        LT$d =tmp$values
-	rm(tmp)
     }else{
-	if(any(weights!=1))
+		if(any(weights!=1))
         { 
-		warning("Eigen decomposition for LT",j," was provided and the model involves weights. Note: You should have weighted the kernel before computing eigen(K)") 
+			warning("Eigen decomposition for LT",j," was provided and the model involves weights. Note: You should have weighted the kernel before computing eigen(K)") 
         }
     }
     
@@ -555,7 +557,7 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
     {
           if(LT$df0<=0) stop("df0>0 in RKHS in order to set S0");
 
-	  LT$S0=((var(y,na.rm=TRUE)*LT$R2)/(mean(LT$d)))*(LT$df0+2)
+	  	  LT$S0=((var(y,na.rm=TRUE)*LT$R2)/(mean(LT$d)))*(LT$df0+2)
 
 	  if(verbose)
 	  {
@@ -860,12 +862,12 @@ welcome=function()
   message("\n");
   message("#--------------------------------------------------------------------#");
   message("#        _\\\\|//_                                                     #");
-  message("#       (` o-o ')      BGLR v1.0.8 beta                              #");
+  message("#       (` o-o ')      BGLR v1.0.9                                   #");
   message("#------ooO-(_)-Ooo---------------------------------------------------#");
   message("#                      Bayesian Generalized Linear Regression        #");
   message("#                      Gustavo de los Campos, gdeloscampos@gmail.com #");
   message("#    .oooO     Oooo.   Paulino Perez-Rodriguez, perpdgo@gmail.com    #");
-  message("#    (   )     (   )   August, 2018                                  #");
+  message("#    (   )     (   )   January, 2020                                 #");
   message("#_____\\ (_______) /_________________________________________________ #");
   message("#      \\_)     (_/                                                   #");
   message("#                                                                    #");
@@ -927,7 +929,7 @@ metropLambda=function (tau2, lambda, shape1 = 1.2, shape2 = 1.2, max = 200, ncp 
     stop("This package requires R 3.5.0 or later")
   assign(".BGLR.home", file.path(library, pkg),
          pos=match("package:BGLR", search()))
-  BGLR.version = "1.0.8 Beta (GitHub)"
+  BGLR.version = "1.0.9"
   assign(".BGLR.version", BGLR.version, pos=match("package:BGLR", search()))
   if(interactive())
   {
