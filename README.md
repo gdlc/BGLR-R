@@ -32,7 +32,7 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
 
 #### Univariate responses
 
-**Genomic Regressions **
+**Genomic Regressions**
 ----------------------------------------------------------------
 
   - [1. Parametric Bayesian Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BayesianAlphabet.md)
