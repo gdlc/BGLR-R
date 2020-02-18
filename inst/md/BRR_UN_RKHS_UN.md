@@ -1,4 +1,4 @@
-#### Ridge regression
+#### Ridge regression + Additive relationship matrix
 
 In this example we use the wheat 599 dataset included in the package.
 Here we include directly the markers as predictors.
