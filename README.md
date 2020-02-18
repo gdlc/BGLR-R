@@ -30,7 +30,7 @@ ld: library not found for -lgfortran
 This can be fixed it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
 
-#### Univariate responses
+## Univariate responses
 
 **Genomic Regressions**
 ----------------------------------------------------------------
