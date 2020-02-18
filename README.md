@@ -94,5 +94,10 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
 
 The Multitrait function included in the BGLR package fits Bayesian multitrait models with 
 arbitrary number of random effects using a Gibbs sampler a functionality similar to this 
-is implemented in the [MTM](http://quantgen.github.io/MTM/vignette.html) package. 
+is implemented in the [MTM](http://quantgen.github.io/MTM/vignette.html) package. In
+this implementation is possible to include regression on markers directly assigning Spike-slab or 
+gaussian priors to the regression coefficients and fixed effects can be different for all the traits.
+We also have improved the sampling routines to speed up computations.
+
+
 
