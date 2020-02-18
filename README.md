@@ -97,8 +97,14 @@ arbitrary number of random effects using a Gibbs sampler a functionality similar
 is implemented in the [MTM](http://quantgen.github.io/MTM/vignette.html) package. In
 this implementation is possible to include regression on markers directly assigning Spike-slab or 
 Gaussian priors to the regression coefficients and fixed effects can be different for all the traits.
-We also have improved the sampling routines to speed up computations.
+We also have improved the sampling routines to speed up computations. Next we include some examples.
 
-
-
+- [1. Random effect model with unstructured covariance matrices]
+- [2. Diagonal residual covariance matrix]
+- [3. Factor analysis]
+- [4. Recursive models]
+- [5. Mixed effects model]
+- [6. Ridge Regression]
+- [7. Spike Slab]
+- [8. Ridge Regression + Additive relationship matrix]
 
