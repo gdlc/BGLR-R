@@ -3,7 +3,7 @@
 Example adapted from  [MTM](http://quantgen.github.io/MTM/vignette.html) package.
 Fixed effects can be added in any of the examples presented simply adding 
 another term to the linear predictor and specifying the model as 
-"FIXED". The parameter common can be used to specify if all the effects are assumed
+"FIXED". The parameter 'common' can be used to specify if all the effects are assumed
 for all the traits.
 
 ```R
