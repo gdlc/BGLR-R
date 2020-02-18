@@ -1,0 +1,1767 @@
+#Auxiliary functions
+#Converts a logical vector to decimal representation
+#eg x=c(TRUE,FALSE), means that we have a binary number "10" which in decimal is 2
+
+logicalToDec<-function(x)
+{
+	sum(x * 2^(rev(seq_along(x)) - 1))
+}
+
+#generating pseudo-random sequences from Wishart distribution
+#v Degrees of freedom (scalar).
+#S Inverse scale matrix pxp.
+#Function included in the MCMCpack, version 1.4-5
+
+rwish<-function(v, S) 
+{
+    if (!is.matrix(S))
+      S <- matrix(S)
+    if (nrow(S) != ncol(S)) 
+    {
+      stop(message="S not square in rwish().\n")
+    }
+    if (v < nrow(S)) 
+    {
+      stop(message="v is less than the dimension of S in rwish().\n")
+    }
+    p <- nrow(S)
+    CC <- chol(S)
+    Z <- matrix(0, p, p)
+    diag(Z) <- sqrt(rchisq(p, v:(v-p+1)))
+    if(p > 1) 
+    {
+      pseq <- 1:(p-1)
+      Z[rep(p*pseq, pseq) + unlist(lapply(pseq, seq))] <- rnorm(p*(p-1)/2)
+    }
+    return(crossprod(Z %*% CC))
+}
+
+#generating pseudo-random sequences from inverse Wishart distribution
+#v Degrees of freedom (scalar).
+#S Inverse scale matrix p x p
+#Function included in the MCMCpack, version 1.4-5
+riwish<-function(v, S) 
+{
+	return(solve(rwish(v,solve(S))))
+}
+
+#Extract Lower Triangular Elements from a Symmetric Matrix.
+#The elements are stored in column major order, it does not check for symmetry. 
+#Function included in the MCMCpack, version 1.4-5
+vech<-function (x) 
+{
+    x <- as.matrix(x)
+    
+    if (dim(x)[1] != dim(x)[2]) 
+    {
+      stop("Non-square matrix passed to vech().\n")
+    }
+    
+    output <- x[lower.tri(x, diag = TRUE)]
+    dim(output) <- NULL
+    return(output)
+}
+
+#Takes vector x and returns an nrow times nrow symmetric matrix,
+#this will recycle the elements of x as needed to fill the matrix.
+#The number of rows is computed autmatically is not given.
+#Function included in the MCMCpack, version 1.4-5
+xpnd <-function (x, nrow = NULL) 
+{
+    dim(x) <- NULL
+    if(is.null(nrow)) nrow <- (-1 + sqrt(1 + 8 * length(x))) / 2
+    output <- matrix(0, nrow, nrow)
+    output[lower.tri(output, diag = TRUE)] <- x
+    hold <- output
+    hold[upper.tri(hold, diag=TRUE)] <- 0
+    output <- output + t(hold)
+    return(output)
+}
+  
+#UNstructured covariance matrix
+setCov.UN<-function(Cov,traits)
+{	
+	
+	message("UNstructured covariance matrix")
+	
+	if(is.null(Cov$S0))
+	{
+		Cov$S0<-diag(traits)
+		message("S0 set to an identity matrix")	
+	}
+		
+	if(is.null(Cov$df0))
+	{
+		Cov$df0<-traits
+		message("df0 was set to ", traits)
+	}
+	
+	#Omega=cov(b)
+	Cov$Omega<-riwish(v=Cov$df0,S=Cov$S0)
+	Cov$Omegainv<-solve(Cov$Omega)
+	
+	#Objects for saving posterior means for MCMC
+	Cov$post_Omega<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
+	
+	return(Cov)
+
+}
+
+#DIAGonal covariance matrix
+setCov.DIAG<-function(Cov,traits)
+{
+	message("DIAGonal covariance matrix")
+	
+	if(is.null(Cov$S0))
+	{
+		Cov$S0 <- rep(1,traits)
+		message("S0 was set to 1 for all the traits")	
+	}
+		
+	if(is.null(Cov$df0))
+	{
+		Cov$df0<-rep(1,traits)
+		message("df0 set to  1 for all the traits")
+	}
+	
+	Cov$Omega<-matrix(0,nrow=traits,ncol=traits)
+		
+	for(k in 1:traits)
+	{
+		Cov$Omega[k,k]<-Cov$S0[k]/rchisq(n=1,df=Cov$df0[k])
+	}
+		
+	Cov$Omegainv<-solve(Cov$Omega)
+	
+	#Objects for saving posterior means for MCMC
+	Cov$post_Omega<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
+	
+	return(Cov)	
+	
+}
+
+#RECursive covariance matrix
+setCov.REC<-function(Cov,traits,j,saveAt)
+{
+	message("RECursive covariance matrix")
+	
+	if(is.null(Cov$S0))
+	{
+		Cov$S0 <- rep(1,traits)
+		message("S0 was set to 1 for all the traits")	
+	}
+		
+	if(is.null(Cov$df0))
+	{
+		Cov$df0<-rep(1,traits)
+		message("df0 set to  1 for all the traits")
+	}
+			
+	if(is.null(Cov$var))
+	{
+		Cov$var<-100
+		message("var was set to 100")
+	}
+
+	if(is.null(Cov$M)) stop("M can not be null")
+		
+	if(!is.logical(Cov$M)) stop("M must be logical matrix (with entries being TRUE/FALSE)")
+		
+	if(!is.matrix(Cov$M)) stop("M must be a matrix")
+		
+	if(nrow(Cov$M)!=ncol(Cov$M)) stop("M must be a square matrix") 
+		
+	if(nrow(Cov$M)!=traits) stop("M must have ", traits, " rows and columns")
+		
+	if(any(diag(Cov$M)==TRUE)) stop("All diagonal entries of M must be set to FALSE")
+		
+	Cov$M[upper.tri(Cov$M)]<-FALSE
+		
+
+	Cov$B<-matrix(0,nrow=traits,ncol=traits)
+	Cov$PSI<-rep(NA,traits)
+		
+	for(k in 1:traits)
+	{
+		Cov$PSI[k]<-Cov$S0[k]/rchisq(n=1,df=Cov$df0[k])
+	}
+		
+	#Omega=cov(b)
+	Cov$Omega<-riwish(v=traits,S=diag(Cov$S0))
+	Cov$Omegainv<-solve(Cov$Omega)
+		
+	#Objects for saving posterior means for MCMC
+	Cov$post_Omega<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_B<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_B2<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_PSI<-rep(0,traits)
+	Cov$post_PSI2<-rep(0,traits)
+	
+	#Output files
+	Cov$fName_B<-paste(saveAt,"B_",j,".dat",sep="")
+	Cov$fName_PSI<-paste(saveAt,"PSI_",j,".dat",sep="")
+	
+	Cov$f_B<-file(description=Cov$fName_B,open="w")
+	Cov$f_PSI<-file(description=Cov$fName_PSI,open="w")
+	
+	return(Cov)
+}
+
+
+#FA covariance matrix
+setCov.FA<-function(Cov,traits,nD,j,saveAt)
+{
+	message("FA covariance matrix")
+	
+	if(is.null(Cov$S0))
+	{
+		Cov$S0 <- rep(1/100,traits)
+		message("S0 was set to 1/100 for all the traits")	
+	}
+		
+	if(is.null(Cov$df0))
+	{
+		Cov$df0<-rep(1,traits)
+		message("df0 set to  1 for all the traits")
+	}
+			
+	if(is.null(Cov$var))
+	{
+		Cov$var<-100
+		message("var was set to 100")
+	}
+			
+	
+	if(is.null(Cov$M)) stop("M can not be null")
+		
+	if(!is.logical(Cov$M)) stop("M must be logical matrix (with entries being TRUE/FALSE)")
+		
+	if(!is.matrix(Cov$M)) stop("M must be a matrix")
+		
+	if(nrow(Cov$M)!=traits) stop("M must have ", traits, " rows")
+		
+	if(ncol(Cov$M)>traits) stop("Number of columns of M must be smaller than ", traits)
+		
+	Cov$nF<-ncol(Cov$M)
+	
+	Cov$nD<-nD
+		
+	#Omega=cov(b)
+	Cov$Omega<-riwish(v=traits,S=diag(Cov$S0))
+	
+	sdU <- sqrt(diag(Cov$Omega))
+    FA <- factanal(covmat = Cov$Omega, factors = Cov$nF)
+    Cov$B <- matrix(nrow = traits, ncol = Cov$nF, 0)
+    Cov$B[Cov$M] <- (diag(sdU) %*% FA$loadings)[Cov$M]
+    Cov$PSI <- (sdU^2) * FA$uniquenesses + 1e-04
+    Cov$Omega <- tcrossprod(Cov$B) + diag(Cov$PSI)
+    Cov$Omegainv<-solve(Cov$Omega)
+    
+    Cov$F <- matrix(nrow = nD, ncol = Cov$nF, 0)
+        
+    #Objects for saving posterior means for MCMC
+	Cov$post_Omega<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_B<-matrix(0,nrow=traits,ncol=Cov$nF)
+	Cov$post_B2<-matrix(0,nrow=traits,ncol=Cov$nF)
+	Cov$post_PSI<-rep(0,traits)
+	Cov$post_PSI2<-rep(0,traits)
+	
+	#Output files
+	Cov$fName_B<-paste(saveAt,"B_",j,".dat",sep="")
+	Cov$fName_PSI<-paste(saveAt,"PSI_",j,".dat",sep="")
+	Cov$f_B<-file(description=Cov$fName_B,open="w")
+	Cov$f_PSI<-file(description=Cov$fName_PSI,open="w")
+		
+	return(Cov)
+}
+
+
+#Set linear term for DiracSS_mt
+setLT.DiracSS_mt<-function(LT,traits,j,saveAt)
+{
+	
+	message("Setting linear term ",j)
+	
+	#Inclusion probabilities
+	
+	if(is.null(LT$inclusionProb))
+	{
+		LT$inclusionProb<-list(probIn=rep(0.5,traits),
+		                       counts=rep(2,traits))
+		message("probIn set to 0.5 for all the traits")
+		message("counts set to 2 for all the traits")
+	
+	}else{
+		
+		if(is.null(LT$inclusionProb$probIn))
+		{
+			LT$inclusionProb$probIn<-rep(0.5,traits)
+			message("probIn set to 0.5 for all the traits")
+		}
+		
+		if(is.null(LT$inclusionProb$counts))
+		{
+			LT$inclusionProb$probIn$counts<-rep(2,traits)
+			message("counts set to 2 for all the traits")
+		}
+	}
+
+	#Compute countsIn and countsOut
+	LT$inclusionProb$countsIn <- LT$inclusionProb$counts * LT$inclusionProb$probIn
+	LT$inclusionProb$countsOut <- LT$inclusionProb$counts - LT$inclusionProb$countsIn
+	
+	#X
+	if(is.null(LT$X)) stop("X can not be NULL\n")
+	if(!is.matrix(LT$X))  stop("X must be a matrix\n")
+	if(any(is.na(LT$X))) stop("X has NAs\n")
+	
+	LT$x2<-as.vector(colSums(LT$X^2))
+	
+	#Initialize b, d, beta, beta=b#d
+	LT$p<-ncol(LT$X)
+	
+	LT$b<-matrix(0,nrow=LT$p,ncol=traits)
+	LT$d<-matrix(1,nrow=LT$p,ncol=traits)
+
+	LT$beta<-LT$b*LT$d
+	
+	#Distribution for Omega, which is related to (b_1j,b_2j,...,b_tj)
+	#j=1,...,p, where p is the number of columns of X
+	#t the number of traits
+	
+	if(is.null(LT$Cov))
+	{
+		#Cov is null
+		LT$Cov<-list()
+		LT$Cov$type<-"UN"
+		
+	}else{
+		#Cov is not null
+		if(is.null(LT$Cov$type))
+		{
+		
+			LT$Cov$type<-"UN"
+			
+		}else{
+		
+			if(!(LT$Cov$type %in% c("UN","REC","FA","DIAG")))
+			{
+				stop("Error '", LT$Cov$type, "' not implemented (note: evaluation is case sensitive)")
+			}
+			 
+		}
+	}
+	
+	#Beyond this point Cov is not NULL and we already know the covariance structure
+
+	#Select appropriate covariance structure
+	
+	LT$Cov<-switch(LT$Cov$type,
+					UN=setCov.UN(Cov=LT$Cov,traits=traits),
+					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits),
+					REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,saveAt=saveAt),
+					FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,saveAt=saveAt)
+	               )
+	               
+	
+	#Objects for saving posterior means for MCMC
+	LT$post_b<-matrix(0,nrow=LT$p,ncol=traits)
+	LT$post_b2<-matrix(0,nrow=LT$p,ncol=traits)
+	
+	LT$post_d<-matrix(0,nrow=LT$p,ncol=traits)
+	LT$post_d2<-matrix(0,nrow=LT$p,ncol=traits)
+	
+	LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
+	LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
+	
+	return(LT)
+}
+
+#Set linear term for Ridge Regression
+setLT.BRR_mt<-function(LT,traits,j,saveAt)
+{		
+
+	message("Setting linear term ",j)
+		
+	#X
+	if(is.null(LT$X)) stop("X can not be NULL\n")
+	if(!is.matrix(LT$X))  stop("X must be a matrix\n")
+	if(any(is.na(LT$X))) stop("X has NAs\n")
+	
+	LT$x2<-as.vector(colSums(LT$X^2))
+	
+	#Initialize beta
+	LT$p<-ncol(LT$X)
+	
+	LT$beta<-matrix(0,nrow=LT$p,ncol=traits)
+	
+	#Distribution for Omega, which is related to (b_1j,b_2j,...,b_tj)
+	#j=1,...,p, where p is the number of columns of X
+	#t the number of traits
+	
+	if(is.null(LT$Cov))
+	{
+		#Cov is null
+		LT$Cov<-list()
+		LT$Cov$type<-"UN"
+		
+	}else{
+		#Cov is not null
+		if(is.null(LT$Cov$type))
+		{
+		
+			LT$Cov$type<-"UN"
+			
+		}else{
+		
+			if(!(LT$Cov$type %in% c("UN","REC","FA","DIAG")))
+			{
+				stop("Error '", LT$Cov$type, "' not implemented (note: evaluation is case sensitive)")
+			}
+			 
+		}
+	}
+	
+	#Beyond this point Cov is not NULL and we already know the covariance structure
+
+	#Select appropriate covariance structure
+	
+	LT$Cov<-switch(LT$Cov$type,
+					UN=setCov.UN(Cov=LT$Cov,traits=traits),
+					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits),
+					REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,saveAt=saveAt),
+					FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,saveAt=saveAt)
+	               )
+	
+	#Objects for saving posterior means for MCMC
+	LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
+	LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
+	
+	LT$post_Omega<-matrix(0,nrow=traits,ncol=traits)
+	LT$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
+	
+	return(LT)
+}
+
+
+#Set linear term for u_t ~ N(0, \sigma^2_r K)
+#Note also  (u_1',...,u_t') ~ N(0, G_0 x K), where x represents the Kronecker product
+#Internally we represent this using the eigen-value decomposition, 
+#using as incidence matrix X=Gamma*Lambda^{1/2}, where K=Gamma*Lambda*Gamma' 
+
+setLT.RKHS_mt<-function(LT,traits,j,saveAt)
+{
+
+	if(is.null(LT$K)) stop("K can not be NULL")
+	
+	#K=Gamma*Lambda*Gamma'
+		
+	evd.K <- eigen(LT$K)
+	keep <- evd.K$values>1e-10
+	LT$evd.K$vectors <- evd.K$vectors[,keep]
+	LT$evd.K$values <- evd.K$values[keep]
+	
+	#X=Gamma*Lambda^{1/2}
+	LT$X<-sweep(x=evd.K$vectors,MARGIN=2,STATS=sqrt(evd.K$values),FUN="*")
+	
+	LT<-setLT.BRR_mt(LT=LT,traits=traits,j=j,saveAt=saveAt)
+	
+	return(LT)
+	
+}
+
+#Set linear term for Fixed effects
+setLT.FIXED_mt<-function(LT,traits,j)
+{
+	message("Setting linear term ",j)
+		
+	if(is.null(LT$common))
+	{
+		LT$common<-TRUE
+		message("matrix of fixed effects X is the same for all the traits,")
+		message("so the same effects are assumed for all the traits")
+	}else{
+		if(LT$common)
+		{
+			message("matrix for fixed effects X is the same for all the traits,")
+			message("so the same effects are assumed for all the traits")	
+		}else{
+			message("each trait has a different matrix for fixed X_t, we assume")
+			message("X=[X_1,...,X_t], k=1,...,t (traits)")
+		}
+	}
+	
+	#X
+	if(is.null(LT$X)) stop("X can not be NULL\n")
+	if(!is.matrix(LT$X))  stop("X must be a matrix\n")
+	if(any(is.na(LT$X))) stop("X has NAs\n")
+
+	#Omega
+	LT$Cov<-list()
+	LT$Cov$Omega<-diag(rep(1E6,traits))
+	LT$Cov$Omegainv<-solve(LT$Cov$Omega)
+	
+	if(LT$common)
+	{
+		#check rank
+		if(qr(LT$X)$rank<ncol(LT$X)) stop("X is rank deficient")
+		
+		LT$x2<-as.vector(colSums(LT$X^2))
+
+
+		#Initialize beta
+		LT$p<-ncol(LT$X)
+
+		LT$beta<-matrix(0,nrow=LT$p,ncol=traits)
+
+		#Objects for saving posterior means for MCMC
+		LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
+		LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
+		
+	}else{
+				
+		#Number of columns in each X=[X_1,...,X_t], k=1,...,t (traits)
+		LT$p<-floor(ncol(LT$X)/traits)
+		if(traits*LT$p!=ncol(LT$X)) stop("Check the number of columns in X")
+		LT$upper<-LT$p*c(1:traits)
+		LT$lower<-LT$upper+1-LT$p
+		
+		#Check the rank of each matrix
+		for(k in 1:traits)
+		{
+			if(qr(LT$X[,c(LT$lower[k]:LT$upper[k])])$rank<LT$p) stop("X_",k, " is rank deficient")
+		}
+		
+		#Do not move this code out here!!!
+		#It appears to be repeated but is not the case
+		
+		LT$x2<-as.vector(colSums(LT$X^2))
+
+		LT$beta<-matrix(0,nrow=LT$p,ncol=traits)
+
+		#Objects for saving posterior means for MCMC
+		LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
+		LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)		
+	}
+	
+	return(LT)
+	
+}
+
+#Initialize residual covariance structure
+setResCov<-function(resCov, traits,error,saveAt)
+{
+
+	message("Initializing resCov")
+	
+	resCov$R<-var(error)/2
+	resCov$Rinv<-solve(resCov$R)
+	
+	if(is.null(resCov$type))
+	{
+		resCov$type<-"UN"
+		message("Modelling R as UNstructured")
+		
+	}else{
+	
+		if(!(resCov$type %in% c("UN","DIAG","REC","FA")))
+		{
+			stop("Error '", resCov$type, "' not implemented (note: evaluation is case sensitive)")
+		} 
+	}
+	
+	if(resCov$type=="UN")
+	{
+		message("Setting hyperparameters for UNstructured R")
+		if(is.null(resCov$S0))
+		{
+			resCov$S0 <- diag(traits)
+			message("S0 was set to an identity matrix")	
+		}
+		
+		if(is.null(resCov$df0))
+		{
+			resCov$df0<-traits
+			message("df0 was set to ", traits)
+		}	
+	}
+	
+	if(resCov$type=="DIAG")
+	{
+		message("Setting hyperparameters for DIAG R")
+		if(is.null(resCov$S0))
+		{
+			resCov$S0 <- rep(1,traits)
+			message("S0 was set to 1 for all the traits")	
+		}
+		
+		if(is.null(resCov$df0))
+		{
+			resCov$df0<-rep(1,traits)
+			message("df0 set to  1 for all the traits")
+		}
+	}
+	
+	if(resCov$type=="REC")
+	{
+		if(is.null(resCov$M)) stop("M can not be null")
+		
+		if(!is.logical(resCov$M)) stop("M must be logical matrix (with entries being TRUE/FALSE)")
+		
+		if(!is.matrix(resCov$M)) stop("M must be a matrix")
+		
+		if(nrow(resCov$M)!=ncol(resCov$M)) stop("M must be a square matrix") 
+		
+		if(nrow(resCov$M)!=traits) stop("M must have ", traits, " rows and columns")
+		
+		if(any(diag(resCov$M)==TRUE)) stop("All diagonal entries of M must be set to FALSE")
+		
+		resCov$M[upper.tri(resCov$M)]<-FALSE
+		
+		if(is.null(resCov$S0))
+		{
+			resCov$S0 <- rep(1,traits)
+			message("S0 was set to 1 for all the traits")	
+		}
+		
+		if(is.null(resCov$df0))
+		{
+			resCov$df0<-rep(1,traits)
+			message("df0 set to  1 for all the traits")
+		}
+			
+		if(is.null(resCov$var))
+		{
+			resCov$var<-100
+			message("var was set to 100")
+		}
+			
+		resCov$B<-matrix(0,nrow=traits,ncol=traits)
+		resCov$PSI<-rep(NA,traits)
+		
+		for(k in 1:traits)
+		{
+			resCov$PSI[k]<-resCov$S0[k]/rchisq(n=1,df=resCov$df0[k])
+		}
+			
+		#Objects for saving posterior means for MCMC
+		resCov$post_B<-matrix(0,nrow=traits,ncol=traits)
+		resCov$post_B2<-matrix(0,nrow=traits,ncol=traits)
+		resCov$post_PSI<-rep(0,traits)
+		resCov$post_PSI2<-rep(0,traits)
+
+		#Output files
+		resCov$fName_B<-paste(saveAt,"B_R.dat",sep="")
+		resCov$fName_PSI<-paste(saveAt,"PSI_R.dat",sep="")
+		resCov$f_B<-file(description=resCov$fName_B,open="w")
+		resCov$f_PSI<-file(description=resCov$fName_PSI,open="w")
+		
+	}
+	
+	if(resCov$type=="FA")
+	{
+		if(is.null(resCov$M)) stop("M can not be null")
+		
+		if(!is.logical(resCov$M)) stop("M must be logical matrix (with entries being TRUE/FALSE)")
+		
+		if(!is.matrix(resCov$M)) stop("M must be a matrix")
+		
+		if(nrow(resCov$M)!=traits) stop("M must have ", traits, " rows")
+		
+		if(ncol(resCov$M)>traits) stop("Number of columns of M must be smaller than ", traits)
+		
+		resCov$nF<-ncol(resCov$M)
+		
+		
+		if(is.null(resCov$S0))
+		{
+			resCov$S0 <- rep(1/100,traits)
+			message("S0 was set to 1/100 for all the traits")	
+		}
+		
+		if(is.null(resCov$df0))
+		{
+			resCov$df0<-rep(1,traits)
+			message("df0 set to  1 for all the traits")
+		}
+			
+		if(is.null(resCov$var))
+		{
+			resCov$var<-100
+			message("var was set to 100")
+		}
+				
+		sdU <- sqrt(diag(resCov$R))
+        FA <- factanal(covmat = resCov$R, factors = resCov$nF)
+        resCov$B <- matrix(nrow = traits, ncol = resCov$nF, 0)
+        resCov$B[resCov$M] <- (diag(sdU) %*% FA$loadings)[resCov$M]
+        resCov$PSI <- (sdU^2) * FA$uniquenesses + 1e-04
+        resCov$R <- tcrossprod(resCov$B) + diag(resCov$PSI)
+        resCov$Rinv<-solve(resCov$R)
+        resCov$F <- matrix(nrow = nrow(error), ncol = resCov$nF, 0)
+        
+        #Objects for saving posterior means for MCMC
+		resCov$post_B<-matrix(0,nrow=traits,ncol=resCov$nF)
+		resCov$post_B2<-matrix(0,nrow=traits,ncol=resCov$nF)
+		resCov$post_PSI<-rep(0,traits)
+		resCov$post_PSI2<-rep(0,traits)
+		
+		#Output files
+		resCov$fName_B<-paste(saveAt,"B_R.dat",sep="")
+		resCov$fName_PSI<-paste(saveAt,"PSI_R.dat",sep="")
+		resCov$f_B<-file(description=resCov$fName_B,open="w")
+		resCov$f_PSI<-file(description=resCov$fName_PSI,open="w")
+	}
+		
+	#Objects for saving posterior means for MCMC
+	resCov$post_R<-matrix(0,nrow=traits,ncol=traits)
+	resCov$post_R2<-matrix(0,nrow=traits,ncol=traits)
+	
+	resCov$fName_R<-paste(saveAt,"R.dat",sep="")
+	resCov$f_R<-file(description=resCov$fName_R,open="w")
+	
+	message("Done")
+	
+	return(resCov)
+	
+}
+
+#Evaluates
+#partial Loglikelihood for complete and partially observed records
+#-0.5 * n * log(det(R)) - 0.5 * sum (error_i' R^{-1} error_i) 
+#error a matrix with errors=y-yHat, R residual variance covariance matrix
+
+partialLogLik<-function(error,R)
+{
+	if(is.matrix(error))
+	{
+		n<-nrow(error)
+		Linv<-solve(chol(R))
+		ans<- -0.5*n*log(det(R)) - 0.5 * sum(crossprod(t(error), Linv)^2)
+	}else{
+		stop("error must be a matrix")
+	}
+	return(ans)
+}
+
+
+#Computes the  Deviance Information Criterion and Effective Number of Parameters 
+#parameters: 
+#y.back: matrix of dimension n x traits, NA's for missing values
+#yHat the posterior mean of the conditional expectation 
+#meanLogLik the posterior mean of logLik
+#cte = -(n_complete_observed + n_partially_observed)*traits/2*log(2*pi)
+
+getDIC<-function(y.back, yHat, meanLogLik, cte, complete_records, R,
+                 missings=FALSE,
+                 missing_records=NULL,
+				 Dpatterns=NULL,
+				 Upatterns=NULL,
+				 dUpatterns=NULL,
+				 dAllMissings=NULL)
+{
+		
+		error <- y.back-yHat
+		
+		logLikAtPostMean <- cte
+		
+		LogLikAtPostMean <- logLikAtPostMean + partialLogLik(error[complete_records,,drop=FALSE],R)
+		
+		if(missings)
+		{
+		
+			for (q in 1:length(dUpatterns))
+			{
+				#Some traits observed
+				if(dUpatterns[q]!=dAllMissings)
+				{
+					#1=missing, 2=observed
+					S22<-R[!Upatterns[q,],!Upatterns[q,],drop=FALSE]
+					
+					index<-missing_records[Dpatterns==dUpatterns[q]]
+					
+					#logLik
+					logLikAtPostMean <- logLikAtPostMean + partialLogLik(error[index,!Upatterns[q,],drop=FALSE],S22)
+				}
+			
+			}
+		}
+		
+		pD <- -2 * (meanLogLik - logLikAtPostMean)
+    	DIC <- pD - 2 * meanLogLik
+    	
+    	return(list(pD=pD,DIC=DIC,logLikAtPostMean=logLikAtPostMean))		
+}
+
+
+#Recursive structures for variance covariance matrix
+#Model: U=UB+D (ONLY RECURSIVE ALLOWED!)  Current sample of random effects ('data') 
+#M a traits x traits matrix with TRUE/FALSE indicating position of non-null
+#recursive effects (FALSE in diagonal!)  PSI px1 the variance of the orthogonal
+#shocks ...
+
+#Function taken from MTM package
+    
+sample_G0_REC <- function(U, M, PSI, traits, priorVar = 100, 
+                          df0 = rep(0, traits),S0 = rep(0, traits)) 
+{
+
+    B <- matrix(nrow = traits, ncol = traits, 0)
+    
+    for (i in 1:traits)
+    {
+
+        dimX <- sum(M[i, ])
+
+        if (dimX > 0) {
+            tmpX <- U[, M[i, ]]
+            tmpY <- U[, i]
+
+            C <- crossprod(tmpX)/PSI[i] + 1/priorVar
+            CInv <- chol2inv(chol(C))
+            rhs <- crossprod(tmpX, tmpY)/PSI[i]
+
+            sol <- crossprod(CInv, rhs)
+            L <- chol(CInv)
+            shock <- crossprod(L, rnorm(dimX))
+            tmpB <- as.numeric(sol + shock)
+            B[i, M[i, ]] <- tmpB
+            uStar <- tmpY - matrix(tmpX, ncol = dimX) %*% (tmpB)
+            SS <- as.numeric(crossprod(uStar)) + S0[i]
+            df <- nrow(U) + df0[i]
+            PSI[i] <- SS/rchisq(n = 1, df = df)
+        }else{
+            SS <- as.numeric(crossprod(U[, i])) + S0[i]
+            df <- nrow(U) + df0
+            PSI[i] <- SS/rchisq(n = 1, df = df)
+        }
+    }
+
+    tmp <- solve(diag(traits) - B)
+    G <- tmp %*% diag(PSI) %*% t(tmp)
+
+    out <- list(B = B, PSI = PSI, G = G)
+
+    return(out)
+}
+
+
+#Sampler for FA
+#Model U=BF+D
+#G_0 = B B' + PSI
+#B is a matrix of loadings (regressions of the original random effects into common factors)
+#F is a matrix of common factors
+#M a logical matrix of the same dimensions that F, with TRUE for the loadings that the 
+#user wants to estimate
+#PSI is a diagonal matrix whose non-null entries give the variances of factors that 
+#are trait-specific
+#nF number of common factors, is equal to the number of columns of B
+#nD: number of rows of U
+#df0: degrees of freedom associated to the prior of PSI
+#S0: scale parameter associated to the prior for PSI
+#priorVar: prior variance if the Gaussian prior assigned to the unknown loadings
+
+#Function taken from MTM package
+
+
+sample_G0_FA <- function(U, F, M, B, PSI, traits, nF, nD, 
+                       df0 = rep(1, traits), S0 = rep(1/100,traits), priorVar = 100) 
+{
+    ## sampling common factors LOOP OVER FACTORS
+    for (i in 1:nF) 
+    {
+        tmpY <- U - F[, -i] %*% matrix((B[, -i]), ncol = traits)
+        rhs <- tmpY %*% matrix(B[, i]/PSI, ncol = 1)
+        CInv <- 1/(sum((B[, i]^2)/PSI) + 1)
+        sol <- CInv * rhs
+        SD <- sqrt(CInv)
+        F[, i] <- rnorm(n = nD, sd = SD, mean = sol)
+    }
+
+    # sampling loadings LOOP OVER TRAITS LOOP OVER FACTORS
+    for (i in 1:traits) 
+    {
+    
+        for (j in 1:nF) 
+        {
+            if (M[i, j]) 
+            {
+                tmpY <- U[, i] - F[, -j] %*% matrix(B[i, -j], ncol = 1)
+                CInv <- 1/as.numeric(crossprod(F[, j])/PSI[i] + 1/priorVar)
+                rhs <- as.numeric(crossprod(F[, j], tmpY)/PSI[i])
+                sol <- CInv * rhs
+                SD <- sqrt(CInv)
+                B[i, j] <- rnorm(n = 1, mean = sol, sd = SD)
+            }
+        }
+        
+        D <- U[, i] - F %*% B[i, ]
+        df <- df0[i] + nD
+        SS <- S0[i] + crossprod(D)
+        PSI[i] <- SS/rchisq(df = df, n = 1)
+    }
+    
+    if (nF > 1) 
+    {
+        B <- varimax(B)$loadings[]
+    }
+    
+    G <- tcrossprod(B) + diag(PSI)
+    
+    out <- list(F = F, PSI = PSI, B = B, G=G)
+    
+    return(out)
+}
+
+#Gibbs sampler for DIAG covariance matrices
+#Function taken from MTM package
+
+sample_G0_DIAG <- function(U, traits = ncol(U), n = nrow(U), 
+                           df0 = rep(0, traits),
+                           S0 = diag(0, traits)) 
+{
+
+    G <- matrix(nrow = traits, ncol = traits, 0)
+    
+    ## sampling common factors LOOP OVER FACTORS
+    for (i in 1:traits) 
+    {
+        tmp_SS <- sum(U[, i]^2) + S0[i]
+        tmp_df <- n + df0[i]
+        G[i, i] <- tmp_SS/rchisq(df = tmp_df, n = 1)
+    }
+
+    return(G)
+}
+
+#Sample the vector mu (intercept)
+#The prior for mu is non informative
+#For trait k, y_k = mu_k * 1 + eta_j + e_j
+#ystar_k = y_k - eta_j = mu_k * 1 + e_j 
+#mu | else ~ MN(m,R/n), where m is the vector of sample means obtained obtained from ystar
+#Arguments: 
+#ystar: matrix, individuals in rows, traits in columns
+#R: residual covariance matrix
+#n: number of rows of y
+#traits: number of traits
+
+sample_mu <- function(ystar, R, n, traits) 
+{
+    sol <- colMeans(ystar)
+    L <- chol(R)/sqrt(n)
+    mu <- as.vector(crossprod(L, rnorm(n=traits,mean=0,sd=1)) + sol)
+    return(mu)
+}
+
+#Function to fit multi-trait model
+#Arguments:
+#y: A matrix of dimension n * t, where t is the number of traits, NAs allowed.
+#ETA: Linear predictor A two level list to specify the linear predictors.
+#intecept: Logical, TRUE an intercept is included and FALSE an intercept is not included.
+#resCov: List to specify the prior for residual covariance matrix (R).
+#nIter, burnIn, thin: Number of iterations, burnIn and thin.
+
+Multitrait<-function(y,
+					 ETA,
+					 intercept=TRUE,
+                     resCov = list(df0=NULL,S0=NULL,type="UN"),
+                     nIter=1000,burnIn=500,thin=10,
+                     saveAt="")
+{
+	
+	#Check inputs
+	if(!is.matrix(y)) stop("y must be a matrix\n")
+	
+	traits<-ncol(y)
+	
+	if(traits<2) stop("y must hava at least 2 columns\n")
+	
+	n<-nrow(y)
+	
+	#Deep copy of y, DO NOT REPLACE with y.back<-y, it does not work, both objects 
+	#share the same memory address
+	y.back<-matrix(NA,nrow=n,ncol=traits)
+	y.back<-y[]
+	
+	
+	#Now check if there are missing values
+	complete_records <- which(complete.cases(y))
+	n_complete_observed <- length(complete_records)
+	n_partially_observed <- 0                        #Just initial value
+	n_complete_missing <- 0							 #Just initial value
+	
+	#Note: 
+	#n=n_complete_observed + n_partially_observed + n_complete_missing
+	
+	missings<-any(is.na(y))
+
+	if(missings)
+	{
+		
+		missing_records<-which(!complete.cases(y))
+	
+		#patterns of missing records, should be a matrix
+		patterns<-is.na(y[missing_records,])
+
+		#Case when there is only one missing record
+		if(!is.matrix(patterns))
+		{
+			patterns<-matrix(patterns,ncol=ncol(y))	
+		}
+	
+		Dpatterns<-apply(patterns,1,logicalToDec)     #patterns in decimal
+		Upatterns<-unique(patterns,drop=FALSE)	      #Unique patterns
+		dUpatterns<-apply(Upatterns,1,logicalToDec)	  #decimal of unique patterns
+		dAllMissings<-logicalToDec(rep(TRUE,traits))  #decimal representation of a record
+		                                              #with all missing values
+		
+		m<-colMeans(y,na.rm=TRUE)
+		for(k in 1:traits)
+		{
+			tmp<-is.na(y[,k])
+			y[tmp,k]<-m[k]
+			rm(tmp)
+		}
+		
+		#Partially observed records
+		n_partially_observed <- sum(Dpatterns!=dAllMissings)
+		
+		#Complete missing
+		n_complete_missing <-  sum(Dpatterns==dAllMissings)
+		
+	}else{
+		
+		missing_records <- NULL
+		Dpatterns <- NULL
+		Upatterns <- NULL
+		dUpatterns <- NULL
+		dAllMissings <- NULL
+		
+	}
+	
+	#For likelihood
+	cte<- -(n_complete_observed + n_partially_observed)*traits/2*log(2*pi)
+	
+	if(intercept)
+	{
+		mu<-colMeans(y)
+		post_mu<-rep(0,traits)
+		post_mu2<-rep(0,traits)
+		f_mu<-file(description="mu.dat",open="w")
+	}
+	
+	#Setting the linear terms
+	
+	nLT <- ifelse(is.null(ETA), 0, length(ETA))
+	
+	if(nLT<1) stop("Provide at least a linear predictor in ETA\n")
+	
+	
+	for(j in 1:nLT)
+	{
+		if(!(ETA[[j]]$model %in% c("SpikeSlab","BRR","RKHS","FIXED"))) 
+        {
+        	stop("Error in ETA[[", j, "]]", " model ", ETA[[j]]$model, " not implemented (note: evaluation is case sensitive)")    
+        }
+        
+		ETA[[j]]<-switch(ETA[[j]]$model,
+						SpikeSlab=setLT.DiracSS_mt(LT=ETA[[j]],traits=traits,j=j,saveAt=saveAt),
+						BRR=setLT.BRR_mt(LT=ETA[[j]],traits=traits,j=j,saveAt=saveAt),
+						RKHS=setLT.RKHS_mt(LT=ETA[[j]],traits=traits,j=j,saveAt=saveAt),
+						FIXED=setLT.FIXED_mt(LT=ETA[[j]],traits=traits,j=j))
+	
+	} 	#End of cycle for setting linear terms
+	
+	
+	#error initialization assuming beta=0 in all the entries
+	#Deep copy of y, DO NOT REPLACE with error<-y, it does not work, both objects 
+	#share the same memory address
+	
+	error<-matrix(NA,nrow=n,ncol=traits)
+	error<-y[]
+	
+	if(intercept)
+	{
+		error<-sweep(x=error,MARGIN=2,STATS=mu,FUN="-")
+	}
+
+	#Initialization of variance covariance matrix for errors (R)
+	resCov<-setResCov(resCov=resCov,traits=traits,error=error,saveAt=saveAt)
+	
+	yHat<-matrix(0,nrow=n,ncol=traits)
+	yHat2<-matrix(0,nrow=n,ncol=traits)
+	
+	post_logLik<-0
+	
+	#Objects for running means
+	nSums<-0	
+	
+	#Iterations
+	for(iter in 1:nIter)
+	{
+		start<-proc.time()[3]
+		
+		logLik <- cte 
+		
+		if(intercept)
+		{
+			error<-sweep(x=error,MARGIN=2,STATS=mu,FUN="+")
+			mu<-sample_mu(ystar=error, R=resCov$R, n=n, traits=traits)
+			error<-sweep(x=error,MARGIN=2,STATS=mu,FUN="-")
+			#print(mu) 
+		}
+		
+		for(j in 1:nLT)
+		{
+		
+			#SpikeSlab
+			if(ETA[[j]]$model=="SpikeSlab")
+			{
+					for(k in 1:traits)
+					{
+						#cat("k=",k,"\n")	
+		
+						S11 <- ETA[[j]]$Cov$Omega[k,k,drop=FALSE]
+						S22 <- ETA[[j]]$Cov$Omega[-k,-k,drop=FALSE]
+						S12 <- ETA[[j]]$Cov$Omega[k,-k,drop=FALSE]
+						tmp12 <- as.vector(S12%*%solve(S22))
+						tmp11 <- tmp12%*%t(S12)
+						sigma2 <- as.numeric(S11-tmp11)
+		
+						logPriorOdds<-log(ETA[[j]]$inclusionProb$probIn[k]/(1-ETA[[j]]$inclusionProb$probIn[k]))
+		
+						#b, d, beta and error are overwritten with this .Call
+		
+						.Call("sampler_DiracSS_mt", k, logPriorOdds, n, ETA[[j]]$p,
+							  traits, resCov$Rinv, ETA[[j]]$X, error,
+							  ETA[[j]]$beta,
+							  ETA[[j]]$b,
+							  ETA[[j]]$d,
+							  ETA[[j]]$x2,
+							  tmp12,
+							  sigma2,
+							  ETA[[j]]$Cov$Omegainv[k,-k],
+							  ETA[[j]]$Cov$Omegainv[k,k])
+		
+						#Sampling inclusion probabilities | else
+						mrkIn <- sum(ETA[[j]]$d[,k])
+						shape1 <- mrkIn + ETA[[j]]$inclusionProb$countsIn[k]
+						shape2 <- ETA[[j]]$p - mrkIn + ETA[[j]]$inclusionProb$countsOut[k]
+						ETA[[j]]$inclusionProb$probIn[k]=rbeta(shape1 = shape1,
+													           shape2 = shape2, 
+													           n = 1)
+												
+					}#End of loop for traits
+					
+					#Sampling from Omega | else						
+					if(ETA[[j]]$Cov$type=="UN")
+					{
+						S4<-crossprod(ETA[[j]]$b)		
+						ETA[[j]]$Cov$Omega<-riwish(v=ETA[[j]]$Cov$df0+traits+ETA[[j]]$p,
+					                               S=S4+ETA[[j]]$Cov$S0)
+					                               
+						ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
+					}
+					
+					if(ETA[[j]]$Cov$type=="DIAG")
+					{
+						ETA[[j]]$Cov$Omega<-sample_G0_DIAG(U=ETA[[j]]$b, traits=traits, 
+						                                   n=nrow(ETA[[j]]$b),
+						                                   df0=ETA[[j]]$Cov$df0,
+                             			                   S0=ETA[[j]]$Cov$S0)
+                             			                   
+                        ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
+					}
+					
+					if(ETA[[j]]$Cov$type=="REC")
+					{
+						tmp<-sample_G0_REC(U=ETA[[j]]$b, M=ETA[[j]]$Cov$M, 
+							               PSI=ETA[[j]]$Cov$PSI, 
+							               traits=traits, 
+							               priorVar = ETA[[j]]$Cov$var, 
+                             			   df0 = ETA[[j]]$Cov$df0,
+                             			   S0 = ETA[[j]]$Cov$S0)
+                            
+                        ETA[[j]]$Cov$Omega<-tmp$G
+                        ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
+                        ETA[[j]]$Cov$B<-tmp$B
+                        ETA[[j]]$Cov$PSI<-tmp$PSI
+                            
+                        rm(tmp)
+					}
+					
+					if(ETA[[j]]$Cov$type=="FA")
+					{
+						tmp<-sample_G0_FA(U=ETA[[j]]$b, F=ETA[[j]]$Cov$F, M=ETA[[j]]$Cov$M, 
+						    	          B=ETA[[j]]$Cov$B, PSI=ETA[[j]]$Cov$PSI, 
+						        	      traits=traits, nF=ETA[[j]]$Cov$nF, 
+						        	      nD=ETA[[j]]$Cov$nD, df0 = ETA[[j]]$Cov$df0, 
+                       					  S0 = ETA[[j]]$Cov$S0, 
+                       					  priorVar = ETA[[j]]$Cov$var) 
+
+						ETA[[j]]$Cov$F<-tmp$F
+						ETA[[j]]$Cov$PSI<-tmp$PSI
+						ETA[[j]]$Cov$B<-tmp$B
+						ETA[[j]]$Cov$Omega<-tmp$G
+                    	ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
+						
+						rm(tmp)
+						
+					}
+					
+			} #End of SpikeSlab
+			
+			if(ETA[[j]]$model%in%c("BRR","RKHS"))
+			{		
+					for(k in 1:traits)
+					{
+						#cat("k=",k,"\n")	
+						
+						S11 <- ETA[[j]]$Cov$Omega[k,k,drop=FALSE]
+						S22 <- ETA[[j]]$Cov$Omega[-k,-k,drop=FALSE]
+						S12 <- ETA[[j]]$Cov$Omega[k,-k,drop=FALSE]
+						tmp12 <- as.vector(S12%*%solve(S22))
+						tmp11 <- tmp12%*%t(S12)
+						sigma2 <- as.numeric(S11-tmp11)
+		
+		
+						#beta and error are overwritten with this .Call
+						.Call("sampler_BRR_mt", k, n, ETA[[j]]$p,
+							  traits, resCov$Rinv, ETA[[j]]$X, error,
+							  ETA[[j]]$beta,
+							  ETA[[j]]$x2,
+							  tmp12,
+							  sigma2,
+							  ETA[[j]]$Cov$Omegainv[k,-k],
+							  ETA[[j]]$Cov$Omegainv[k,k])
+												
+					}#End of loop for traits
+					
+					#Sampling from Omega | else
+					
+					if(ETA[[j]]$Cov$type=="UN")
+					{
+						S4<-crossprod(ETA[[j]]$beta)		
+						ETA[[j]]$Cov$Omega<-riwish(v=ETA[[j]]$Cov$df0+traits+ETA[[j]]$p,
+					    	                   S=S4+ETA[[j]]$Cov$S0)
+						ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
+						
+					}#End of UN
+					
+					if(ETA[[j]]$Cov$type=="DIAG")
+					{
+												
+						ETA[[j]]$Cov$Omega<-sample_G0_DIAG(U=ETA[[j]]$beta, traits=traits, 
+						                                   n=nrow(ETA[[j]]$beta),
+						                                   df0=ETA[[j]]$Cov$df0,
+                             			                   S0=ETA[[j]]$Cov$S0)
+                             			                   
+                        ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
+                        
+					}#End of DIAG
+					
+					if(ETA[[j]]$Cov$type=="REC")
+					{
+						tmp<-sample_G0_REC(U=ETA[[j]]$beta, M=ETA[[j]]$Cov$M, 
+							               PSI=ETA[[j]]$Cov$PSI, 
+							               traits=traits, 
+							               priorVar = ETA[[j]]$Cov$var, 
+                             			   df0 = ETA[[j]]$Cov$df0,
+                             			   S0 = ETA[[j]]$Cov$S0)
+                            
+                        ETA[[j]]$Cov$Omega<-tmp$G
+                        ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
+                        ETA[[j]]$Cov$B<-tmp$B
+                        ETA[[j]]$Cov$PSI<-tmp$PSI
+                            
+                        rm(tmp)
+					}#End of REC
+					
+					if(ETA[[j]]$Cov$type=="FA")
+					{
+						tmp<-sample_G0_FA(U=ETA[[j]]$beta, F=ETA[[j]]$Cov$F, M=ETA[[j]]$Cov$M, 
+						    	          B=ETA[[j]]$Cov$B, PSI=ETA[[j]]$Cov$PSI, 
+						        	      traits=traits, nF=ETA[[j]]$Cov$nF, 
+						        	      nD=ETA[[j]]$Cov$nD, df0 = ETA[[j]]$Cov$df0, 
+                       					  S0 = ETA[[j]]$Cov$S0, 
+                       					  priorVar = ETA[[j]]$Cov$var) 
+
+						ETA[[j]]$Cov$F<-tmp$F
+						ETA[[j]]$Cov$PSI<-tmp$PSI
+						ETA[[j]]$Cov$B<-tmp$B
+						ETA[[j]]$Cov$Omega<-tmp$G
+                    	ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
+						
+						rm(tmp)
+						
+					}#End of FA
+					
+					
+			}#End of BRR and RKHS
+			
+			if(ETA[[j]]$model=="FIXED")
+			{
+					if(ETA[[j]]$common)
+					{
+						for(k in 1:traits)
+						{	
+							S11 <- ETA[[j]]$Cov$Omega[k,k,drop=FALSE]
+							S22 <- ETA[[j]]$Cov$Omega[-k,-k,drop=FALSE]
+							S12 <- ETA[[j]]$Cov$Omega[k,-k,drop=FALSE]
+							tmp12 <- as.vector(S12%*%solve(S22))
+							tmp11 <- tmp12%*%t(S12)
+							sigma2 <- as.numeric(S11-tmp11)
+						
+							#beta and error are overwritten with this .Call
+							.Call("sampler_BRR_mt", k, n, ETA[[j]]$p,
+								  traits, resCov$Rinv, ETA[[j]]$X, error,
+								  ETA[[j]]$beta,
+								  ETA[[j]]$x2,
+								  tmp12,
+								  sigma2,
+								  ETA[[j]]$Cov$Omegainv[k,-k],
+								  ETA[[j]]$Cov$Omegainv[k,k])
+												
+						}#End of loop for traits
+						
+					}else{
+						
+						
+						low<-ETA[[j]]$lower
+						up<-ETA[[j]]$upper
+						
+						for(k in 1:traits)
+						{
+							#Exactly the same routine as before, but instead of X, with 
+							#X=[X_1,...,X_t], k=1,...,t (traits), we pass as
+							#argument X_k, and the corresponding sum of squares of columns
+							
+							Xk<-ETA[[j]]$X[,c(low[k]:up[k]),drop=FALSE]
+							x2k<-ETA[[j]]$x2[c(low[k]:up[k])]
+							
+							
+							S11 <- ETA[[j]]$Cov$Omega[k,k,drop=FALSE]
+							S22 <- ETA[[j]]$Cov$Omega[-k,-k,drop=FALSE]
+							S12 <- ETA[[j]]$Cov$Omega[k,-k,drop=FALSE]
+							tmp12 <- as.vector(S12%*%solve(S22))
+							tmp11 <- tmp12%*%t(S12)
+							sigma2 <- as.numeric(S11-tmp11)
+						
+							#beta and error are overwritten with this .Call
+							.Call("sampler_BRR_mt", k, n, ETA[[j]]$p,
+								  traits, resCov$Rinv, Xk, error,
+								  ETA[[j]]$beta,
+								  x2k,
+								  tmp12,
+								  sigma2,
+								  ETA[[j]]$Cov$Omegainv[k,-k],
+								  ETA[[j]]$Cov$Omegainv[k,k])
+								  
+						}#End of loop for traits
+						
+					}
+			} #End of FIXED			
+		} #End of loop linear terms
+	
+		#Sampling from R
+		
+		if(resCov$type=="UN")
+		{
+			CP<-crossprod(error)
+			resCov$R<-riwish(v=resCov$df0+n,S=CP+resCov$S0)
+		}
+		
+		if(resCov$type=="DIAG")
+		{
+		
+			resCov$R<-sample_G0_DIAG(U=error, traits=traits, n=nrow(error),
+			 			             df0=resCov$df0, S0=resCov$S0)
+		}
+		
+		if(resCov$type=="REC")
+		{
+			tmp<-sample_G0_REC(U=error,M=resCov$M, PSI=resCov$PSI, 
+							   traits=traits, priorVar = resCov$var, 
+                               df0 = resCov$df0,
+                               S0 = resCov$S0)
+                            
+            resCov$R<-tmp$G
+            resCov$B<-tmp$B
+            resCov$PSI<-tmp$PSI
+            rm(tmp)
+            
+		}
+		
+		if(resCov$type=="FA")
+		{
+				tmp<-sample_G0_FA(U=error, F=resCov$F, M=resCov$M, 
+						    	  B=resCov$B, PSI=resCov$PSI, 
+						          traits=traits, nF=resCov$nF, nD=nrow(error),
+                       			  df0 = resCov$df0, 
+                       			  S0 = resCov$S0, 
+                       			  priorVar = resCov$var)
+
+                resCov$F<-tmp$F
+				resCov$PSI<-tmp$PSI
+				resCov$B<-tmp$B
+				resCov$R<-tmp$G
+		}
+		
+		resCov$Rinv<-solve(resCov$R)		
+		
+		#Impute missing values
+		#Experimental!!!!
+		#Check all the subsettings
+		
+		#Linear predictor
+		lp <- y-error
+		
+		#Log likelihood for complete cases
+		logLik <- logLik + partialLogLik(error[complete_records,,drop=FALSE],resCov$R)
+		
+		if(missings)
+		{
+			yold<-y
+		
+			for (q in 1:length(dUpatterns))
+			{
+				#Some traits observed
+				if(dUpatterns[q]!=dAllMissings)
+				{
+					#1=missing, 2=observed
+					S11<-resCov$R[Upatterns[q,],Upatterns[q,],drop=FALSE]
+					S12<-resCov$R[Upatterns[q,],!Upatterns[q,],drop=FALSE]
+					S21<-resCov$R[!Upatterns[q,],Upatterns[q,],drop=FALSE]
+					S22<-resCov$R[!Upatterns[q,],!Upatterns[q,],drop=FALSE]
+			
+					tmp12<-S12%*%solve(S22)
+			
+					index<-missing_records[Dpatterns==dUpatterns[q]]
+					
+					#logLik
+					logLik <- logLik + partialLogLik(error[index,!Upatterns[q,],drop=FALSE],S22)
+					
+			
+					#lp<-y[index,]-error[index,]
+					#mu1<-lp[,Upatterns[q,],drop=FALSE]
+					#mu2<-lp[,!Upatterns[q,],drop=FALSE]
+					
+					mu1<-lp[index,Upatterns[q,],drop=FALSE]
+					mu2<-lp[index,!Upatterns[q,],drop=FALSE]
+			
+					Sigma<-S11-tmp12%*%S21
+			
+					tmp3<-tmp12%*%t(y[index,!Upatterns[q,],drop=FALSE]-mu2)
+					tmp3<-t(tmp3)
+			
+					mean<-mu1+tmp3
+			
+					#Impute y and overwrite the value
+					y[index,Upatterns[q,]]<-mean+mvrnorm(n=length(index),mu=rep(0,nrow(Sigma)),Sigma=Sigma)
+					
+					#Keep a copy of the imputed value in lp
+					lp[index,Upatterns[q,]]<-y[index,Upatterns[q,]]
+				
+				}else{
+				
+					#Observations for all traits are missing for some records
+					index<-missing_records[Dpatterns==dUpatterns[q]]
+					
+					#lp<-y[index,]-error[index,]
+					#y[index,Upatterns[q,]]<-lp+mvrnorm(n=length(index),mu=rep(0,nrow(R)),Sigma=R)
+					
+					#predict y and overwrite the value
+					y[index,]<-lp[index,]+mvrnorm(n=length(index),mu=rep(0,nrow(resCov$R)),Sigma=resCov$R)
+					
+					#Keep a copy of the predicted value in lp
+					lp[index,]<-y[index,]	
+				}
+				
+			}
+		
+			#Update residuals
+			for(k in 1:traits)
+			{			
+				index<-missing_records[patterns[,k]]
+				error[index,k]<-error[index,k]+y[index,k]-yold[index,k]
+			}
+		
+		}
+		
+		#Saving files
+		if(iter%%thin==0)
+		{
+			#mu
+			if(intercept)
+			{
+				write(mu,ncolumns=length(mu),file=f_mu,append=TRUE,sep=" ")
+			}
+			
+			#resCov
+			tmp <- vech(resCov$R)
+			write(tmp, ncolumns = length(tmp), file = resCov$f_R, append = TRUE, sep = " ")
+			rm(tmp)
+			
+			if(resCov$type%in%c("REC","FA"))
+			{
+				if (sum(resCov$M) > 0) 
+				{
+					tmp <- resCov$B[resCov$M]
+					write(tmp, ncolumns = length(tmp), file = resCov$f_B, append = TRUE, 
+					      sep = " ")
+					rm(tmp)
+				}
+								
+				write(resCov$PSI, ncolumns = length(resCov$PSI), file = resCov$f_PSI, 
+				      append = TRUE, sep = " ")
+			}
+			
+			for(j in 1:nLT)
+			{
+				if(ETA[[j]]$model%in%c("SpikeSlab","BRR","RKHS"))
+				{
+				
+					if(ETA[[j]]$Cov$type%in%c("REC","FA"))
+					{
+						if (sum(ETA[[j]]$Cov$M) > 0) 
+						{
+							tmp <- ETA[[j]]$Cov$B[ETA[[j]]$Cov$M]
+							write(tmp, ncolumns = length(tmp), file = ETA[[j]]$Cov$f_B, 
+							      append = TRUE, sep = " ")
+							rm(tmp)
+						}
+								
+						write(ETA[[j]]$Cov$PSI, ncolumns = length(ETA[[j]]$Cov$PSI), 
+						      file = ETA[[j]]$Cov$f_PSI, append = TRUE, sep = " ")			
+					}#End REC and FA
+					
+				}#End of SpikeSlab, BRR and RKHS
+				
+			}#End for
+			
+		}#End of saving files
+		
+		
+		#Running means
+		if((iter>burnIn) & (iter%%thin==0))
+		{
+			nSums<-nSums + 1
+			fraction <- (nSums - 1)/nSums
+			
+			#mu
+			if(intercept)
+			{
+				post_mu<-post_mu * fraction + mu/nSums
+				post_mu2<-post_mu2 * fraction + mu^2/nSums
+			}
+			
+			#Predictions
+			yHat<-yHat * fraction + lp/nSums
+			yHat2<-yHat2 * fraction + lp^2/nSums
+			
+			#Residual
+			resCov$post_R <- resCov$post_R * fraction + resCov$R/nSums
+			resCov$post_R2<- resCov$post_R2 * fraction + resCov$R^2/nSums
+			
+			if(resCov$type%in%c("REC","FA"))
+			{
+				resCov$post_B <- resCov$post_B * fraction + resCov$B/nSums
+    			resCov$post_B2 <- resCov$post_B2 * fraction + resCov$B^2/nSums
+    					
+    			resCov$post_PSI <- resCov$post_PSI * fraction + resCov$PSI/nSums
+    			resCov$post_PSI2 <- resCov$post_PSI2 * fraction + resCov$PSI^2/nSums
+    			
+			}		
+			
+			#Likelihood
+			post_logLik<- post_logLik * fraction + logLik/nSums
+			
+			for(j in 1:nLT)
+			{
+				#All the models, post_beta and post_beta2
+				ETA[[j]]$post_beta <- ETA[[j]]$post_beta * fraction + ETA[[j]]$beta/nSums
+				ETA[[j]]$post_beta2 <- ETA[[j]]$post_beta2 * fraction + ETA[[j]]$beta^2/nSums
+				
+				
+				#post_b, post_b2, post_d, post_d2
+				if(ETA[[j]]$model=="SpikeSlab")
+				{
+					ETA[[j]]$post_b <- ETA[[j]]$post_b * fraction + ETA[[j]]$b/nSums
+					ETA[[j]]$post_b2 <- ETA[[j]]$post_b2 * fraction + ETA[[j]]$b^2/nSums
+					
+					ETA[[j]]$post_d <- ETA[[j]]$post_d * fraction + ETA[[j]]$d/nSums
+					ETA[[j]]$post_d2 <- ETA[[j]]$post_d2 * fraction + ETA[[j]]$d^2/nSums				
+				}
+
+				if(ETA[[j]]$model%in%c("SpikeSlab","BRR","RKHS"))
+				{
+					#post_Omega, post_Omega2
+					ETA[[j]]$Cov$post_Omega <- ETA[[j]]$Cov$post_Omega * fraction + ETA[[j]]$Cov$Omega/nSums
+    				ETA[[j]]$Cov$post_Omega2 <- ETA[[j]]$Cov$post_Omega2 * fraction + ETA[[j]]$Cov$Omega^2/nSums
+    				
+    				if(ETA[[j]]$Cov$type%in%c("REC","FA"))
+    				{
+    					ETA[[j]]$Cov$post_B <- ETA[[j]]$Cov$post_B * fraction + ETA[[j]]$Cov$B/nSums
+    					ETA[[j]]$Cov$post_B2 <- ETA[[j]]$Cov$post_B2 * fraction + ETA[[j]]$Cov$B^2/nSums
+    					
+    					ETA[[j]]$Cov$post_PSI <- ETA[[j]]$Cov$post_PSI * fraction + ETA[[j]]$Cov$PSI/nSums
+    					ETA[[j]]$Cov$post_PSI2 <- ETA[[j]]$Cov$post_PSI2 * fraction + ETA[[j]]$Cov$PSI^2/nSums
+    					
+    				}			
+				}
+			}#End for linear terms
+		}
+		
+		end<-proc.time()[3]
+		cat(paste("Iter: ", iter, "time: ", round(end - start, 4)," s \n"))
+				
+	}#End of loop for iterations
+	
+	if(intercept)
+	{
+		mu<-post_mu
+		SD.mu<-sqrt(post_mu2-post_mu^2)
+	}
+		
+	#Renaming/removing objects in ETA
+	for(j in 1:nLT)
+	{
+			#beta and SD.beta
+			if(ETA[[j]]$model%in%c("SpikeSlab","BRR","FIXED"))
+			{
+				ETA[[j]]$beta<-ETA[[j]]$post_beta
+				ETA[[j]]$SD.beta<-sqrt(ETA[[j]]$post_beta2-ETA[[j]]$post_beta^2)
+			}
+			
+			#u, FIXME: SD.u missing 
+			if(ETA[[j]]$model=="RKHS")
+			{
+				ETA[[j]]$u<-ETA[[j]]$X%*%ETA[[j]]$post_beta
+			}
+			
+			#post_b, post_b2, post_d, post_d2
+			if(ETA[[j]]$model=="SpikeSlab")
+			{
+				ETA[[j]]$b<-ETA[[j]]$post_b
+				ETA[[j]]$SD.b<-sqrt(ETA[[j]]$post_b2-ETA[[j]]$post_b^2)
+		
+				ETA[[j]]$d<-ETA[[j]]$post_d
+				ETA[[j]]$SD.d<-sqrt(ETA[[j]]$post_d2-ETA[[j]]$post_d^2)
+			}
+
+			if(ETA[[j]]$model%in%c("SpikeSlab","BRR","RKHS"))
+			{
+				#Omega
+				ETA[[j]]$Cov$Omega<-ETA[[j]]$Cov$post_Omega
+				ETA[[j]]$Cov$SD.Omega<-sqrt(ETA[[j]]$Cov$post_Omega2-ETA[[j]]$Cov$post_Omega^2)
+				
+				if(ETA[[j]]$Cov$type%in%c("REC","FA"))
+				{
+					ETA[[j]]$Cov$B<-ETA[[j]]$Cov$post_B
+					ETA[[j]]$Cov$SD.B<-sqrt(ETA[[j]]$Cov$post_B2-ETA[[j]]$Cov$post_B^2)
+				
+					ETA[[j]]$Cov$PSI<-ETA[[j]]$Cov$post_PSI
+					ETA[[j]]$Cov$SD.PSI<-sqrt(ETA[[j]]$Cov$post_PSI2-ETA[[j]]$Cov$post_PSI^2)	
+				}
+				
+				tmp<-which(names(ETA[[j]]$Cov)%in%c("post_Omega","post_Omega2","Omegainv",
+				                                    "post_B","post_B2","post_PSI","post_PSI2",
+				                                    "F"))
+				ETA[[j]]$Cov<-ETA[[j]]$Cov[-tmp] 
+				
+				rm(tmp)                                   
+								
+			}
+			
+			#Deep cleaning!!
+			tmp<-which(names(ETA[[j]])%in%c("X","x2","post_beta","post_beta2",
+			                                "post_b","post_b2","post_d","post_d2"))
+			ETA[[j]]<-ETA[[j]][-tmp]
+			
+			rm(tmp)
+			
+	}#End for linear terms
+	
+	#resCov
+	resCov$R<-resCov$post_R
+	resCov$SD.R<-sqrt(resCov$post_R2-resCov$post_R^2)
+	
+	if(resCov$type%in%c("REC","FA"))
+	{
+		resCov$B<-resCov$post_B
+		resCov$SD.B<-sqrt(resCov$post_B2-resCov$post_B^2)
+				
+		resCov$PSI<-resCov$post_PSI
+		resCov$SD.PSI<-sqrt(resCov$post_PSI2-resCov$post_PSI^2)
+		
+		close(resCov$f_B)
+		resCov$f_B<-NULL
+		close(resCov$f_PSI)
+		resCov$f_PSI<-NULL
+		
+	}
+	
+	#Deep cleaning!
+	tmp<-which(names(resCov)%in%c("post_R","post_R2","Rinv","post_B","post_B2",
+			                      "post_PSI","post_PSI2","F"))
+	resCov<-resCov[-tmp]
+			    
+	rm(tmp)
+	
+	#Closing files
+	
+	if(intercept)
+	{
+		close(f_mu)
+		f_mu<-NULL
+	}
+	
+	close(resCov$f_R)
+	resCov$f_R<-NULL
+	
+	for(j in 1:nLT)
+	{
+		if(ETA[[j]]$model%in%c("SpikeSlab","BRR","RKHS"))
+		{
+			if(ETA[[j]]$Cov$type%in%c("REC","FA"))
+			{
+				close(ETA[[j]]$Cov$f_B)
+				ETA[[j]]$Cov$f_B<-NULL
+				close(ETA[[j]]$Cov$f_PSI)
+				ETA[[j]]$Cov$f_PSI<-NULL
+				
+			}#End of if REC, FA
+		}#End of if SpikeSlab, BRR, RKHS
+	}#End of for			
+	
+	SD.yHat<-sqrt(yHat2-yHat^2)
+	
+	#Fit
+	fit<-getDIC(y.back, yHat, post_logLik, cte, complete_records, resCov$R, 
+				missings, missing_records, Dpatterns, Upatterns, 
+				dUpatterns,dAllMissings)
+	
+	fit$postMeanLogLik<-post_logLik
+	
+	#Return the goodies
+	out<-list(ETA=ETA,resCov=resCov,yHat=yHat,SD.yHat=SD.yHat,
+	          fit=fit)
+	          
+	if(intercept)
+	{
+		out$mu<-mu
+		out$SD.mu<-SD.mu
+	}
+	
+	if(missings)
+	{
+		out$missing_records<-missing_records
+		out$patterns<-patterns
+	}
+	
+	return(out)
+}
