@@ -99,7 +99,7 @@ this implementation is possible to include regression on markers directly assign
 Gaussian priors to the regression coefficients and fixed effects can be different for all the traits.
 We also have improved the sampling routines to speed up computations. Next we include some examples.
 
-- [1. Random effect model with unstructured covariance matrices]
+- [1. Random effect model with unstructured covariance matrices](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS_UN_UN.md)
 - [2. Diagonal residual covariance matrix]
 - [3. Factor analysis]
 - [4. Recursive models]
