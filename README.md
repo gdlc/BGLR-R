@@ -30,7 +30,7 @@ ld: library not found for -lgfortran
 This can be fixed it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
 
-## Univariate responses
+## 1. Univariate responses
 
 **Genomic Regressions**
 ----------------------------------------------------------------
@@ -87,5 +87,6 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
 **Image Data**
 ----------------------------------------------------------------
   -Maize (Image data): [Aguate et al. (IBC, 2016)](https://dl.sciencesocieties.org/publications/cs/articles/57/5/2517)
-  
-  
+
+## 2. Multi-trait models
+
