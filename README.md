@@ -31,6 +31,7 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
 
 
 ## 1. Univariate responses
+----------------------------------------------------------------
 
 **Genomic Regressions**
 ----------------------------------------------------------------
@@ -89,4 +90,5 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   -Maize (Image data): [Aguate et al. (IBC, 2016)](https://dl.sciencesocieties.org/publications/cs/articles/57/5/2517)
 
 ## 2. Multi-trait models
+----------------------------------------------------------------
 
