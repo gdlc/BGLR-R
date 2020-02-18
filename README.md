@@ -94,5 +94,5 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
 
 The Multitrait function included in the BGLR package fits Bayesian multitrait models with 
 arbitrary number of random effects using a Gibbs sampler a functionality similar to this 
-is implemented in the MTM package(http://quantgen.github.io/MTM/vignette.html). 
+is implemented in the [MTM](http://quantgen.github.io/MTM/vignette.html) package. 
 
