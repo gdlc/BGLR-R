@@ -102,7 +102,7 @@ We also have improved the sampling routines to speed up computations. Next we in
 - [1. Random effect model with unstructured covariance matrices](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS_UN_UN.md)
 - [2. Diagonal residual covariance matrix](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS_UN_DIAG.md)
 - [3. Factor analysis](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS_FA_DIAG.md)
-- [4. Recursive models]
+- [4. Recursive models](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS_REC_DIAG.md)
 - [5. Mixed effects model]
 - [6. Ridge Regression]
 - [7. Spike Slab]
