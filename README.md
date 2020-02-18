@@ -104,7 +104,7 @@ We also have improved the sampling routines to speed up computations. Next we in
 - [3. Factor analysis](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS_FA_DIAG.md)
 - [4. Recursive models](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS_REC_DIAG.md)
 - [5. Mixed effects model](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS_FIXED_UN_UN.md)
-- [6. Ridge Regression]
-- [7. Spike Slab]
-- [8. Ridge Regression + Additive relationship matrix]
+- [6. Ridge Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BRR_UN_UN.md)
+- [7. Ridge Regression + Additive relationship matrix]
+- [8. Spike Slab]
 
