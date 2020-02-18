@@ -30,7 +30,9 @@ ld: library not found for -lgfortran
 This can be fixed it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
 
-**Genomic Regressions (univariate responses)**
+#### Univariate responses
+
+**Genomic Regressions **
 ----------------------------------------------------------------
 
   - [1. Parametric Bayesian Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BayesianAlphabet.md)
@@ -69,20 +71,20 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   - [17. Multi-trait prediction using eigenvectors](https://github.com/gdlc/BGLR-R/edit/master/inst/md/MULTITRAIT.md)
 
 
-**Other Omics (univariate responses)**
+**Other Omics**
 ----------------------------------------------------------------
 
   - Metabolomics (milk-spectra): [Ferragina et al., J.D.Sci, 2015](http://www.sciencedirect.com/science/article/pii/S0022030215006645)
   
   - Multi-omic (gene expression, methylation & CNV): [Vazquez et al. (10th, WCGALP)](https://www.researchgate.net/profile/Sadeep_Shrestha/publication/266077932_Integration_of_Multi-Layer_Omic_Data_for_Prediction_of_Disease_Risk_in_Humans/links/542430f30cf26120b7a72201.pdf) & [Vazquez et al. (Genetics, 2016)](http://www.genetics.org/content/early/2016/04/27/genetics.115.185181.abstract)
 
-**Markers or Pedigree and Environmental Covariates (univariate responses)**
+**Markers or Pedigree and Environmental Covariates**
 ----------------------------------------------------------------
   -Wheat (SNPs and env. covariates): [Jarquin et al. (TAG, 2014)](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3931944/)
   
   -Cotton (Pedigree and env. covariates): [Perez-Rodriguez et al.(Crop. Sci, 2015)](https://dl.sciencesocieties.org/publications/cs/abstracts/55/3/1143)
   
-**Image Data (univariate responses)**
+**Image Data**
 ----------------------------------------------------------------
   -Maize (Image data): [Aguate et al. (IBC, 2016)](https://dl.sciencesocieties.org/publications/cs/articles/57/5/2517)
   
