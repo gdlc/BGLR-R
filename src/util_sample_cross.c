@@ -151,7 +151,7 @@ SEXP sampler_others(SEXP nCol,
                     SEXP RSS)
 {
 
-    double Cjj, lhs, rhs,  sol, offset, vare, z, u, old_beta;
+    double Cjj, lhs, rhs,  sol, offset, vare, z, old_beta;
     double *pXX, *pXY, *pvarB, *pbeta, *pRSS;
     int *pidColumns;
  
