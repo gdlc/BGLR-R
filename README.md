@@ -106,5 +106,5 @@ We also have improved the sampling routines to speed up computations. Next we in
 - [5. Mixed effects model](https://github.com/gdlc/BGLR-R/blob/master/inst/md/RKHS_FIXED_UN_UN.md)
 - [6. Ridge Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BRR_UN_UN.md)
 - [7. Ridge Regression + Additive relationship matrix](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BRR_UN_RKHS_UN.md)
-- [8. Spike Slab]
+- [8. Spike Slab] (https://github.com/gdlc/BGLR-R/blob/master/inst/md/SS_UN_UN.md)
 
