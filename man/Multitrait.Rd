@@ -133,7 +133,7 @@
   de los Campos, G. and  D. Gianola. 2007. Factor analysis models for structuring covariance matrices of additive genetic 
   effects: a Bayesian implementation. \emph{Genet. Sel. Evol.}, \bold{39}:481-494.
   
-  Hao, C., K. Kadir, J, Zeng, D. Garrick and R. Fernando. 2018. Genomic Prediction from Multiple-Trait 
+  Cheng, H.,  K. Kadir, J., Zeng, D. Garrick and R. Fernando. 2018. Genomic Prediction from Multiple-Trait 
   Bayesian Regression Methods Using Mixture Priors. \emph{Genetics}, \bold{209(1)}: 89-103.
   
   Sorensen, D. and D. Gianola. 2002. Likelihood, Bayesian, and MCMC methods in quantitative genetics. 
