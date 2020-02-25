@@ -7,13 +7,13 @@ Fitting selection variable models with multi trait models with simulated data.
 library(BGLR)
 data(simulated3t)
 
-y<-as.matrix(pheno[,1:3])
-g<-as.matrix(pheno[,4:6])
+y<-as.matrix(simulated3t.pheno[,1:3])
+g<-as.matrix(simulated3t.pheno[,4:6])
 cov(g)
 y<-scale(y,center=TRUE,scale=FALSE)
 y.orig<-y
 	
-X<-as.matrix(markers)
+X<-simulated3t.X
 X<-scale(X)/sqrt(ncol(X))
 
 ETA1<-list(list(X=X,model="SpikeSlab",
