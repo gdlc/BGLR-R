@@ -43,7 +43,6 @@ crossprod(fm1$ETA[[1]]$beta)/fm1$ETA[[1]]$p
 #Covariance matrix for b, UN
 fm1$ETA[[1]]$Cov
 	           
-
 ```
 
 [Return to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
