@@ -1659,6 +1659,15 @@ Multitrait<-function(y,
 				ETA[[j]]$Cov$Omega<-ETA[[j]]$Cov$post_Omega
 				ETA[[j]]$Cov$SD.Omega<-sqrt(ETA[[j]]$Cov$post_Omega2-ETA[[j]]$Cov$post_Omega^2)
 				
+				#Rename Omega to G
+				if(ETA[[j]]$model=="RKHS")
+				{
+					ETA[[j]]$Cov$G<-ETA[[j]]$Cov$Omega
+					ETA[[j]]$Cov$SD.G<-ETA[[j]]$Cov$SD.Omega
+					ETA[[j]]$Cov$Omega<-NULL
+					ETA[[j]]$Cov$SD.Omega<-NULL
+				}
+				
 				if(ETA[[j]]$Cov$type%in%c("REC","FA"))
 				{
 					ETA[[j]]$Cov$B<-ETA[[j]]$Cov$post_B
