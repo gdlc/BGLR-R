@@ -36,9 +36,9 @@ fm1$resCov
 crossprod(fm1$ETA[[1]]$beta)/fm1$ETA[[1]]$p
 
 #Compare against the TRUE genetic co-variance matrix
-1.00   0.34   0.07
-0.34   1.00   0.21 
-0.07   0.21   1.00 
+#1.00   0.34   0.07
+#0.34   1.00   0.21 
+#0.07   0.21   1.00 
 	
 #Covariance matrix for b, UN
 fm1$ETA[[1]]$Cov
