@@ -26,9 +26,11 @@
               (the conditional expectation function in case of Gaussian outcomes) includes only an intercept.
               Regression on covariates and other types of random effects are specified in this two-level list. For instance:
 
-              ETA=list(list(X=W, model="FIXED"), 
-                       list(X=Z,model="BL"), 
-                       list(K=G,model="RKHS")), 
+\preformatted{
+ETA=list(list(X=W, model="FIXED"), 
+              list(X=Z,model="BL"), 
+              list(K=G,model="RKHS")),
+} 
 
 	      specifies that the linear predictor should include: an intercept (included by default) plus a linear regression on W with regression 
               coefficients treated as fixed effects (i.e., flat prior), plus regression on Z, with regression coefficients modeled as in the 
