@@ -452,21 +452,50 @@ setLT.BRR_mt<-function(LT,traits,j,saveAt)
 #Note also  (u_1',...,u_t') ~ N(0, G_0 x K), where x represents the Kronecker product
 #Internally we represent this using the eigen-value decomposition, 
 #using as incidence matrix X=Gamma*Lambda^{1/2}, where K=Gamma*Lambda*Gamma' 
-
 setLT.RKHS_mt<-function(LT,traits,j,saveAt)
 {
 
-	if(is.null(LT$K)) stop("K can not be NULL")
+	if(is.null(LT$EVD) & is.null(LT$K))
+	{
+		text<-"Either variance co-variance matrix K or its eigen-value decomposition\n"
+		text<-paste(text,"must be provided for linear term ",j,"\n")
+		text<-paste(text,"To specify the variance covariance matrix K use:\n")
+		text<-paste(text,"list(K=?,model='RKHS'), where ? is the user defined (between subjects) co-variance matrix\n")
+		text<-paste(text,"To specify the eigen-value decomposition for K use:\n")
+		text<-paste(text,"list(EVD=?,model='RKHS'), where ? is the output from eigen function for a user defined (between subjects) co-variance matrix\n")
+		stop(text)
+	}
 	
-	#K=Gamma*Lambda*Gamma'
-		
-	evd.K <- eigen(LT$K)
-	keep <- evd.K$values>1e-10
-	LT$evd.K$vectors <- evd.K$vectors[,keep]
-	LT$evd.K$values <- evd.K$values[keep]
+	if((!is.null(LT$K)) & (!is.null(LT$EVD)))
+	{
+		message("Variance covariance matrix K and its eigen-value decomposition for linear term ",j, " was provided")
+		message("ONLY EVD will be used")
+		LT$K<-NULL
+	}
+	
+	if((!is.null(LT$K)) & is.null(LT$EVD))
+	{
+		message("Checking variance co-variance matrix K  for linear term ",j)
+		if(nrow(LT$K)!=ncol(LT$K)) stop("variance covariance matrix must be square")
+		LT$EVD <- eigen(LT$K)
+		message("Ok")
+	}
+	
+	if(is.null(LT$K) & (!is.null(LT$EVD)))
+	{
+		message("Checking EVD provided for linear term ",j)
+		if(!is.matrix(LT$EVD$vectors)) stop("eigen-vectors must be a matrix\n")
+		if(nrow(LT$EVD$vectors)!=ncol(LT$EVD$vectors)) stop("eigen-vectors must be a square matrix\n")
+		if(class(LT$EVD$values)!="numeric") stop("eigen-values must be a numeric vector\n")
+		message("Ok")
+	}
+	
+	keep <- LT$EVD$values>1e-10
+	LT$EVD$vectors <- LT$EVD$vectors[,keep]
+	LT$EVD$values <- LT$EVD$values[keep]
 	
 	#X=Gamma*Lambda^{1/2}
-	LT$X<-sweep(x=evd.K$vectors,MARGIN=2,STATS=sqrt(evd.K$values),FUN="*")
+	LT$X<-sweep(x=LT$EVD$vectors,MARGIN=2,STATS=sqrt(LT$EVD$values),FUN="*")
 	
 	LT<-setLT.BRR_mt(LT=LT,traits=traits,j=j,saveAt=saveAt)
 	
