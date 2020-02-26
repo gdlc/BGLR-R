@@ -13,7 +13,7 @@ we simulated 500 generations to obtain linkage disequilibrium using
 500 males and 500 females that were mated at random. 
 Random mating was continued for 5 more generations and 
 population size was increased to 4000 males and 4000 females. 
-The QTL on chromoseme 1 has effect on trait 1, wherehas 
+The QTL on chromosome 1 has effect on trait 1, wherehas 
 chomosomes 1 and 2 had effects on traits 2 and 3 respectively.
 The QTL on chromosome 4 had effects on the 3 traits. The effects 
 of QTL on chromosome 4 were simulated from a multivariate
