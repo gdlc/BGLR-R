@@ -93,7 +93,7 @@ setLT.BayesA.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(is.null(LT$thin)){ LT$thin=thin }
     	fname=paste(saveAt,LT$Name,"_b.bin",sep="")
     	if(rmExistingFiles){ unlink(fname) }
-    	LT$fileEffects=file(fname,open='wb')
+    	LT$fileEffects=gzfile(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
     }#*#
@@ -221,7 +221,7 @@ setLT.BayesB.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(is.null(LT$thin)){ LT$thin=thin }
     	fname=paste(saveAt,LT$Name,"_b.bin",sep="")
     	if(rmExistingFiles){ unlink(fname) }
-    	LT$fileEffects=file(fname,open='wb')
+    	LT$fileEffects=gzfile(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
     }#*#
@@ -339,7 +339,7 @@ setLT.BayesC.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(is.null(LT$thin)){ LT$thin=thin }
     	fname=paste(saveAt,LT$Name,"_b.bin",sep="")
     	if(rmExistingFiles){ unlink(fname) }
-    	LT$fileEffects=file(fname,open='wb')
+    	LT$fileEffects=gzfile(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
     }#*#
@@ -527,7 +527,7 @@ setLT.SSVS.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(is.null(LT$thin)){ LT$thin=thin }
     	fname=paste(saveAt,LT$Name,"_b.bin",sep="")
     	if(rmExistingFiles){ unlink(fname) }
-    	LT$fileEffects=file(fname,open='wb')
+    	LT$fileEffects=gzfile(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
     }#*#
@@ -610,7 +610,7 @@ setLT.BRR.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(is.null(LT$thin)){ LT$thin=thin }
     	fname=paste(saveAt,LT$Name,"_b.bin",sep="")
     	if(rmExistingFiles){ unlink(fname) }
-    	LT$fileEffects=file(fname,open='wb')
+    	LT$fileEffects=gzfile(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
     	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
     }#*#

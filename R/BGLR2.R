@@ -281,7 +281,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
           			if(ETA[[i]]$saveEffects){
     					fname=paste(saveAt,ETA[[i]]$Name,"_b.bin",sep="")
     					if(rmExistingFiles){ unlink(fname) }
-    					ETA[[i]]$fileEffects=file(fname,open='wb')
+    					ETA[[i]]$fileEffects=gzfile(fname,open='wb')
     					nRow=floor((nIter-burnIn)/thin)
     					writeBin(object=c(nRow,ETA[[i]]$p),con=ETA[[i]]$fileEffects)
     				}
@@ -317,7 +317,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 			
 			if(ETA[[i]]$saveEffects){
 				fname=paste(saveAt,ETA[[i]]$Name,"_b.bin",sep="")
-    				ETA[[i]]$fileEffects=file(fname,open='ab')
+    				ETA[[i]]$fileEffects=gzfile(fname,open='ab')
 			}
 		}
 	}

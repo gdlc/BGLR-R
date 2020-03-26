@@ -1,7 +1,7 @@
 
  readBinMat=function(filename,byrow=TRUE){
  	## Function to read effects saved by BGLR when ETA[[j]]$saveEffects=TRUE
-  	fileIn=file(filename,open='rb')
+  	fileIn=gzfile(filename,open='rb')
  	n=readBin(fileIn,n=1,what=numeric())
  	p=readBin(fileIn,n=1,what=numeric())
  	tmp=readBin(fileIn,n=(n*p),what=numeric())
@@ -14,7 +14,7 @@
     n=nrow(x)
     p=ncol(x)
     x=as.vector(x)
-    fileOut<-file(file,open='rb')
+    fileOut<-gzfile(file,open='rb')
     writeBin(object=n,con=fileOut)
     writeBin(object=p,con=fileOut)
     writeBin(object=x,con=fileOut)
