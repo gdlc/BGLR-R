@@ -924,9 +924,6 @@ metropLambda=function (tau2, lambda, shape1 = 1.2, shape2 = 1.2, max = 200, ncp 
 #this function is executed once the library is loaded
 .onAttach = function(library, pkg)
 {
-  Rv = R.Version()
-  if(!exists("getRversion", baseenv()) || (getRversion() < "3.5.0"))
-    stop("This package requires R 3.5.0 or later")
   if(interactive())
   {
     packageStartupMessage("# Gustavo de los Campos & Paulino Perez-Rodriguez")
