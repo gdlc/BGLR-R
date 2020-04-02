@@ -110,13 +110,19 @@ SEXP sampler_DiracSS_mt(SEXP trait,
             //t-th column of Rinv and error
             cRinv=pRinv+t*traits;
             cerror=perror+t*rows;
+            
             s1+=cRinv[k]*F77_NAME(ddot)(&rows,xj,&inc,cerror,&inc);
         }
         
         //k-th column of Rinv and error
         cRinv=pRinv+k*traits;
         cerror=perror+k*rows;
-        s2=cbeta[j]*s1 + 0.5*cRinv[k]*cbeta[j]*cbeta[j]*px2[j];
+        
+        //e = y-X*beta = e* - x_j*beta_j, so e* = error + x_j * beta_j
+        //we can not use  e* = e + x_j * b_j, because error was computed based on beta
+        //in previous iteration, and if d_j was 0 beta_j = b_j * d_j = 0
+        
+        s2=cb[j]*s1 + cb[j]*cbeta[j]*cRinv[k]*px2[j] - 0.5*cRinv[k]*cb[j]*cb[j]*px2[j];
         
         logOdds=s2+logPriorOdds;
              
@@ -143,12 +149,11 @@ SEXP sampler_DiracSS_mt(SEXP trait,
             }
             
             //Reset pointer to k-th column of cb
-            cb=pb+k*p;
-            
-            s3=s1+cRinv[k]*cbeta[j]*px2[j]-s4;
-            v=cRinv[k]*px2[j]+Omegainversekk;
+            cb=pb + k*p;
+            s3=s1 + cbeta[j]*cRinv[k]*px2[j] - s4;
+            v=cRinv[k]*px2[j] + Omegainversekk;
             mu=s3/v;
-            
+                
             cb[j]=mu+sqrt(1.0/v)*norm_rand();
             
         }else{
