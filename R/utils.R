@@ -1,23 +1,29 @@
 
- readBinMat=function(filename,byrow=TRUE){
+ readBinMat=function(filename,byrow=TRUE,size=8L){
+    if(!size %in% c(4L,8L)){
+        stop("size can either be 4 (single) or 8 (double, default)")
+    }
  	## Function to read effects saved by BGLR when ETA[[j]]$saveEffects=TRUE
   	fileIn=file(filename,open='rb')
- 	n=readBin(fileIn,n=1,what=numeric())
- 	p=readBin(fileIn,n=1,what=numeric())
- 	tmp=readBin(fileIn,n=(n*p),what=numeric())
+ 	n=readBin(fileIn,n=1,what=numeric(),size=size)
+ 	p=readBin(fileIn,n=1,what=numeric(),size=size)
+ 	tmp=readBin(fileIn,n=(n*p),what=numeric(),size=size)
  	X=matrix(data=tmp,nrow=n,ncol=p,byrow=byrow)
  	close(fileIn)
  	return(X)
  }
  
- writeBinMat=function(x,file,byrow=T){
+ writeBinMat=function(x,file,byrow=T,size=8L){
+    if(!size %in% c(4L,8L)){
+        stop("size can either be 4 (single) or 8 (double, default)")
+    }
     n=nrow(x)
     p=ncol(x)
     x=as.vector(x)
     fileOut<-file(file,open='rb')
-    writeBin(object=n,con=fileOut)
-    writeBin(object=p,con=fileOut)
-    writeBin(object=x,con=fileOut)
+    writeBin(object=n,con=fileOut,size=size)
+    writeBin(object=p,con=fileOut,size=size)
+    writeBin(object=x,con=fileOut,size=size)
     close(fileOut)
  }
  

@@ -6,13 +6,14 @@
 }
 \usage{
 
-	readBinMat(filename,byrow=TRUE)
+	readBinMat(filename,byrow=TRUE,size=8L)
 
 }
 \arguments{
 
 	\item{filename}{(string), the name of the file to be read.}
 	\item{byrow}{(logical), if TRUE the matrix is created by filling its corresponding elements by rows.}
+	\item{size}{(integer), the size used to save effects via ETA[[j]]$sizeEffects: '8' if double (default), or '4' if single.}
 }
 
 \value{
