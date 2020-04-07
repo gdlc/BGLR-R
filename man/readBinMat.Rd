@@ -6,13 +6,14 @@
 }
 \usage{
 
-	readBinMat(filename,byrow=TRUE)
+	readBinMat(filename,byrow=TRUE,storageMode="double")
 
 }
 \arguments{
 
 	\item{filename}{(string), the name of the file to be read.}
 	\item{byrow}{(logical), if TRUE the matrix is created by filling its corresponding elements by rows.}
+	\item{storageMode}{(character), the storage mode used to save effects via ETA[[j]]$storageMode: 'double' (default) or 'single'.}
 }
 
 \value{
