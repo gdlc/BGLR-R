@@ -1,7 +1,7 @@
 Package: BGLR
 Version: 1.0.9
 Title: Bayesian Generalized Linear Regression
-Author: Gustavo de los Campos, Paulino Perez Rodriguez,
+Author: Gustavo de los Campos, Paulino Perez Rodriguez
 Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
 Depends: R (>= 3.5.0)
 Imports: truncnorm, MASS
