@@ -7,5 +7,5 @@ Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
 Depends: R (>= 3.5.0)
 Imports: truncnorm, MASS
 Description: Bayesian Generalized Linear Regression.
-LazyLoad: true
+LazyData: true
 License: GPL-3
