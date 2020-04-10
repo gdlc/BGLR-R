@@ -10,5 +10,3 @@ Description: Bayesian Generalized Linear Regression.
 LazyLoad: true
 License: GPL-3
 NeedsCompilation: yes
-Repository: CRAN
-Date/Publication: 2018-11-11 07:20:03 UTC
