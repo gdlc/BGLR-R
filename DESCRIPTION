@@ -9,4 +9,3 @@ Imports: truncnorm, MASS
 Description: Bayesian Generalized Linear Regression.
 LazyLoad: true
 License: GPL-3
-NeedsCompilation: yes
