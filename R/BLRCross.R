@@ -15,6 +15,7 @@ setLT.BayesA.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$rate0=prior$rate0
 	LT$p=p
 	LT$idColumns=idColumns
+	LT$saveEffects=prior$saveEffects
 		
 	LT$MSx=sumVarX
 	
@@ -119,6 +120,7 @@ setLT.BayesB.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$counts=prior$counts
 	LT$p=p
 	LT$idColumns=idColumns
+	LT$saveEffects=prior$saveEffects
 		
 	LT$MSx=sumVarX
 	
@@ -246,9 +248,10 @@ setLT.BayesC.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$counts=prior$counts
 	LT$p=p
 	LT$idColumns=idColumns
+	LT$saveEffects=prior$saveEffects
 		
 	LT$MSx=sumVarX
-	
+		
 	if(is.null(LT$R2))
     {
     	LT$R2=R2/nLT
@@ -407,6 +410,7 @@ setLT.SSVS.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$counts=prior$counts
 	LT$p=p
 	LT$idColumns=idColumns
+	LT$saveEffects=prior$saveEffects
 		
 	LT$MSx=sumVarX
 	
@@ -550,6 +554,7 @@ setLT.BRR.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$S0=prior$S0
 	LT$p=p
 	LT$idColumns=idColumns
+	LT$saveEffects=prior$saveEffects
 		
 	LT$MSx=sumVarX
 	
@@ -1090,8 +1095,12 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
     	}#End if loop for checking that i is a multiple of thin
     	
     	end=proc.time()[3]
-    	message("Iter=",i," Time/Iter=",round(end-start,3))
-    	message("varE=",round(varE,4))
+    	
+    	if(verbose)
+    	{
+    		message("Iter=",i," Time/Iter=",round(end-start,3))
+    		message("varE=",round(varE,4))
+    	}
     
     }#End of loop for Gibbs sampler
     
