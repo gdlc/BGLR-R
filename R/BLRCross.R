@@ -641,7 +641,14 @@ setLT.Fixed.Cross=function(p,idColumns,Name,saveAt,rmExistingFiles)
   	LT$varB = 1e10
   	
   	
-  	fname=paste(saveAt,LT$Name,"_b.dat",sep="")
+  	if(LT$Name=="___INTERCEPT___")
+  	{
+  		#Dirty hack to save samples from the intercept as "mu.dat"
+        #when the intercept is as fixed effect included automatically in routine BLRXy
+  		fname=paste(saveAt,"mu.dat",sep="")
+  	}else{
+  		fname=paste(saveAt,LT$Name,"_b.dat",sep="")
+  	}
 
     LT$NamefileOut=fname
 
@@ -741,7 +748,11 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
             {
             	priors[[j]]$Name=paste("ETA_",j,sep="")
             }else{
-            	priors[[j]]$Name=paste("ETA_",names(priors)[j],sep="")
+            	if(names(priors)[j]!="___INTERCEPT___")
+            	{
+            		#Dirty hack to avoid changing Name, see setLT.Fixed.Cross
+            		priors[[j]]$Name=paste("ETA_",names(priors)[j],sep="")
+            	}
             }
     		
     		ETA[[j]]=switch(priors[[j]]$model,
@@ -1170,57 +1181,119 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
 }
 
 
-#This will be an auxiliary function, but it is not ready yet.
-#We still need to think about some issues, e.g. when including the intercept in X 
-#and then you center, this will lead to NaN...
-
-BLRXy=function(y,
-               X,centerX=TRUE,centerY=TRUE,scaleX=FALSE,imputeX=TRUE,
-               nIter=1500,burnIn=500,
-               thin=5,R2=0.5,
-               S0=NULL,df0=5,
-               priors=NULL,
-               idPriors=NULL,
-               verbose=TRUE)
-{	
-	n=nrow(X)
-	p=ncol(X)
+BLRXy<-function(y, intercept=TRUE, ETA, 
+               nIter = 1500, burnIn = 500, thin = 5, 
+               S0 = NULL, df0 = 5, R2 = 0.5, 
+               verbose = TRUE, saveAt="",rmExistingFiles = TRUE) 
+{
+		
+		nLT <- ifelse(is.null(ETA), 0, length(ETA))
+		
+		if(!(nLT>0)) stop("ETA should have at least one component\n")
+		
+		if(is.null(names(ETA)))
+    	{
+    		names(ETA)<-rep("",nLT)
+    	}
+		
+		#Check NA's
+		if(any(is.na(y))) stop("NA's not allowed in this implementation")
+		
+		n<-length(y)
 	
-	# Centering/Scaling/Imputing (this could be done with scale but scale can create memory issues....)
-	if(centerY){ y=y-mean(y)}
-	if(centerX | scaleX | imputeX)
-	{
-		for(i in 1:p){
-			mu=mean(X[,i],na.rm=T)
-			whichNA=which(is.na(X[,i]))
-			if(centerX){  
-				X[,i]=X[,i]-mu 
-				if(imputeX){
-					X[whichNA,i]=0
+		ps<-rep(NA,nLT)
+		ns<-rep(NA,nLT)
+		
+		#Check supported models, number of columns in each element of the list
+		for(j in 1:nLT)
+		{
+			if(!(ETA[[j]]$model %in% c("FIXED", "BRR", "BayesA", "BayesB","BayesC","SSVS"))) 
+			{
+				stop("Error in ETA[[", j, "]]", " model ", ETA[[j]]$model, " not implemented (note: evaluation is case sensitive)")
+			}
+			
+			if(!is.null(ETA[[j]]$X))
+			{
+				if(is.matrix(ETA[[j]]$X))
+				{
+					ps[j]<-ncol(ETA[[j]]$X)
+					ns[j]<-nrow(ETA[[j]]$X)
+				}else{
+					stop("Error in ETA[[", j, "]], X should be a matrix")
 				}
 			}else{
-				if(imputeX){ 
-					X[whichNA,i]=mu
-				}
+				stop("Error in ETA[[", j, "]], X is NULL")
 			}
-			if(scaleX){
-				SD=sd(X[,i],na.rm=T)
-				X[,i]=X[,i]/SD
-			}
-		}
-	}
-	
-	XX=crossprod(X)
-	Xy=as.vector(crossprod(X,y-mean(y)))
-	
-	
-	out=BLRCross(y=y,XX=XX,Xy=Xy,nIter=nIter,burnIn=burnIn,
-                  thin=thin,R2=R2,
-                  S0=S0,df0=df0,
-                  priors=priors,
-                  idPriors=idPriors,
-                  verbose=verbose)
+						
+		}#End of checking inputs
 		
-	return(out)
-	
+		if(any(is.na(ps))) stop("Check that every X in ETA is a matrix at least one column and ",n," rows")
+		if(any(is.na(ns))) stop("Check that every X in ETA is a matrix at least one column and ",n," rows")
+		if(any(n!=ns)) stop("Every X in ETA must have the same number of rows")
+		
+		low<-cumsum(ps)-ps+1
+		up<-cumsum(ps)
+
+		X<-matrix(NA,nrow=n,ncol=sum(ps))
+		idPriors<-rep(NA,sum(ps))
+		priors<-list()
+		
+		for(j in 1:nLT)			
+		{
+			X[1:n,c(low[j]:up[j])]<-ETA[[j]]$X
+			idPriors[c(low[j]:up[j])]<-j
+			priors[[j]]<-ETA[[j]]
+			priors[[j]]$X<-NULL	
+		}
+		
+		tmp<-names(ETA)
+		
+		#Dirty hack
+		if(intercept)
+		{
+			X<-cbind(X,1)
+			idPriors<-c(idPriors,nLT+1)
+			priors[[nLT+1]]<-list(model="FIXED")
+			priors[[nLT+1]]$Name="___INTERCEPT___"
+			tmp<-c(tmp,"___INTERCEPT___")
+		}
+		
+		names(priors)<-tmp
+		
+		#Crossprod
+		XX<-crossprod(X)
+		Xy<-as.vector(crossprod(X,y))
+		
+		out<-BLRCross(y=y,XX=XX,Xy=Xy,nIter=nIter,burnIn=burnIn,
+                      thin=thin,R2=R2,
+                      S0=S0,df0=df0,
+                      priors=priors,
+                      idPriors=idPriors,
+                      verbose=verbose,
+                      saveAt=saveAt,
+                      rmExistingFiles = rmExistingFiles)
+                      
+        if(intercept)
+        {
+        	out$mu<-out$ETA[[nLT+1]]$b
+        	out$SD.mu<-out$ETA[[nLT+1]]$SD.b
+        	out$ETA[[nLT+1]]<-NULL
+        }
+        
+        #Compute yHat
+        yHat<-rep(0,n)
+        
+        for(j in 1:nLT)
+        {
+        	yHat<-yHat+as.vector(ETA[[j]]$X%*%out$ETA[[j]]$b)
+        }
+        
+        if(intercept)
+        {
+        	yHat<-yHat+out$mu
+        }
+        
+        out$yHat<-yHat
+                 
+		return(out)
 }
