@@ -845,6 +845,9 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
             }
             if(!is.null(ETA[[i]]$fileEffects)){
             		close(ETA[[i]]$fileEffects)
+                if(!is.null(ETA[[i]]$compressEffects)&&ETA[[i]]$compressEffects==TRUE){
+                    compressFile(paste0(saveAt,ETA[[i]]$Name,"_b.bin"))
+                }
             		ETA[[i]]$fileEffects = NULL
             }
             

@@ -1775,9 +1775,12 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                 ETA[[i]]$fileOut = NULL
             }
             if(!is.null(ETA[[i]]$fileEffects)){
-            		flush(ETA[[i]]$fileEffects)
-            		close(ETA[[i]]$fileEffects)
-            		ETA[[i]]$fileEffects = NULL
+                flush(ETA[[i]]$fileEffects)
+                close(ETA[[i]]$fileEffects)
+                if(!is.null(ETA[[i]]$compressEffects)&&ETA[[i]]$compressEffects==TRUE){
+                    compressFile(paste0(saveAt,ETA[[i]]$Name,"_b.bin"))
+                }
+                ETA[[i]]$fileEffects = NULL
             }
             
         }
