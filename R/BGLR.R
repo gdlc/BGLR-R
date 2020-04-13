@@ -927,10 +927,6 @@ metropLambda=function (tau2, lambda, shape1 = 1.2, shape2 = 1.2, max = 200, ncp 
   Rv = R.Version()
   if(!exists("getRversion", baseenv()) || (getRversion() < "3.5.0"))
     stop("This package requires R 3.5.0 or later")
-  assign(".BGLR.home", file.path(library, pkg),
-         pos=match("package:BGLR", search()))
-  BGLR.version = "1.0.9"
-  assign(".BGLR.version", BGLR.version, pos=match("package:BGLR", search()))
   if(interactive())
   {
     packageStartupMessage("# Gustavo de los Campos & Paulino Perez-Rodriguez")
