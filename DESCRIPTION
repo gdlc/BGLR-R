@@ -1,15 +1,9 @@
 Package: BGLR
 Version: 1.0.9
-Date: 2020-02-18
 Title: Bayesian Generalized Linear Regression
-Author: Gustavo de los Campos, Paulino Perez Rodriguez,
+Author: Gustavo de los Campos, Paulino Perez Rodriguez
 Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
 Depends: R (>= 3.5.0)
 Imports: truncnorm, MASS
 Description: Bayesian Generalized Linear Regression.
-LazyLoad: true
 License: GPL-3
-NeedsCompilation: yes
-Packaged: 2020-02-18 16:38:48 UTC; paulino
-Repository: CRAN
-Date/Publication: 2018-11-11 07:20:03 UTC
