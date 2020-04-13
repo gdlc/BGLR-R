@@ -95,9 +95,6 @@ idPriors=rep(1,p)
 fm1=BLRCross(y=y,XX=XX,Xy=Xy,nIter=1000,priors=priors,idPriors=idPriors)
 plot(as.vector(X\%*\%fm1$ETA[[1]]$b),y)
 
-#fm1=BLRXy(y=y,X,nIter=1000,priors=priors,idPriors=idPriors)
-#plot(as.vector(X\%*\%fm1$ETA[[1]]$b),y)
-
 #BayesB
 priors=list(list(model="BayesB"))
 idPriors=idPriors=rep(1,p)

@@ -41,7 +41,7 @@ ETA=list(list(X=W, model="FIXED"),
               BayesB (two component mixture prior with a point of mass at zero and a sclaed-t slab), BayesC (two component mixture prior with a point of
               mass at zero and a Gaussian slab). In linear regressions X can be the incidence matrix for effects or a formula (e.g. \code{~factor(sex) + age})
               in which case the incidence matrix is created internally using the \code{model.matrix} function of R. For Gaussian processes (RKHS) a co-variance matrix
-              (K) must be provided. Further details about the models implemented in BGLR see the vignettes in the package or \url{http://genomics.cimmyt.org/BGLR-extdoc.pdf}. 
+              (K) must be provided. Further details about the models implemented in BGLR see the vignettes in the package. 
              }
    \item{weights}{(numeric, \eqn{n}{n}) a vector of weights, may be \code{NULL}. If weights is not \code{NULL}, the 
                   residual variance of each data-point is set to be proportional to the inverse of the squared-weight. Only
@@ -51,11 +51,11 @@ ETA=list(list(X=W, model="FIXED"),
    \item{S0, df0}{ (numeric) The scale parameter for the scaled inverse-chi squared prior assigned to the residual variance, only used with Gaussian outcomes. 
                   In the parameterization of the scaled-inverse chi square in BGLR the expected values is \code{S0/(df0-2)}. The default value for the 
                   df parameter is 5. If the scale is not specified a value is calculated so that the prior mode of the residual 
-                  variance  equals \code{var(y)*R2} (see below). For further details see the vignettes in the package or \url{http://genomics.cimmyt.org/BGLR-extdoc.pdf}.}
+                  variance  equals \code{var(y)*R2} (see below). For further details see the vignettes in the package.}
    \item{R2}{(numeric, \code{0<R2<1}) The proportion of variance that one expects, a priori, to be explained by the regression. Only used if 
              the hyper-parameters are not specified; if that is the case, internaly, hyper-paramters are set so that the prior modes are consistent with the 
              variance partition specified by R2 and the prior distribution is relatively flat at the mode. For 
-             further details see the vignettes in the package or \url{http://genomics.cimmyt.org/BGLR-extdoc.pdf}.}
+             further details see the vignettes in the package.}
    \item{verbose}{(logical) if TRUE the iteration history is printed, default TRUE.}
    \item{rmExistingFiles}{(logical) if TRUE removes existing output files from previous runs, default TRUE.}
    \item{groups}{(factor) a vector of the same length of y that associates observations with groups, each group will have an associated variance component for the error term.}
@@ -67,8 +67,8 @@ BGLR implements a Gibbs sampler for a Bayesian regresion model. The linear predi
 includes an intercept (introduced by default) plus a number of user-specified regression components (X) and 
 random effects (u), that is:
 
-\ifelse{html}{\figure{ETA.png}}{{\deqn{\eta=1\mu +X_1 \beta_1+...+X_p \beta_p +u_1+...+u_q}}}
-
+  \ifelse{html}{\out{&eta;=1&mu; + X<sub>1</sub>&beta;<sub>1</sub>+...+X<sub>p</sub>&beta;<sub>p</sub>+u<sub>1</sub>+...+u<sub>q</sub>}}{\deqn{\eta=1\mu +X_1 \beta_1+...+X_p \beta_p +u_1+...+u_q}}
+  
 The components of the linear predictor are specified in the argument ETA (see above). 
 The user can specify as many linear terms as desired, and for each component the user can choose the 
 prior density to be assigned. The distribution of the response is modeled as a function of the 
@@ -100,7 +100,7 @@ from the data. Further details about this approach can be found in Albert and Ch
 \value{
 
 A list with estimated posterior means, estimated posterior standard deviations, and the parameters used to fit the model.
-See the vignettes in the package (or \url{http://genomics.cimmyt.org/BGLR-extdoc.pdf}) for further details.
+See the vignettes in the package for further details.
 
 }
 
