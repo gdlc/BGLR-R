@@ -149,3 +149,15 @@ compressFile=function(pathname,bufferSize=1e6,keep=FALSE){
     }
     close(conOut)
 }
+
+# Compute Bayesian FDR
+BFDR=function(prob){
+    origNames=names(prob)
+    names(prob)=1:length(prob)
+    prob=sort(prob,decreasing=TRUE)
+    bfdr=1-cumsum(prob)/1:length(prob)
+    # Recover the original order and names
+    bfdr=bfdr[order(as.integer(names(prob)))]
+    names(bfdr)=origNames
+    return(bfdr)
+}
