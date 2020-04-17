@@ -79,23 +79,29 @@ xpnd <-function (x, nrow = NULL)
 }
   
 #UNstructured covariance matrix
-setCov.UN<-function(Cov,traits)
+#Cov, list
+#traits, integer
+#mo, Mode
+setCov.UN<-function(Cov,traits,mo)
 {	
 	
 	message("UNstructured covariance matrix")
 	
-	if(is.null(Cov$S0))
-	{
-		Cov$S0<-diag(traits)
-		message("S0 set to an identity matrix")	
-	}
-		
 	if(is.null(Cov$df0))
 	{
-		Cov$df0<-traits
-		message("df0 was set to ", traits)
+		Cov$df0<-5
+		message("df0 was set to 5")
 	}
 	
+	if(is.null(Cov$S0))
+	{
+		#Cov$S0<-diag(traits)
+		#message("S0 set to an identity matrix")
+		Cov$S0<-mo*(Cov$df0+traits+1)
+		message("S0 set to ")
+		print(Cov$S0)	
+	}
+		
 	#Omega=cov(b)
 	Cov$Omega<-riwish(v=Cov$df0,S=Cov$S0)
 	Cov$Omegainv<-solve(Cov$Omega)
@@ -109,20 +115,26 @@ setCov.UN<-function(Cov,traits)
 }
 
 #DIAGonal covariance matrix
-setCov.DIAG<-function(Cov,traits)
+#Cov, list
+#traits, integer
+#mo, Mode
+setCov.DIAG<-function(Cov,traits,mo)
 {
 	message("DIAGonal covariance matrix")
 	
-	if(is.null(Cov$S0))
-	{
-		Cov$S0 <- rep(1,traits)
-		message("S0 was set to 1 for all the traits")	
-	}
-		
 	if(is.null(Cov$df0))
 	{
-		Cov$df0<-rep(1,traits)
-		message("df0 set to  1 for all the traits")
+		Cov$df0<-rep(5,traits)
+		message("df0 set to  5 for all the traits")
+	}
+	
+	if(is.null(Cov$S0))
+	{
+		#Cov$S0 <- rep(1,traits)
+		#message("S0 was set to 1 for all the traits")
+		Cov$S0<-mo*(Cov$df0+2)
+		message("S0 was set to: ")
+		print(Cov$S0)	
 	}
 	
 	Cov$Omega<-matrix(0,nrow=traits,ncol=traits)
@@ -143,20 +155,23 @@ setCov.DIAG<-function(Cov,traits)
 }
 
 #RECursive covariance matrix
-setCov.REC<-function(Cov,traits,j,saveAt)
+setCov.REC<-function(Cov,traits,j,mo,saveAt)
 {
 	message("RECursive covariance matrix")
 	
-	if(is.null(Cov$S0))
-	{
-		Cov$S0 <- rep(1,traits)
-		message("S0 was set to 1 for all the traits")	
-	}
-		
 	if(is.null(Cov$df0))
 	{
-		Cov$df0<-rep(1,traits)
-		message("df0 set to  1 for all the traits")
+		Cov$df0<-rep(5,traits)
+		message("df0 set to  5 for all the traits")
+	}
+	
+	if(is.null(Cov$S0))
+	{
+		#Cov$S0 <- rep(1,traits)
+		#message("S0 was set to 1 for all the traits")
+		Cov$S0<-mo*(Cov$df0+2)
+		message("S0 was set to: ")
+		print(Cov$S0)	
 	}
 			
 	if(is.null(Cov$var))
@@ -212,20 +227,24 @@ setCov.REC<-function(Cov,traits,j,saveAt)
 
 
 #FA covariance matrix
-setCov.FA<-function(Cov,traits,nD,j,saveAt)
+setCov.FA<-function(Cov,traits,nD,j,mo,saveAt)
 {
 	message("FA covariance matrix")
 	
-	if(is.null(Cov$S0))
-	{
-		Cov$S0 <- rep(1/100,traits)
-		message("S0 was set to 1/100 for all the traits")	
-	}
-		
 	if(is.null(Cov$df0))
 	{
-		Cov$df0<-rep(1,traits)
+		Cov$df0<-rep(5,traits)
 		message("df0 set to  1 for all the traits")
+	}
+
+	
+	if(is.null(Cov$S0))
+	{
+		#Cov$S0 <- rep(1/100,traits)
+		#message("S0 was set to 1/100 for all the traits")
+		Cov$S0<-mo*(Cov$df0+2)
+		message("S0 was set to: ")
+		print(Cov$S0)
 	}
 			
 	if(is.null(Cov$var))
@@ -281,7 +300,7 @@ setCov.FA<-function(Cov,traits,nD,j,saveAt)
 
 
 #Set linear term for DiracSS_mt
-setLT.DiracSS_mt<-function(LT,traits,j,saveAt)
+setLT.DiracSS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 {
 	
 	message("Setting linear term ",j)
@@ -320,6 +339,12 @@ setLT.DiracSS_mt<-function(LT,traits,j,saveAt)
 	if(any(is.na(LT$X))) stop("X has NAs\n")
 	
 	LT$x2<-as.vector(colSums(LT$X^2))
+	
+	#FIXME:
+	#Perhaps we need to modify this to take into account the inclusion probabilities
+	sumMeanXSq<-sum((apply(LT$X,2L,mean))^2)
+	MSx<-sum(LT$x2)/nrow(LT$X)-sumMeanXSq
+	message("MSx=",MSx)
 	
 	#Initialize b, d, beta, beta=b#d
 	LT$p<-ncol(LT$X)
@@ -361,10 +386,10 @@ setLT.DiracSS_mt<-function(LT,traits,j,saveAt)
 	#Select appropriate covariance structure
 	
 	LT$Cov<-switch(LT$Cov$type,
-					UN=setCov.UN(Cov=LT$Cov,traits=traits),
-					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits),
-					REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,saveAt=saveAt),
-					FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,saveAt=saveAt)
+					UN=setCov.UN(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*Sy/MSx),
+					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*diag(Sy)/MSx),
+					REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt),
+					FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt)
 	               )
 	               
 	
@@ -382,7 +407,7 @@ setLT.DiracSS_mt<-function(LT,traits,j,saveAt)
 }
 
 #Set linear term for Ridge Regression
-setLT.BRR_mt<-function(LT,traits,j,saveAt)
+setLT.BRR_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 {		
 
 	message("Setting linear term ",j)
@@ -393,6 +418,10 @@ setLT.BRR_mt<-function(LT,traits,j,saveAt)
 	if(any(is.na(LT$X))) stop("X has NAs\n")
 	
 	LT$x2<-as.vector(colSums(LT$X^2))
+	
+	sumMeanXSq<-sum((apply(LT$X,2L,mean))^2)
+	MSx<-sum(LT$x2)/nrow(LT$X)-sumMeanXSq
+	message("MSx=",MSx)
 	
 	#Initialize beta
 	LT$p<-ncol(LT$X)
@@ -431,10 +460,10 @@ setLT.BRR_mt<-function(LT,traits,j,saveAt)
 	#Select appropriate covariance structure
 	
 	LT$Cov<-switch(LT$Cov$type,
-					UN=setCov.UN(Cov=LT$Cov,traits=traits),
-					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits),
-					REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,saveAt=saveAt),
-					FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,saveAt=saveAt)
+					UN=setCov.UN(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*Sy/MSx),
+					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*diag(Sy)/MSx),
+					REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt),
+					FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt)
 	               )
 	
 	#Objects for saving posterior means for MCMC
@@ -452,7 +481,7 @@ setLT.BRR_mt<-function(LT,traits,j,saveAt)
 #Note also  (u_1',...,u_t') ~ N(0, G_0 x K), where x represents the Kronecker product
 #Internally we represent this using the eigen-value decomposition, 
 #using as incidence matrix X=Gamma*Lambda^{1/2}, where K=Gamma*Lambda*Gamma' 
-setLT.RKHS_mt<-function(LT,traits,j,saveAt)
+setLT.RKHS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 {
 
 	if(is.null(LT$EVD) & is.null(LT$K))
@@ -490,6 +519,8 @@ setLT.RKHS_mt<-function(LT,traits,j,saveAt)
 		message("Ok")
 	}
 	
+	
+	
 	keep <- LT$EVD$values>1e-10
 	LT$EVD$vectors <- LT$EVD$vectors[,keep]
 	LT$EVD$values <- LT$EVD$values[keep]
@@ -497,7 +528,7 @@ setLT.RKHS_mt<-function(LT,traits,j,saveAt)
 	#X=Gamma*Lambda^{1/2}
 	LT$X<-sweep(x=LT$EVD$vectors,MARGIN=2,STATS=sqrt(LT$EVD$values),FUN="*")
 	
-	LT<-setLT.BRR_mt(LT=LT,traits=traits,j=j,saveAt=saveAt)
+	LT<-setLT.BRR_mt(LT=LT,traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt)
 	
 	return(LT)
 	
@@ -582,7 +613,7 @@ setLT.FIXED_mt<-function(LT,traits,j)
 }
 
 #Initialize residual covariance structure
-setResCov<-function(resCov, traits,error,saveAt)
+setResCov<-function(resCov,traits,error,Sy,R2,saveAt)
 {
 
 	message("Initializing resCov")
@@ -606,37 +637,48 @@ setResCov<-function(resCov, traits,error,saveAt)
 	if(resCov$type=="UN")
 	{
 		message("Setting hyperparameters for UNstructured R")
-		if(is.null(resCov$S0))
-		{
-			resCov$S0 <- diag(traits)
-			message("S0 was set to an identity matrix")	
-		}
 		
 		if(is.null(resCov$df0))
 		{
-			resCov$df0<-traits
-			message("df0 was set to ", traits)
+			resCov$df0<-5
+			message("df0 was set to ", resCov$df0)
+		}
+		
+		if(is.null(resCov$S0))
+		{
+			#resCov$S0 <- diag(traits)
+			resCov$S0<-(1-R2)*Sy*(resCov$df0+traits+1)
+			message("S0 was set to ")
+			print(resCov$S0)	
 		}	
 	}
 	
 	if(resCov$type=="DIAG")
 	{
 		message("Setting hyperparameters for DIAG R")
-		if(is.null(resCov$S0))
-		{
-			resCov$S0 <- rep(1,traits)
-			message("S0 was set to 1 for all the traits")	
-		}
 		
 		if(is.null(resCov$df0))
 		{
-			resCov$df0<-rep(1,traits)
-			message("df0 set to  1 for all the traits")
+			resCov$df0<-rep(5,traits)
+			message("df0 set to  5 for all the traits")
 		}
+		
+		if(is.null(resCov$S0))
+		{
+			#resCov$S0 <- rep(1,traits)
+			#message("S0 was set to 1 for all the traits")
+			resCov$S0<-(1-R2)*diag(Sy)*(resCov$df0+2)
+			message("S0 was set to ")
+			print(resCov$S0)	
+		}
+		
+
 	}
 	
 	if(resCov$type=="REC")
 	{
+		message("Setting hyperparameters for REC R")
+		
 		if(is.null(resCov$M)) stop("M can not be null")
 		
 		if(!is.logical(resCov$M)) stop("M must be logical matrix (with entries being TRUE/FALSE)")
@@ -651,16 +693,20 @@ setResCov<-function(resCov, traits,error,saveAt)
 		
 		resCov$M[upper.tri(resCov$M)]<-FALSE
 		
-		if(is.null(resCov$S0))
-		{
-			resCov$S0 <- rep(1,traits)
-			message("S0 was set to 1 for all the traits")	
-		}
 		
 		if(is.null(resCov$df0))
 		{
-			resCov$df0<-rep(1,traits)
-			message("df0 set to  1 for all the traits")
+			resCov$df0<-rep(5,traits)
+			message("df0 set to  5 for all the traits")
+		}
+		
+		if(is.null(resCov$S0))
+		{
+			#resCov$S0 <- rep(1,traits)
+			#message("S0 was set to 1 for all the traits")
+			resCov$S0<-(1-R2)*diag(Sy)*(resCov$df0+2)
+			message("S0 was set to ")
+			print(resCov$S0)	
 		}
 			
 		if(is.null(resCov$var))
@@ -693,6 +739,8 @@ setResCov<-function(resCov, traits,error,saveAt)
 	
 	if(resCov$type=="FA")
 	{
+		message("Setting hyperparameters for FA R")
+		
 		if(is.null(resCov$M)) stop("M can not be null")
 		
 		if(!is.logical(resCov$M)) stop("M must be logical matrix (with entries being TRUE/FALSE)")
@@ -706,18 +754,22 @@ setResCov<-function(resCov, traits,error,saveAt)
 		resCov$nF<-ncol(resCov$M)
 		
 		
-		if(is.null(resCov$S0))
-		{
-			resCov$S0 <- rep(1/100,traits)
-			message("S0 was set to 1/100 for all the traits")	
-		}
-		
 		if(is.null(resCov$df0))
 		{
-			resCov$df0<-rep(1,traits)
-			message("df0 set to  1 for all the traits")
+			resCov$df0<-rep(5,traits)
+			message("df0 set to  5 for all the traits")
 		}
-			
+		
+		if(is.null(resCov$S0))
+		{
+			#resCov$S0 <- rep(1/100,traits)
+			#message("S0 was set to 1/100 for all the traits")
+			resCov$S0<-(1-R2)*diag(Sy)*(resCov$df0+2)
+			message("S0 was set to ")
+			print(resCov$S0)	
+		}
+		
+
 		if(is.null(resCov$var))
 		{
 			resCov$var<-100
@@ -997,7 +1049,8 @@ sample_mu <- function(ystar, R, n, traits)
 Multitrait<-function(y,
 					 ETA,
 					 intercept=TRUE,
-                     resCov = list(df0=NULL,S0=NULL,type="UN"),
+                     resCov = list(df0=5,S0=NULL,type="UN"),
+                     R2=0.5,
                      nIter=1000,burnIn=500,thin=10,
                      saveAt="")
 {
@@ -1010,6 +1063,9 @@ Multitrait<-function(y,
 	if(traits<2) stop("y must hava at least 2 columns\n")
 	
 	n<-nrow(y)
+	
+	#Compute sample variance covariance matrix
+	Sy<-cov(y,use="complete.obs")
 	
 	#Deep copy of y, DO NOT REPLACE with y.back<-y, it does not work, both objects 
 	#share the same memory address
@@ -1089,18 +1145,18 @@ Multitrait<-function(y,
 	
 	if(nLT<1) stop("Provide at least a linear predictor in ETA\n")
 	
-	
 	for(j in 1:nLT)
 	{
-		if(!(ETA[[j]]$model %in% c("SpikeSlab","BRR","RKHS","FIXED"))) 
+	
+        if(!(ETA[[j]]$model %in% c("SpikeSlab","BRR","RKHS","FIXED"))) 
         {
         	stop("Error in ETA[[", j, "]]", " model ", ETA[[j]]$model, " not implemented (note: evaluation is case sensitive)")    
         }
         
 		ETA[[j]]<-switch(ETA[[j]]$model,
-						SpikeSlab=setLT.DiracSS_mt(LT=ETA[[j]],traits=traits,j=j,saveAt=saveAt),
-						BRR=setLT.BRR_mt(LT=ETA[[j]],traits=traits,j=j,saveAt=saveAt),
-						RKHS=setLT.RKHS_mt(LT=ETA[[j]],traits=traits,j=j,saveAt=saveAt),
+						SpikeSlab=setLT.DiracSS_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt),
+						BRR=setLT.BRR_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt),
+						RKHS=setLT.RKHS_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt),
 						FIXED=setLT.FIXED_mt(LT=ETA[[j]],traits=traits,j=j))
 	
 	} 	#End of cycle for setting linear terms
@@ -1119,7 +1175,7 @@ Multitrait<-function(y,
 	}
 
 	#Initialization of variance covariance matrix for errors (R)
-	resCov<-setResCov(resCov=resCov,traits=traits,error=error,saveAt=saveAt)
+	resCov<-setResCov(resCov=resCov,traits=traits,error=error,Sy=Sy,R2=R2,saveAt=saveAt)
 	
 	yHat<-matrix(0,nrow=n,ncol=traits)
 	yHat2<-matrix(0,nrow=n,ncol=traits)
