@@ -4,7 +4,8 @@ importFrom("graphics", "abline", "plot")
 importFrom("stats", "cor", "dbeta", "dchisq", "dexp", "dgamma",
            "dnorm", "model.frame", "model.matrix", "pnorm", "qnorm",
            "rbeta", "rbinom", "rchisq", "rgamma", "rnorm", "runif",
-           "var", "weighted.mean","sd","complete.cases","factanal","varimax")
+           "var", "weighted.mean","sd","complete.cases","factanal","varimax",
+           "cov")
 importFrom("utils", "read.table")
 importFrom("truncnorm", "rtruncnorm")
 importFrom("MASS","mvrnorm")
