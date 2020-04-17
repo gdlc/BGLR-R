@@ -31,8 +31,8 @@
 }
 
 \usage{
- Multitrait(y, ETA, intercept=TRUE,resCov = list(df0=NULL,S0=NULL,type="UN"), 
-  nIter=1000,burnIn=500,thin=10, saveAt="")
+ Multitrait(y, ETA, intercept=TRUE,resCov = list(df0=5,S0=NULL,type="UN"), 
+   R2=0.5, nIter=1000,burnIn=500,thin=10, saveAt="")
 }
 
 \arguments{
@@ -61,6 +61,9 @@
    		    specifies an UN-structured covariance matrix, 
    		    with an Inverse Whishart prior with degree of freedom df0 (scalar) and scale matrix (t x t) V.}
   	 \item{saveAt}{(string) this may include a path and a pre-fix that will be added to the name of the files that are saved as the program runs.}
+  	 \item{R2}{(numeric, \code{0<R2<1}) The proportion of co-variance that one expects, a priori, to be explained by the regression. Only used if 
+             the hyper-parameters are not specified; if that is the case, internaly, hyper-paramters are set so that the prior modes are consistent with the 
+             co-variance partition specified by R2 and the prior distribution is relatively flat at the mode.}
 }
 
 \details{
