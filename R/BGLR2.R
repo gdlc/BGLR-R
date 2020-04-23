@@ -190,11 +190,6 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
 		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC"))) stop(paste(" Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups\n", sep = ""))
             }
 
-            if(!is.null(ETA[[i]]$storageMode)){
-                if(!(ETA[[i]]$storageMode %in% c("single","double"))) stop("Error in ETA[[", i, "]]", " storageMode can be either 'single' or 'double' (default)")
-            }else{
-                ETA[[i]]$storageMode="double"
-            }
 
             ETA[[i]] = switch(ETA[[i]]$model, 
 			      FIXED = setLT.Fixed(LT = ETA[[i]],  n = n, j = i, weights = weights, y = y, nLT = nLT, saveAt = saveAt, rmExistingFiles = rmExistingFiles,groups=groups,nGroups=nGroups), 
@@ -288,7 +283,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
     					if(rmExistingFiles){ unlink(fname) }
     					ETA[[i]]$fileEffects=file(fname,open='wb')
     					nRow=floor((nIter-burnIn)/thin)
-    					writeBin(object=c(nRow,ETA[[i]]$p),con=ETA[[i]]$fileEffects,size=ifelse(ETA[[i]]$storageMode=="single",4,8))
+    					writeBin(object=c(nRow,ETA[[i]]$p),con=ETA[[i]]$fileEffects)
     				}
     			}
          	}
@@ -700,9 +695,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$post_b2 = ETA[[j]]$post_b2 * k + (ETA[[j]]$b^2)/nSums
                       ETA[[j]]$post_varB = ETA[[j]]$post_varB * k + (ETA[[j]]$varB)/nSums
                       ETA[[j]]$post_varB2 = ETA[[j]]$post_varB2 * k + (ETA[[j]]$varB^2)/nSums
-                      if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
-                          writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
-                      }#*#
+                      if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#
                     }
 
                     if (ETA[[j]]$model == "BRR_sets") {
@@ -712,9 +705,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$post_varB2 = ETA[[j]]$post_varB2 * k + (ETA[[j]]$varB^2)/nSums
                       ETA[[j]]$post_varSets<-ETA[[j]]$post_varSets*k+tmp/nSums
                       ETA[[j]]$post_varSets2<-ETA[[j]]$post_varSets2*k+(tmp^2)/nSums
-                      if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
-                          writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
-                      }#*#
+                      if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#
                     }
                     
                     if (ETA[[j]]$model == "BL") {
@@ -722,9 +713,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$post_b2 = ETA[[j]]$post_b2 * k + (ETA[[j]]$b^2)/nSums
                       ETA[[j]]$post_tau2 = ETA[[j]]$post_tau2 * k + (ETA[[j]]$tau2)/nSums
                       ETA[[j]]$post_lambda = ETA[[j]]$post_lambda * k + (ETA[[j]]$lambda)/nSums
-                      if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
-                          writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
-                      }#*#
+                      if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#
                     }
 
                     if (ETA[[j]]$model == "RKHS") {
@@ -743,9 +732,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$post_d = ETA[[j]]$post_d * k + (ETA[[j]]$d)/nSums
                       ETA[[j]]$post_probIn = ETA[[j]]$post_probIn * k + (ETA[[j]]$probIn)/nSums
                       ETA[[j]]$post_probIn2 = ETA[[j]]$post_probIn2 * k + (ETA[[j]]$probIn^2)/nSums
-                      if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
-                          writeBin(object=ETA[[j]]$b*ETA[[j]]$d,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
-                      }#*#
+                      if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b*ETA[[j]]$d,con=ETA[[j]]$fileEffects)}#*#
                     }
 
                     if (ETA[[j]]$model == "BayesA") {
@@ -755,9 +742,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$post_varB2 = ETA[[j]]$post_varB2 * k + (ETA[[j]]$varB^2)/nSums
                       ETA[[j]]$post_S = ETA[[j]]$post_S * k + (ETA[[j]]$S)/nSums
 		      		  ETA[[j]]$post_S2 = ETA[[j]]$post_S2 * k + (ETA[[j]]$S^2)/nSums
-		      		  if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
-                          writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
-                      }#*#
+		      		  if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#
                     }
 
                     if(ETA[[j]]$model=="BayesB")
@@ -771,9 +756,7 @@ BGLR2=function (y, response_type = "gaussian", a = NULL, b = NULL,
                         ETA[[j]]$post_probIn2 = ETA[[j]]$post_probIn2 * k + (ETA[[j]]$probIn^2)/nSums
                         ETA[[j]]$post_S = ETA[[j]]$post_S * k + (ETA[[j]]$S)/nSums
 						ETA[[j]]$post_S2 = ETA[[j]]$post_S2 * k + (ETA[[j]]$S^2)/nSums
-						if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
-                            writeBin(object=ETA[[j]]$b*ETA[[j]]$d,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
-                        }#*#
+						if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b*ETA[[j]]$d,con=ETA[[j]]$fileEffects)}#*#
                     }
                   }
                 }
