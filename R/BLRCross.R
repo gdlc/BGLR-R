@@ -96,7 +96,7 @@ setLT.BayesA.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(rmExistingFiles){ unlink(fname) }
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
-    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
+    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
     }#*#
     
   	return(LT)
@@ -225,7 +225,7 @@ setLT.BayesB.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(rmExistingFiles){ unlink(fname) }
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
-    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
+    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
     }#*#
       	
   	return(LT)
@@ -344,7 +344,7 @@ setLT.BayesC.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(rmExistingFiles){ unlink(fname) }
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
-    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
+    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
     }#*#
       	
   	return(LT)
@@ -533,7 +533,7 @@ setLT.SSVS.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(rmExistingFiles){ unlink(fname) }
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
-    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
+    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
     }#*#
       	
   	return(LT)
@@ -617,7 +617,7 @@ setLT.BRR.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     	if(rmExistingFiles){ unlink(fname) }
     	LT$fileEffects=file(fname,open='wb')
     	nRow=floor((nIter-burnIn)/LT$thin)
-    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects)
+    	writeBin(object=c(nRow,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
     }#*#
     
   	return(LT)
@@ -1026,7 +1026,9 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
                       	ETA[[j]]$post_S = ETA[[j]]$post_S * k + (ETA[[j]]$S)/nSums
 		      		  	ETA[[j]]$post_S2 = ETA[[j]]$post_S2 * k + (ETA[[j]]$S^2)/nSums
 		      		  	
-		      		  	if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#
+		      		  	if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
+                            writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
+                        }#*#
     				}
     				
     				#BayesB case
@@ -1044,7 +1046,9 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
                         ETA[[j]]$post_S = ETA[[j]]$post_S * k + (ETA[[j]]$S)/nSums
 						ETA[[j]]$post_S2 = ETA[[j]]$post_S2 * k + (ETA[[j]]$S^2)/nSums
 						
-						if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#
+						if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
+                            writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
+                        }#*#
     				}
     				
     				#BayesC case
@@ -1059,7 +1063,9 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
                         ETA[[j]]$post_probIn = ETA[[j]]$post_probIn * k + (ETA[[j]]$probIn)/nSums
                         ETA[[j]]$post_probIn2 = ETA[[j]]$post_probIn2 * k + (ETA[[j]]$probIn^2)/nSums  
                         
-                        if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#			
+                        if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
+                            writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
+                        }#*#
     				}
     				
     				#SSVS case
@@ -1077,7 +1083,9 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
                         ETA[[j]]$post_c = ETA[[j]]$post_c * k + ETA[[j]]$c/nSums
                       	ETA[[j]]$post_c2 = ETA[[j]]$post_c2 * k + (ETA[[j]]$c^2)/nSums
                         
-                        if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#
+                        if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
+                            writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
+                        }#*#
     				}
     			
     				#BRR case
@@ -1088,7 +1096,9 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
                       	ETA[[j]]$post_varB = ETA[[j]]$post_varB * k + (ETA[[j]]$varB)/nSums
                       	ETA[[j]]$post_varB2 = ETA[[j]]$post_varB2 * k + (ETA[[j]]$varB^2)/nSums  
                       	
-                      	if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){  writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects)}#*#  			
+                      	if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
+                            writeBin(object=ETA[[j]]$b,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
+                        }#*#
     				}
     				
     				#FIXED case
