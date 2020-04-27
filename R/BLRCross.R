@@ -16,6 +16,7 @@ setLT.BayesA.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$p=p
 	LT$idColumns=idColumns
 	LT$saveEffects=prior$saveEffects
+	LT$storageMode=prior$storageMode
 		
 	LT$MSx=sumVarX
 	
@@ -125,6 +126,7 @@ setLT.BayesB.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$p=p
 	LT$idColumns=idColumns
 	LT$saveEffects=prior$saveEffects
+	LT$storageMode=prior$storageMode
 		
 	LT$MSx=sumVarX
 	
@@ -257,6 +259,7 @@ setLT.BayesC.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$p=p
 	LT$idColumns=idColumns
 	LT$saveEffects=prior$saveEffects
+	LT$storageMode=prior$storageMode
 		
 	LT$MSx=sumVarX
 		
@@ -423,6 +426,7 @@ setLT.SSVS.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$p=p
 	LT$idColumns=idColumns
 	LT$saveEffects=prior$saveEffects
+	LT$storageMode=prior$storageMode
 		
 	LT$MSx=sumVarX
 	
@@ -571,6 +575,7 @@ setLT.BRR.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 	LT$p=p
 	LT$idColumns=idColumns
 	LT$saveEffects=prior$saveEffects
+	LT$storageMode=prior$storageMode
 		
 	LT$MSx=sumVarX
 	
