@@ -2,8 +2,8 @@ version 1.0 (2012-10-01)
   
   It starts as a copy of BLR version 1.3
   
-  major changes, new list interface, models added for continuous, discrete and 
-  censored traits. 
+  Major changes, new list interface, models added for continuous, discrete and 
+  censored traits 
   
   For continuous traits:
   
@@ -21,35 +21,58 @@ version 1.0 (2012-10-01)
 
 version 1.0.1 
 
-  initial release
+  Initial release
 
 version 1.0.2
 
-  some documentation fixes, some comments added to the code
+  Some documentation fixes, some comments added to the code
 
 version 1.0.3
-  some methods added: summary, residuals, predict, effects
+  
+  Some methods added: summary, residuals, predict, effects
 
 version 1.0.4
-  methods added to deal with heterogeneous variances
-  bug fixes for BayesB and BayesC-pi. There was a bug that included 
+  
+  Methods added to deal with heterogeneous variances
+  
+  Bug fixes for BayesB and BayesC-pi. There was a bug that included 
   markers that should not appear in the model
 
 version 1.0.5
-  using BRR_sets (BRR_windows removed)
-  saving effects in binary files & computing windows
+  
+  Using BRR_sets (BRR_windows removed)
+  
+  Saving effects in binary files & computing windows
 
 version 1.0.6
-  never released, problems with reverse depencies
+  
+  Never released, problems with reverse depencies
 
 version 1.0.7
+  
   Removing OpenMP Flags, C code for registring routines added
+  
   Update urls
 
 version 1.0.8
+  
   Bayesian Ridge Regression now supports (square) triangular matrices and samples effects efficiently
+  
   Sampling from truncated normal distribution is performed using the truncnorm library
+  
   Fixes in C code for avoiding integer overflow in sampling functions with large datasets
+  
   CITATION added
+  
   Several fixes for displaying messages when using stop(), cat(), etc.
+
+version 1.0.9
+  
+  Saving effects in binary files now supports two storage modes: 8 bits (double, default) and 4 bits (single).
+  
+  Added several functions, i) BLRCross and BLRXy which implements efficient fitting of models based on summary 
+  statistics X'X and X'y, which is faster when number of individuals (p) is bigger than the number of markers.
+  
+  Added functions to fit multitrait models with arbitrary number of random effects.  
+  
 
