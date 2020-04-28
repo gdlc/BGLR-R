@@ -71,7 +71,7 @@ version 1.0.9
   Saving effects in binary files now supports two storage modes: 8 bits (double, default) and 4 bits (single).
   
   Added several functions, i) BLRCross and BLRXy which implements efficient fitting of models based on summary 
-  statistics X'X and X'y, which is faster when number of individuals (p) is bigger than the number of markers.
+  statistics X'X and X'y, which is faster when number of individuals (n) is bigger than the number of markers(p).
   
   Added functions to fit multitrait models with arbitrary number of random effects.  
   
