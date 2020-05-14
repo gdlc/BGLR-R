@@ -391,7 +391,13 @@ setLT.DiracSS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 					REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt),
 					FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt)
 	               )
-	               
+	
+	#Add a new object to compute covariance between entries of
+	#beta=b*d with MCMC output, Sigma=Cov(beta,beta'), beta is 
+	#a vector with marker effects for one locus, dimmension 1*traits
+	LT$Cov$Sigma=matrix(0,nrow=traits,ncol=traits)   
+	LT$Cov$post_Sigma=matrix(0,nrow=traits,ncol=traits)
+	LT$Cov$post_Sigma2=matrix(0,nrow=traits,ncol=traits)            
 	
 	#Objects for saving posterior means for MCMC
 	LT$post_b<-matrix(0,nrow=LT$p,ncol=traits)
@@ -1038,6 +1044,38 @@ sample_mu <- function(ystar, R, n, traits)
     return(mu)
 }
 
+#Function to compute covariance matrix between entries of beta=b*d
+#using MCMC information
+#cov(beta_{jk},beta_{jk'})=sigma_{kk'} if both beta_{jk} and beta_{jk} different from 0
+#and o otherwise
+covBeta<-function(d,Omega,traits)
+{
+	DpatternsG<-apply(d,1,logicalToDec)    			#patterns in decimal
+	tDpatternsG<-table(DpatternsG)			  		#Frequency table
+	UpatternsG<-unique(d,drop=FALSE)	   			#Unique patterns
+	dUpatternsG<-apply(UpatternsG,1,logicalToDec)	#decimal of unique patterns
+	permutationG<-order(dUpatternsG)				#Permutations to sort records
+	UpatternsG<-UpatternsG[permutationG,]			#Sort
+	dUpatternsG<-dUpatternsG[permutationG]			#Sort
+	
+	if(any(names(tDpatternsG)!=as.character(dUpatternsG))) stop("Ordering problem in covBeta\n")
+
+	tmp1G<-rep(0,traits*traits)
+	tmp2G<-as.vector(Omega)
+
+	for(mG in 1:length(dUpatternsG))
+	{
+		#Both entries are set to 1 or TRUE
+		tmp3G<-as.integer(rowSums(expand.grid(UpatternsG[mG,],UpatternsG[mG,]))==2)
+		tmp1G<-tmp1G + tDpatternsG[mG]*tmp2G*tmp3G
+	}
+
+	tmp1G<-tmp1G/nrow(d)
+	tmp1G<-matrix(tmp1G,nrow=traits,ncol=traits,byrow=FALSE)
+	
+	return(tmp1G)
+}
+
 #Function to fit multi-trait model
 #Arguments:
 #y: A matrix of dimension n * t, where t is the number of traits, NAs allowed.
@@ -1297,6 +1335,11 @@ Multitrait<-function(y,
 						rm(tmp)
 						
 					}
+					
+					#At this point we already know the value of the indicator variables
+					#So we can compute the variance-covariance matrix for beta=b*d
+					ETA[[j]]$Cov$Sigma<-covBeta(d=ETA[[j]]$d,Omega=ETA[[j]]$Cov$Omega,
+					                            traits=traits)					
 					
 			} #End of SpikeSlab
 			
@@ -1688,6 +1731,12 @@ Multitrait<-function(y,
 					ETA[[j]]$Cov$post_Omega <- ETA[[j]]$Cov$post_Omega * fraction + ETA[[j]]$Cov$Omega/nSums
     				ETA[[j]]$Cov$post_Omega2 <- ETA[[j]]$Cov$post_Omega2 * fraction + ETA[[j]]$Cov$Omega^2/nSums
     				
+    				if(ETA[[j]]$model%in%"SpikeSlab")
+    				{
+    					ETA[[j]]$Cov$post_Sigma <- ETA[[j]]$Cov$post_Sigma * fraction + ETA[[j]]$Cov$Sigma/nSums
+    					ETA[[j]]$Cov$post_Sigma2 <- ETA[[j]]$Cov$post_Sigma2 * fraction + ETA[[j]]$Cov$Sigma^2/nSums
+    				}
+    				
     				if(ETA[[j]]$Cov$type%in%c("REC","FA"))
     				{
     					ETA[[j]]$Cov$post_B <- ETA[[j]]$Cov$post_B * fraction + ETA[[j]]$Cov$B/nSums
@@ -1744,6 +1793,12 @@ Multitrait<-function(y,
 				ETA[[j]]$Cov$Omega<-ETA[[j]]$Cov$post_Omega
 				ETA[[j]]$Cov$SD.Omega<-sqrt(ETA[[j]]$Cov$post_Omega2-ETA[[j]]$Cov$post_Omega^2)
 				
+				if(ETA[[j]]$model=="SpikeSlab")
+				{
+					ETA[[j]]$Cov$Sigma<-ETA[[j]]$Cov$post_Sigma
+					ETA[[j]]$Cov$SD.Sigma<-sqrt(ETA[[j]]$Cov$post_Sigma2-ETA[[j]]$Cov$post_Sigma^2)
+				}
+				
 				#Rename Omega to G
 				if(ETA[[j]]$model=="RKHS")
 				{
@@ -1764,7 +1819,8 @@ Multitrait<-function(y,
 				
 				tmp<-which(names(ETA[[j]]$Cov)%in%c("post_Omega","post_Omega2","Omegainv",
 				                                    "post_B","post_B2","post_PSI","post_PSI2",
-				                                    "F"))
+				                                    "F",
+				                                    "post_Sigma","post_Sigma2"))
 				ETA[[j]]$Cov<-ETA[[j]]$Cov[-tmp] 
 				
 				rm(tmp)                                   
