@@ -300,7 +300,7 @@ setCov.FA<-function(Cov,traits,nD,j,mo,saveAt)
 
 
 #Set linear term for DiracSS_mt
-setLT.DiracSS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
+setLT.DiracSS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt,nRow)
 {
 	
 	message("Setting linear term ",j)
@@ -409,11 +409,36 @@ setLT.DiracSS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 	LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
 	LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
 	
+	#Files to save binary files with betas
+	if(is.null(LT$saveEffects))
+	{
+		LT$saveEffects<-FALSE
+	}
+	
+    if(LT$saveEffects)
+    {
+        if(is.null(LT$storageMode))
+        {
+        	LT$storageMode<-"double"
+        }
+        
+        if(!LT$storageMode%in%c("single","double")) 
+        {
+            stop("storageMode of LP ",j," can either be 'single' or 'double' (default)")
+        }
+         	
+    	fname<-paste(saveAt,LT$Name,"_beta.bin",sep="")
+    	LT$fileEffects<-file(fname,open='wb')
+    	writeBin(object=c(nRow,traits,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
+    	
+    }#*#
+    
+	
 	return(LT)
 }
 
 #Set linear term for Ridge Regression
-setLT.BRR_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
+setLT.BRR_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt,nRow)
 {		
 
 	message("Setting linear term ",j)
@@ -479,6 +504,30 @@ setLT.BRR_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 	LT$post_Omega<-matrix(0,nrow=traits,ncol=traits)
 	LT$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
 	
+	#Files to save binary files with betas
+	if(is.null(LT$saveEffects))
+	{
+		LT$saveEffects<-FALSE
+	}
+	
+    if(LT$saveEffects)
+    {
+        if(is.null(LT$storageMode))
+        {
+        	LT$storageMode<-"double"
+        }
+        
+        if(!LT$storageMode%in%c("single","double")) 
+        {
+            stop("storageMode of LP ",j," can either be 'single' or 'double' (default)")
+        }
+         	
+    	fname<-paste(saveAt,LT$Name,"_beta.bin",sep="")
+    	LT$fileEffects<-file(fname,open='wb')
+    	writeBin(object=c(nRow,traits,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
+    	
+    }#*#
+    
 	return(LT)
 }
 
@@ -534,7 +583,10 @@ setLT.RKHS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 	#X=Gamma*Lambda^{1/2}
 	LT$X<-sweep(x=LT$EVD$vectors,MARGIN=2,STATS=sqrt(LT$EVD$values),FUN="*")
 	
-	LT<-setLT.BRR_mt(LT=LT,traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt)
+	
+	#We do not save effects in RKHS
+	LT$saveEffects<-FALSE
+	LT<-setLT.BRR_mt(LT=LT,traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt,nRow=0)
 	
 	return(LT)
 	
@@ -1076,6 +1128,39 @@ covBeta<-function(d,Omega,traits)
 	return(tmp1G)
 }
 
+# Function to read effects saved by Multitrait when ETA[[j]]$saveEffects=TRUE
+# It returns a 3D array, with dim=c(nRow,p,traits)
+# nRow number of MCMC samples saved,
+# p number of predictors
+# traits number of traits
+
+readBinMatMultitrait<-function(filename,storageMode="double")
+{
+
+    if(!storageMode%in%c("single","double")){
+        stop("storageMode can either be 'single' or 'double' (default)")
+    }
+    
+  	fileIn<-gzfile(filename,open='rb')
+ 	nRow<-readBin(fileIn,n=1,what=numeric(),size=ifelse(storageMode=="single",4,8))
+ 	traits<-readBin(fileIn,n=1,what=numeric(),size=ifelse(storageMode=="single",4,8))
+ 	p<-readBin(fileIn,n=1,what=numeric(),size=ifelse(storageMode=="single",4,8))
+
+ 	Beta<-array(data=NA,dim=c(nRow,p,traits))
+ 	
+ 	for(j in 1:nRow)
+ 	{
+ 		for(k in 1:traits)
+ 		{
+ 			Beta[j,,k]<-readBin(fileIn,n=p,what=numeric(),size=ifelse(storageMode=="single",4,8))
+ 		}
+ 	}
+ 	 	
+ 	close(fileIn)
+ 	
+ 	return(Beta)
+}
+
 #Function to fit multi-trait model
 #Arguments:
 #y: A matrix of dimension n * t, where t is the number of traits, NAs allowed.
@@ -1183,8 +1268,24 @@ Multitrait<-function(y,
 	
 	if(nLT<1) stop("Provide at least a linear predictor in ETA\n")
 	
+	#Names of linear terms
+	if(is.null(names(ETA)))
+    { 
+		names(ETA)<-rep("",nLT)
+    }
+    
+    nRow<-nIter/thin
+    if(nRow<1) stop("Check nIter, thin\n")
+	
 	for(j in 1:nLT)
 	{
+		
+		if(names(ETA)[j]=="")
+	    {
+	       	ETA[[j]]$Name=paste("ETA_",j,sep="")
+	    }else{
+            ETA[[j]]$Name=paste("ETA_",names(ETA)[j],sep="")
+	    }
 	
         if(!(ETA[[j]]$model %in% c("SpikeSlab","BRR","RKHS","FIXED"))) 
         {
@@ -1192,8 +1293,8 @@ Multitrait<-function(y,
         }
         
 		ETA[[j]]<-switch(ETA[[j]]$model,
-						SpikeSlab=setLT.DiracSS_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt),
-						BRR=setLT.BRR_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt),
+						SpikeSlab=setLT.DiracSS_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt,nRow=nRow),
+						BRR=setLT.BRR_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt,nRow=nRow),
 						RKHS=setLT.RKHS_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt),
 						FIXED=setLT.FIXED_mt(LT=ETA[[j]],traits=traits,j=j))
 	
@@ -1671,6 +1772,20 @@ Multitrait<-function(y,
 				
 			}#End for
 			
+			#Saving beta effects
+			for(j in 1:nLT)
+			{
+				if(ETA[[j]]$model%in%c("SpikeSlab","BRR"))
+				{
+					if(ETA[[j]]$saveEffects)
+					{
+                      writeBin(object=as.vector(ETA[[j]]$beta),
+                               con=ETA[[j]]$fileEffects,
+                               size=ifelse(ETA[[j]]$storageMode=="single",4,8))
+                    }
+                }
+			}
+			
 		}#End of saving files
 		
 		
@@ -1873,6 +1988,7 @@ Multitrait<-function(y,
 	close(resCov$f_R)
 	resCov$f_R<-NULL
 	
+	#Covariance matrices
 	for(j in 1:nLT)
 	{
 		if(ETA[[j]]$model%in%c("SpikeSlab","BRR","RKHS"))
@@ -1886,7 +2002,26 @@ Multitrait<-function(y,
 				
 			}#End of if REC, FA
 		}#End of if SpikeSlab, BRR, RKHS
-	}#End of for			
+	}#End of for
+	
+	#Effect files
+	for(j in 1:nLT)
+	{
+		if(!is.null(ETA[[j]]$fileEffects))
+		{
+        	flush(ETA[[j]]$fileEffects)
+            close(ETA[[j]]$fileEffects)
+            ETA[[j]]$fileEffects<-NULL
+            
+            if(!is.null(ETA[[j]]$compressEffects) && ETA[[j]]$compressEffects)
+            {
+            	message("Compressing binary file for term ", j)
+            	compressFile(paste(saveAt,ETA[[j]]$Name,"_beta.bin",sep=""))
+            	message("Done")
+            }
+                
+        }
+    }
 	
 	SD.yHat<-sqrt(yHat2-yHat^2)
 	
