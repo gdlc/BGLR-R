@@ -82,7 +82,7 @@ xpnd <-function (x, nrow = NULL)
 #Cov, list
 #traits, integer
 #mo, Mode
-setCov.UN<-function(Cov,traits,mo)
+setCov.UN<-function(Cov,traits,j,mo,saveAt)
 {	
 	
 	message("UNstructured covariance matrix")
@@ -110,6 +110,10 @@ setCov.UN<-function(Cov,traits,mo)
 	Cov$post_Omega<-matrix(0,nrow=traits,ncol=traits)
 	Cov$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
 	
+	#Output files
+	Cov$fName_Omega<-paste(saveAt,"Omega_",j,".dat",sep="")
+	Cov$f_Omega<-file(description=Cov$fName_Omega,open="w")
+	
 	return(Cov)
 
 }
@@ -118,7 +122,7 @@ setCov.UN<-function(Cov,traits,mo)
 #Cov, list
 #traits, integer
 #mo, Mode
-setCov.DIAG<-function(Cov,traits,mo)
+setCov.DIAG<-function(Cov,traits,j,mo,saveAt)
 {
 	message("DIAGonal covariance matrix")
 	
@@ -149,6 +153,10 @@ setCov.DIAG<-function(Cov,traits,mo)
 	#Objects for saving posterior means for MCMC
 	Cov$post_Omega<-matrix(0,nrow=traits,ncol=traits)
 	Cov$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
+	
+	#Output files
+	Cov$fName_Omega<-paste(saveAt,"Omega_",j,".dat",sep="")
+	Cov$f_Omega<-file(description=Cov$fName_Omega,open="w")
 	
 	return(Cov)	
 	
@@ -340,8 +348,6 @@ setLT.DiracSS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt,nRow)
 	
 	LT$x2<-as.vector(colSums(LT$X^2))
 	
-	#FIXME:
-	#Perhaps we need to modify this to take into account the inclusion probabilities
 	sumMeanXSq<-sum((apply(LT$X,2L,mean))^2)
 	MSx<-sum(LT$x2)/nrow(LT$X)-sumMeanXSq
 	message("MSx=",MSx)
@@ -386,11 +392,24 @@ setLT.DiracSS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt,nRow)
 	#Select appropriate covariance structure
 	
 	LT$Cov<-switch(LT$Cov$type,
-					UN=setCov.UN(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*Sy/MSx),
-					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*diag(Sy)/MSx),
+					UN=setCov.UN(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*Sy/MSx,saveAt=saveAt),
+					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt),
 					REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt),
 					FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt)
 	               )
+	
+	
+	#It is not working very well when probIn is small
+	#Dm<-diag(1/LT$inclusionProb$probIn)
+	
+	#LT$Cov<-switch(LT$Cov$type,
+	#				UN=setCov.UN(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*Dm%*%Sy%*%Dm/MSx),
+	#				DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*Dm%*%diag(Sy)%*%Dm/MSx),
+	#				REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*Dm%*%diag(Sy)%*%Dm/MSx,saveAt=saveAt),
+	#				FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,mo=(R2/nLT)*Dm%*%diag(Sy)%*%Dm/MSx,saveAt=saveAt)
+	#               )
+	
+	
 	
 	#Add a new object to compute covariance between entries of
 	#beta=b*d with MCMC output, Sigma=Cov(beta,beta'), beta is 
@@ -491,8 +510,8 @@ setLT.BRR_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt,nRow)
 	#Select appropriate covariance structure
 	
 	LT$Cov<-switch(LT$Cov$type,
-					UN=setCov.UN(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*Sy/MSx),
-					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits,mo=(R2/nLT)*diag(Sy)/MSx),
+					UN=setCov.UN(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*Sy/MSx,saveAt=saveAt),
+					DIAG=setCov.DIAG(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt),
 					REC=setCov.REC(Cov=LT$Cov,traits=traits,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt),
 					FA=setCov.FA(Cov=LT$Cov,traits=traits,nD=LT$p,j=j,mo=(R2/nLT)*diag(Sy)/MSx,saveAt=saveAt)
 	               )
@@ -1768,6 +1787,13 @@ Multitrait<-function(y,
 						      file = ETA[[j]]$Cov$f_PSI, append = TRUE, sep = " ")			
 					}#End REC and FA
 					
+					if(ETA[[j]]$Cov$type%in%c("UN","DIAG"))
+					{
+						tmp <- vech(ETA[[j]]$Cov$Omega)
+						write(tmp, ncolumns = length(tmp), file = ETA[[j]]$Cov$f_Omega, append = TRUE, sep = " ")
+						rm(tmp)
+					}
+					
 				}#End of SpikeSlab, BRR and RKHS
 				
 			}#End for
@@ -2001,6 +2027,13 @@ Multitrait<-function(y,
 				ETA[[j]]$Cov$f_PSI<-NULL
 				
 			}#End of if REC, FA
+			
+			if(ETA[[j]]$Cov$type%in%c("UN","DIAG"))
+			{
+				close(ETA[[j]]$Cov$f_Omega)
+				ETA[[j]]$Cov$f_Omega<-NULL
+			}
+			
 		}#End of if SpikeSlab, BRR, RKHS
 	}#End of for
 	
