@@ -32,7 +32,7 @@
 
 \usage{
  Multitrait(y, ETA, intercept=TRUE,resCov = list(df0=5,S0=NULL,type="UN"), 
-   R2=0.5, nIter=1000,burnIn=500,thin=10, saveAt="")
+   R2=0.5, nIter=1000,burnIn=500,thin=10, saveAt="",verbose=TRUE)
 }
 
 \arguments{
@@ -64,6 +64,7 @@
   	 \item{R2}{(numeric, \code{0<R2<1}) The proportion of co-variance that one expects, a priori, to be explained by the regression. Only used if 
              the hyper-parameters are not specified; if that is the case, internaly, hyper-paramters are set so that the prior modes are consistent with the 
              co-variance partition specified by R2 and the prior distribution is relatively flat at the mode.}
+     \item{verbose}{(logical) if TRUE the iteration history is printed, default TRUE.}
 }
 
 \details{
