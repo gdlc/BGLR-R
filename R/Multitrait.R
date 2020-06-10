@@ -519,10 +519,7 @@ setLT.BRR_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt,nRow)
 	#Objects for saving posterior means for MCMC
 	LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
 	LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
-	
-	LT$post_Omega<-matrix(0,nrow=traits,ncol=traits)
-	LT$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
-	
+		
 	#Files to save binary files with betas
 	if(is.null(LT$saveEffects))
 	{
@@ -1187,6 +1184,7 @@ readBinMatMultitrait<-function(filename,storageMode="double")
 #intecept: Logical, TRUE an intercept is included and FALSE an intercept is not included.
 #resCov: List to specify the prior for residual covariance matrix (R).
 #nIter, burnIn, thin: Number of iterations, burnIn and thin.
+#verbose: logical, TRUE/FALSE to print iteration history
 
 Multitrait<-function(y,
 					 ETA,
@@ -1194,7 +1192,7 @@ Multitrait<-function(y,
                      resCov = list(df0=5,S0=NULL,type="UN"),
                      R2=0.5,
                      nIter=1000,burnIn=500,thin=10,
-                     saveAt="")
+                     saveAt="",verbose=TRUE)
 {
 	
 	#Check inputs
@@ -1892,7 +1890,11 @@ Multitrait<-function(y,
 		}
 		
 		end<-proc.time()[3]
-		cat(paste("Iter: ", iter, "time: ", round(end - start, 4)," s \n"))
+		
+		if(verbose)
+		{
+			cat(paste("Iter: ", iter, "time: ", round(end - start, 4)," s \n"))
+		}
 				
 	}#End of loop for iterations
 	
@@ -2083,3 +2085,4 @@ Multitrait<-function(y,
 	
 	return(out)
 }
+
