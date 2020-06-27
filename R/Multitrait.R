@@ -1467,21 +1467,11 @@ Multitrait<-function(y,
 					{
 						#cat("k=",k,"\n")	
 						
-						S11 <- ETA[[j]]$Cov$Omega[k,k,drop=FALSE]
-						S22 <- ETA[[j]]$Cov$Omega[-k,-k,drop=FALSE]
-						S12 <- ETA[[j]]$Cov$Omega[k,-k,drop=FALSE]
-						tmp12 <- as.vector(S12%*%solve(S22))
-						tmp11 <- tmp12%*%t(S12)
-						sigma2 <- as.numeric(S11-tmp11)
-		
-		
 						#beta and error are overwritten with this .Call
 						.Call("sampler_BRR_mt", k, n, ETA[[j]]$p,
 							  traits, resCov$Rinv, ETA[[j]]$X, error,
 							  ETA[[j]]$beta,
 							  ETA[[j]]$x2,
-							  tmp12,
-							  sigma2,
 							  ETA[[j]]$Cov$Omegainv[k,-k],
 							  ETA[[j]]$Cov$Omegainv[k,k])
 												
@@ -1554,21 +1544,12 @@ Multitrait<-function(y,
 					if(ETA[[j]]$common)
 					{
 						for(k in 1:traits)
-						{	
-							S11 <- ETA[[j]]$Cov$Omega[k,k,drop=FALSE]
-							S22 <- ETA[[j]]$Cov$Omega[-k,-k,drop=FALSE]
-							S12 <- ETA[[j]]$Cov$Omega[k,-k,drop=FALSE]
-							tmp12 <- as.vector(S12%*%solve(S22))
-							tmp11 <- tmp12%*%t(S12)
-							sigma2 <- as.numeric(S11-tmp11)
-						
+						{							
 							#beta and error are overwritten with this .Call
 							.Call("sampler_BRR_mt", k, n, ETA[[j]]$p,
 								  traits, resCov$Rinv, ETA[[j]]$X, error,
 								  ETA[[j]]$beta,
 								  ETA[[j]]$x2,
-								  tmp12,
-								  sigma2,
 								  ETA[[j]]$Cov$Omegainv[k,-k],
 								  ETA[[j]]$Cov$Omegainv[k,k])
 												
@@ -1588,22 +1569,12 @@ Multitrait<-function(y,
 							
 							Xk<-ETA[[j]]$X[,c(low[k]:up[k]),drop=FALSE]
 							x2k<-ETA[[j]]$x2[c(low[k]:up[k])]
-							
-							
-							S11 <- ETA[[j]]$Cov$Omega[k,k,drop=FALSE]
-							S22 <- ETA[[j]]$Cov$Omega[-k,-k,drop=FALSE]
-							S12 <- ETA[[j]]$Cov$Omega[k,-k,drop=FALSE]
-							tmp12 <- as.vector(S12%*%solve(S22))
-							tmp11 <- tmp12%*%t(S12)
-							sigma2 <- as.numeric(S11-tmp11)
-						
+													
 							#beta and error are overwritten with this .Call
 							.Call("sampler_BRR_mt", k, n, ETA[[j]]$p,
 								  traits, resCov$Rinv, Xk, error,
 								  ETA[[j]]$beta,
 								  x2k,
-								  tmp12,
-								  sigma2,
 								  ETA[[j]]$Cov$Omegainv[k,-k],
 								  ETA[[j]]$Cov$Omegainv[k,k])
 								  
