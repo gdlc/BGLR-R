@@ -1,3 +1,4 @@
+
 #Auxiliary functions
 #Converts a logical vector to decimal representation
 #eg x=c(TRUE,FALSE), means that we have a binary number "10" which in decimal is 2
@@ -203,7 +204,7 @@ setCov.REC<-function(Cov,traits,j,mo,saveAt)
 	Cov$M[upper.tri(Cov$M)]<-FALSE
 		
 
-	Cov$B<-matrix(0,nrow=traits,ncol=traits)
+	Cov$W<-matrix(0,nrow=traits,ncol=traits)
 	Cov$PSI<-rep(NA,traits)
 		
 	for(k in 1:traits)
@@ -218,16 +219,16 @@ setCov.REC<-function(Cov,traits,j,mo,saveAt)
 	#Objects for saving posterior means for MCMC
 	Cov$post_Omega<-matrix(0,nrow=traits,ncol=traits)
 	Cov$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
-	Cov$post_B<-matrix(0,nrow=traits,ncol=traits)
-	Cov$post_B2<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_W<-matrix(0,nrow=traits,ncol=traits)
+	Cov$post_W2<-matrix(0,nrow=traits,ncol=traits)
 	Cov$post_PSI<-rep(0,traits)
 	Cov$post_PSI2<-rep(0,traits)
 	
 	#Output files
-	Cov$fName_B<-paste(saveAt,"B_",j,".dat",sep="")
+	Cov$fName_W<-paste(saveAt,"W_",j,".dat",sep="")
 	Cov$fName_PSI<-paste(saveAt,"PSI_",j,".dat",sep="")
 	
-	Cov$f_B<-file(description=Cov$fName_B,open="w")
+	Cov$f_W<-file(description=Cov$fName_W,open="w")
 	Cov$f_PSI<-file(description=Cov$fName_PSI,open="w")
 	
 	return(Cov)
@@ -281,10 +282,10 @@ setCov.FA<-function(Cov,traits,nD,j,mo,saveAt)
 	
 	sdU <- sqrt(diag(Cov$Omega))
     FA <- factanal(covmat = Cov$Omega, factors = Cov$nF)
-    Cov$B <- matrix(nrow = traits, ncol = Cov$nF, 0)
-    Cov$B[Cov$M] <- (diag(sdU) %*% FA$loadings)[Cov$M]
+    Cov$W <- matrix(nrow = traits, ncol = Cov$nF, 0)
+    Cov$W[Cov$M] <- (diag(sdU) %*% FA$loadings)[Cov$M]
     Cov$PSI <- (sdU^2) * FA$uniquenesses + 1e-04
-    Cov$Omega <- tcrossprod(Cov$B) + diag(Cov$PSI)
+    Cov$Omega <- tcrossprod(Cov$W) + diag(Cov$PSI)
     Cov$Omegainv<-solve(Cov$Omega)
     
     Cov$F <- matrix(nrow = nD, ncol = Cov$nF, 0)
@@ -292,15 +293,15 @@ setCov.FA<-function(Cov,traits,nD,j,mo,saveAt)
     #Objects for saving posterior means for MCMC
 	Cov$post_Omega<-matrix(0,nrow=traits,ncol=traits)
 	Cov$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
-	Cov$post_B<-matrix(0,nrow=traits,ncol=Cov$nF)
-	Cov$post_B2<-matrix(0,nrow=traits,ncol=Cov$nF)
+	Cov$post_W<-matrix(0,nrow=traits,ncol=Cov$nF)
+	Cov$post_W2<-matrix(0,nrow=traits,ncol=Cov$nF)
 	Cov$post_PSI<-rep(0,traits)
 	Cov$post_PSI2<-rep(0,traits)
 	
 	#Output files
-	Cov$fName_B<-paste(saveAt,"B_",j,".dat",sep="")
+	Cov$fName_W<-paste(saveAt,"W_",j,".dat",sep="")
 	Cov$fName_PSI<-paste(saveAt,"PSI_",j,".dat",sep="")
-	Cov$f_B<-file(description=Cov$fName_B,open="w")
+	Cov$f_W<-file(description=Cov$fName_W,open="w")
 	Cov$f_PSI<-file(description=Cov$fName_PSI,open="w")
 		
 	return(Cov)
@@ -452,6 +453,24 @@ setLT.DiracSS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt,nRow)
     	
     }#*#
     
+    #NEW, 
+    #perhaps we need to remove, this is only useful for computing genomic relationship
+    #matrix when using Cheng (2018) method.
+    #Files to save indicator variables
+    #binary file are saved in single mode (4 bytes for each number)
+    if(is.null(LT$saveIndicators))
+    {
+    	LT$saveIndicators<-FALSE
+    }
+    
+    if(LT$saveIndicators)
+    {
+
+    	fname2<-paste(saveAt,LT$Name,"_d.bin",sep="")
+    	LT$fileIndicators<-file(fname2,open='wb')
+    	#nrow, traits and p stored as single
+    	writeBin(object=c(nRow,traits,LT$p),con=LT$fileIndicators,size=4)
+    }
 	
 	return(LT)
 }
@@ -586,7 +605,7 @@ setLT.RKHS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 		message("Checking EVD provided for linear term ",j)
 		if(!is.matrix(LT$EVD$vectors)) stop("eigen-vectors must be a matrix\n")
 		if(nrow(LT$EVD$vectors)!=ncol(LT$EVD$vectors)) stop("eigen-vectors must be a square matrix\n")
-		if(class(LT$EVD$values)!="numeric") stop("eigen-values must be a numeric vector\n")
+		if(!is.numeric(LT$EVD$values)) stop("eigen-values must be a numeric vector\n")
 		message("Ok")
 	}
 	
@@ -789,7 +808,7 @@ setResCov<-function(resCov,traits,error,Sy,R2,saveAt)
 			message("var was set to 100")
 		}
 			
-		resCov$B<-matrix(0,nrow=traits,ncol=traits)
+		resCov$W<-matrix(0,nrow=traits,ncol=traits)
 		resCov$PSI<-rep(NA,traits)
 		
 		for(k in 1:traits)
@@ -798,15 +817,15 @@ setResCov<-function(resCov,traits,error,Sy,R2,saveAt)
 		}
 			
 		#Objects for saving posterior means for MCMC
-		resCov$post_B<-matrix(0,nrow=traits,ncol=traits)
-		resCov$post_B2<-matrix(0,nrow=traits,ncol=traits)
+		resCov$post_W<-matrix(0,nrow=traits,ncol=traits)
+		resCov$post_W2<-matrix(0,nrow=traits,ncol=traits)
 		resCov$post_PSI<-rep(0,traits)
 		resCov$post_PSI2<-rep(0,traits)
 
 		#Output files
-		resCov$fName_B<-paste(saveAt,"B_R.dat",sep="")
+		resCov$fName_W<-paste(saveAt,"W_R.dat",sep="")
 		resCov$fName_PSI<-paste(saveAt,"PSI_R.dat",sep="")
-		resCov$f_B<-file(description=resCov$fName_B,open="w")
+		resCov$f_W<-file(description=resCov$fName_W,open="w")
 		resCov$f_PSI<-file(description=resCov$fName_PSI,open="w")
 		
 	}
@@ -852,23 +871,23 @@ setResCov<-function(resCov,traits,error,Sy,R2,saveAt)
 				
 		sdU <- sqrt(diag(resCov$R))
         FA <- factanal(covmat = resCov$R, factors = resCov$nF)
-        resCov$B <- matrix(nrow = traits, ncol = resCov$nF, 0)
-        resCov$B[resCov$M] <- (diag(sdU) %*% FA$loadings)[resCov$M]
+        resCov$W <- matrix(nrow = traits, ncol = resCov$nF, 0)
+        resCov$W[resCov$M] <- (diag(sdU) %*% FA$loadings)[resCov$M]
         resCov$PSI <- (sdU^2) * FA$uniquenesses + 1e-04
-        resCov$R <- tcrossprod(resCov$B) + diag(resCov$PSI)
+        resCov$R <- tcrossprod(resCov$W) + diag(resCov$PSI)
         resCov$Rinv<-solve(resCov$R)
         resCov$F <- matrix(nrow = nrow(error), ncol = resCov$nF, 0)
         
         #Objects for saving posterior means for MCMC
-		resCov$post_B<-matrix(0,nrow=traits,ncol=resCov$nF)
-		resCov$post_B2<-matrix(0,nrow=traits,ncol=resCov$nF)
+		resCov$post_W<-matrix(0,nrow=traits,ncol=resCov$nF)
+		resCov$post_W2<-matrix(0,nrow=traits,ncol=resCov$nF)
 		resCov$post_PSI<-rep(0,traits)
 		resCov$post_PSI2<-rep(0,traits)
 		
 		#Output files
-		resCov$fName_B<-paste(saveAt,"B_R.dat",sep="")
+		resCov$fName_W<-paste(saveAt,"W_R.dat",sep="")
 		resCov$fName_PSI<-paste(saveAt,"PSI_R.dat",sep="")
-		resCov$f_B<-file(description=resCov$fName_B,open="w")
+		resCov$f_W<-file(description=resCov$fName_W,open="w")
 		resCov$f_PSI<-file(description=resCov$fName_PSI,open="w")
 	}
 		
@@ -888,7 +907,7 @@ setResCov<-function(resCov,traits,error,Sy,R2,saveAt)
 #Evaluates
 #partial Loglikelihood for complete and partially observed records
 #-0.5 * n * log(det(R)) - 0.5 * sum (error_i' R^{-1} error_i) 
-#error a matrix with errors=y-yHat, R residual variance covariance matrix
+#error a matrix with errors, R residual variance covariance matrix
 
 partialLogLik<-function(error,R)
 {
@@ -907,11 +926,11 @@ partialLogLik<-function(error,R)
 #Computes the  Deviance Information Criterion and Effective Number of Parameters 
 #parameters: 
 #y.back: matrix of dimension n x traits, NA's for missing values
-#yHat the posterior mean of the conditional expectation 
+#ETAHat the posterior mean of the conditional expectation 
 #meanLogLik the posterior mean of logLik
 #cte = -(n_complete_observed + n_partially_observed)*traits/2*log(2*pi)
 
-getDIC<-function(y.back, yHat, meanLogLik, cte, complete_records, R,
+getDIC<-function(y.back, ETAHat, meanLogLik, cte, complete_records, R,
                  missings=FALSE,
                  missing_records=NULL,
 				 Dpatterns=NULL,
@@ -920,7 +939,7 @@ getDIC<-function(y.back, yHat, meanLogLik, cte, complete_records, R,
 				 dAllMissings=NULL)
 {
 		
-		error <- y.back-yHat
+		error <- y.back-ETAHat
 		
 		logLikAtPostMean <- cte
 		
@@ -1112,38 +1131,6 @@ sample_mu <- function(ystar, R, n, traits)
     return(mu)
 }
 
-#Function to compute covariance matrix between entries of beta=b*d
-#using MCMC information
-#cov(beta_{jk},beta_{jk'})=sigma_{kk'} if both beta_{jk} and beta_{jk} different from 0
-#and o otherwise
-covBeta<-function(d,Omega,traits)
-{
-	DpatternsG<-apply(d,1,logicalToDec)    			#patterns in decimal
-	tDpatternsG<-table(DpatternsG)			  		#Frequency table
-	UpatternsG<-unique(d,drop=FALSE)	   			#Unique patterns
-	dUpatternsG<-apply(UpatternsG,1,logicalToDec)	#decimal of unique patterns
-	permutationG<-order(dUpatternsG)				#Permutations to sort records
-	UpatternsG<-UpatternsG[permutationG,]			#Sort
-	dUpatternsG<-dUpatternsG[permutationG]			#Sort
-	
-	if(any(names(tDpatternsG)!=as.character(dUpatternsG))) stop("Ordering problem in covBeta\n")
-
-	tmp1G<-rep(0,traits*traits)
-	tmp2G<-as.vector(Omega)
-
-	for(mG in 1:length(dUpatternsG))
-	{
-		#Both entries are set to 1 or TRUE
-		tmp3G<-as.integer(rowSums(expand.grid(UpatternsG[mG,],UpatternsG[mG,]))==2)
-		tmp1G<-tmp1G + tDpatternsG[mG]*tmp2G*tmp3G
-	}
-
-	tmp1G<-tmp1G/nrow(d)
-	tmp1G<-matrix(tmp1G,nrow=traits,ncol=traits,byrow=FALSE)
-	
-	return(tmp1G)
-}
-
 # Function to read effects saved by Multitrait when ETA[[j]]$saveEffects=TRUE
 # It returns a 3D array, with dim=c(nRow,p,traits)
 # nRow number of MCMC samples saved,
@@ -1175,6 +1162,34 @@ readBinMatMultitrait<-function(filename,storageMode="double")
  	close(fileIn)
  	
  	return(Beta)
+}
+
+#Get genetic co-variance matrix
+#Internal function, used by getGCovar
+
+getG0i<-function(Z,Bi)
+{
+    U<-Z%*%Bi
+    G0i<-cov(U)
+    return(G0i[row(G0i)>=col(G0i)])
+}
+
+#Genetic co-variance matrix using MCMC samples
+#Lehermeier et al., 2017. 
+#Genomic Variance Estimates: With or without Disequilibrium Covariances?
+#J Anim Breed Genet, 134(3):232-241.
+#Arguments:
+#X: matrix of covariates
+#B: samples for regression coefficients, 3D array, with dim=c(nRow,p,traits)
+# nRow number of MCMC samples saved,
+# p number of predictors
+# traits number of traits
+
+getGCovar<-function(X,B)
+{
+        q<-dim(B)[3]
+        G<-t(apply(FUN=getG0i,X=B,Z=X,MARGIN=1))
+        return(G)
 }
 
 #Function to fit multi-trait model
@@ -1276,7 +1291,7 @@ Multitrait<-function(y,
 		mu<-colMeans(y)
 		post_mu<-rep(0,traits)
 		post_mu2<-rep(0,traits)
-		f_mu<-file(description="mu.dat",open="w")
+		f_mu<-file(description=paste(saveAt,"mu.dat",sep=""),open="w")
 	}
 	
 	#Setting the linear terms
@@ -1333,8 +1348,8 @@ Multitrait<-function(y,
 	#Initialization of variance covariance matrix for errors (R)
 	resCov<-setResCov(resCov=resCov,traits=traits,error=error,Sy=Sy,R2=R2,saveAt=saveAt)
 	
-	yHat<-matrix(0,nrow=n,ncol=traits)
-	yHat2<-matrix(0,nrow=n,ncol=traits)
+	ETAHat<-matrix(0,nrow=n,ncol=traits)
+	ETAHat2<-matrix(0,nrow=n,ncol=traits)
 	
 	post_logLik<-0
 	
@@ -1429,7 +1444,7 @@ Multitrait<-function(y,
                             
                         ETA[[j]]$Cov$Omega<-tmp$G
                         ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
-                        ETA[[j]]$Cov$B<-tmp$B
+                        ETA[[j]]$Cov$W<-tmp$B
                         ETA[[j]]$Cov$PSI<-tmp$PSI
                             
                         rm(tmp)
@@ -1438,7 +1453,7 @@ Multitrait<-function(y,
 					if(ETA[[j]]$Cov$type=="FA")
 					{
 						tmp<-sample_G0_FA(U=ETA[[j]]$b, F=ETA[[j]]$Cov$F, M=ETA[[j]]$Cov$M, 
-						    	          B=ETA[[j]]$Cov$B, PSI=ETA[[j]]$Cov$PSI, 
+						    	          B=ETA[[j]]$Cov$W, PSI=ETA[[j]]$Cov$PSI, 
 						        	      traits=traits, nF=ETA[[j]]$Cov$nF, 
 						        	      nD=ETA[[j]]$Cov$nD, df0 = ETA[[j]]$Cov$df0, 
                        					  S0 = ETA[[j]]$Cov$S0, 
@@ -1446,7 +1461,7 @@ Multitrait<-function(y,
 
 						ETA[[j]]$Cov$F<-tmp$F
 						ETA[[j]]$Cov$PSI<-tmp$PSI
-						ETA[[j]]$Cov$B<-tmp$B
+						ETA[[j]]$Cov$W<-tmp$B
 						ETA[[j]]$Cov$Omega<-tmp$G
                     	ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
 						
@@ -1454,10 +1469,8 @@ Multitrait<-function(y,
 						
 					}
 					
-					#At this point we already know the value of the indicator variables
-					#So we can compute the variance-covariance matrix for beta=b*d
-					ETA[[j]]$Cov$Sigma<-covBeta(d=ETA[[j]]$d,Omega=ETA[[j]]$Cov$Omega,
-					                            traits=traits)					
+					#Compute the variance-covariance matrix for beta=b*d
+					ETA[[j]]$Cov$Sigma<-cov(ETA[[j]]$beta)					
 					
 			} #End of SpikeSlab
 			
@@ -1511,7 +1524,7 @@ Multitrait<-function(y,
                             
                         ETA[[j]]$Cov$Omega<-tmp$G
                         ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
-                        ETA[[j]]$Cov$B<-tmp$B
+                        ETA[[j]]$Cov$W<-tmp$B
                         ETA[[j]]$Cov$PSI<-tmp$PSI
                             
                         rm(tmp)
@@ -1520,7 +1533,7 @@ Multitrait<-function(y,
 					if(ETA[[j]]$Cov$type=="FA")
 					{
 						tmp<-sample_G0_FA(U=ETA[[j]]$beta, F=ETA[[j]]$Cov$F, M=ETA[[j]]$Cov$M, 
-						    	          B=ETA[[j]]$Cov$B, PSI=ETA[[j]]$Cov$PSI, 
+						    	          B=ETA[[j]]$Cov$W, PSI=ETA[[j]]$Cov$PSI, 
 						        	      traits=traits, nF=ETA[[j]]$Cov$nF, 
 						        	      nD=ETA[[j]]$Cov$nD, df0 = ETA[[j]]$Cov$df0, 
                        					  S0 = ETA[[j]]$Cov$S0, 
@@ -1528,7 +1541,7 @@ Multitrait<-function(y,
 
 						ETA[[j]]$Cov$F<-tmp$F
 						ETA[[j]]$Cov$PSI<-tmp$PSI
-						ETA[[j]]$Cov$B<-tmp$B
+						ETA[[j]]$Cov$W<-tmp$B
 						ETA[[j]]$Cov$Omega<-tmp$G
                     	ETA[[j]]$Cov$Omegainv<-solve(ETA[[j]]$Cov$Omega)
 						
@@ -1607,7 +1620,7 @@ Multitrait<-function(y,
                                S0 = resCov$S0)
                             
             resCov$R<-tmp$G
-            resCov$B<-tmp$B
+            resCov$W<-tmp$B
             resCov$PSI<-tmp$PSI
             rm(tmp)
             
@@ -1616,7 +1629,7 @@ Multitrait<-function(y,
 		if(resCov$type=="FA")
 		{
 				tmp<-sample_G0_FA(U=error, F=resCov$F, M=resCov$M, 
-						    	  B=resCov$B, PSI=resCov$PSI, 
+						    	  B=resCov$W, PSI=resCov$PSI, 
 						          traits=traits, nF=resCov$nF, nD=nrow(error),
                        			  df0 = resCov$df0, 
                        			  S0 = resCov$S0, 
@@ -1624,16 +1637,14 @@ Multitrait<-function(y,
 
                 resCov$F<-tmp$F
 				resCov$PSI<-tmp$PSI
-				resCov$B<-tmp$B
+				resCov$W<-tmp$B
 				resCov$R<-tmp$G
 		}
 		
 		resCov$Rinv<-solve(resCov$R)		
 		
 		#Impute missing values
-		#Experimental!!!!
-		#Check all the subsettings
-		
+				
 		#Linear predictor
 		lp <- y-error
 		
@@ -1642,8 +1653,7 @@ Multitrait<-function(y,
 		
 		if(missings)
 		{
-			yold<-y
-		
+			
 			for (q in 1:length(dUpatterns))
 			{
 				#Some traits observed
@@ -1662,11 +1672,6 @@ Multitrait<-function(y,
 					#logLik
 					logLik <- logLik + partialLogLik(error[index,!Upatterns[q,],drop=FALSE],S22)
 					
-			
-					#lp<-y[index,]-error[index,]
-					#mu1<-lp[,Upatterns[q,],drop=FALSE]
-					#mu2<-lp[,!Upatterns[q,],drop=FALSE]
-					
 					mu1<-lp[index,Upatterns[q,],drop=FALSE]
 					mu2<-lp[index,!Upatterns[q,],drop=FALSE]
 			
@@ -1680,22 +1685,15 @@ Multitrait<-function(y,
 					#Impute y and overwrite the value
 					y[index,Upatterns[q,]]<-mean+mvrnorm(n=length(index),mu=rep(0,nrow(Sigma)),Sigma=Sigma)
 					
-					#Keep a copy of the imputed value in lp
-					lp[index,Upatterns[q,]]<-y[index,Upatterns[q,]]
 				
 				}else{
 				
 					#Observations for all traits are missing for some records
 					index<-missing_records[Dpatterns==dUpatterns[q]]
-					
-					#lp<-y[index,]-error[index,]
-					#y[index,Upatterns[q,]]<-lp+mvrnorm(n=length(index),mu=rep(0,nrow(R)),Sigma=R)
-					
+									
 					#predict y and overwrite the value
 					y[index,]<-lp[index,]+mvrnorm(n=length(index),mu=rep(0,nrow(resCov$R)),Sigma=resCov$R)
 					
-					#Keep a copy of the predicted value in lp
-					lp[index,]<-y[index,]	
 				}
 				
 			}
@@ -1704,7 +1702,7 @@ Multitrait<-function(y,
 			for(k in 1:traits)
 			{			
 				index<-missing_records[patterns[,k]]
-				error[index,k]<-error[index,k]+y[index,k]-yold[index,k]
+				error[index,k] <- y[index,k]-lp[index,k]
 			}
 		
 		}
@@ -1727,8 +1725,8 @@ Multitrait<-function(y,
 			{
 				if (sum(resCov$M) > 0) 
 				{
-					tmp <- resCov$B[resCov$M]
-					write(tmp, ncolumns = length(tmp), file = resCov$f_B, append = TRUE, 
+					tmp <- resCov$W[resCov$M]
+					write(tmp, ncolumns = length(tmp), file = resCov$f_W, append = TRUE, 
 					      sep = " ")
 					rm(tmp)
 				}
@@ -1746,8 +1744,8 @@ Multitrait<-function(y,
 					{
 						if (sum(ETA[[j]]$Cov$M) > 0) 
 						{
-							tmp <- ETA[[j]]$Cov$B[ETA[[j]]$Cov$M]
-							write(tmp, ncolumns = length(tmp), file = ETA[[j]]$Cov$f_B, 
+							tmp <- ETA[[j]]$Cov$W[ETA[[j]]$Cov$M]
+							write(tmp, ncolumns = length(tmp), file = ETA[[j]]$Cov$f_W, 
 							      append = TRUE, sep = " ")
 							rm(tmp)
 						}
@@ -1767,16 +1765,27 @@ Multitrait<-function(y,
 				
 			}#End for
 			
-			#Saving beta effects
+			#Saving beta effects and indicator variables
 			for(j in 1:nLT)
 			{
 				if(ETA[[j]]$model%in%c("SpikeSlab","BRR"))
 				{
 					if(ETA[[j]]$saveEffects)
 					{
-                      writeBin(object=as.vector(ETA[[j]]$beta),
-                               con=ETA[[j]]$fileEffects,
-                               size=ifelse(ETA[[j]]$storageMode=="single",4,8))
+                        writeBin(object=as.vector(ETA[[j]]$beta),
+                                 con=ETA[[j]]$fileEffects,
+                                 size=ifelse(ETA[[j]]$storageMode=="single",4,8))
+                    }
+                    
+                    if(ETA[[j]]$model=="SpikeSlab")                          
+                    {
+                        if(ETA[[j]]$saveIndicators)
+                        {
+                                #entries are saved in "single" mode
+                                writeBin(object=as.vector(ETA[[j]]$d),
+                                         con=ETA[[j]]$fileIndicators,
+                                         size=4)
+                        }
                     }
                 }
 			}
@@ -1798,8 +1807,8 @@ Multitrait<-function(y,
 			}
 			
 			#Predictions
-			yHat<-yHat * fraction + lp/nSums
-			yHat2<-yHat2 * fraction + lp^2/nSums
+			ETAHat<-ETAHat * fraction + lp/nSums
+			ETAHat2<-ETAHat2 * fraction + lp^2/nSums
 			
 			#Residual
 			resCov$post_R <- resCov$post_R * fraction + resCov$R/nSums
@@ -1807,8 +1816,8 @@ Multitrait<-function(y,
 			
 			if(resCov$type%in%c("REC","FA"))
 			{
-				resCov$post_B <- resCov$post_B * fraction + resCov$B/nSums
-    			resCov$post_B2 <- resCov$post_B2 * fraction + resCov$B^2/nSums
+				resCov$post_W <- resCov$post_W * fraction + resCov$W/nSums
+    			resCov$post_W2 <- resCov$post_W2 * fraction + resCov$W^2/nSums
     					
     			resCov$post_PSI <- resCov$post_PSI * fraction + resCov$PSI/nSums
     			resCov$post_PSI2 <- resCov$post_PSI2 * fraction + resCov$PSI^2/nSums
@@ -1849,8 +1858,8 @@ Multitrait<-function(y,
     				
     				if(ETA[[j]]$Cov$type%in%c("REC","FA"))
     				{
-    					ETA[[j]]$Cov$post_B <- ETA[[j]]$Cov$post_B * fraction + ETA[[j]]$Cov$B/nSums
-    					ETA[[j]]$Cov$post_B2 <- ETA[[j]]$Cov$post_B2 * fraction + ETA[[j]]$Cov$B^2/nSums
+    					ETA[[j]]$Cov$post_W <- ETA[[j]]$Cov$post_W * fraction + ETA[[j]]$Cov$W/nSums
+    					ETA[[j]]$Cov$post_W2 <- ETA[[j]]$Cov$post_W2 * fraction + ETA[[j]]$Cov$W^2/nSums
     					
     					ETA[[j]]$Cov$post_PSI <- ETA[[j]]$Cov$post_PSI * fraction + ETA[[j]]$Cov$PSI/nSums
     					ETA[[j]]$Cov$post_PSI2 <- ETA[[j]]$Cov$post_PSI2 * fraction + ETA[[j]]$Cov$PSI^2/nSums
@@ -1913,26 +1922,17 @@ Multitrait<-function(y,
 					ETA[[j]]$Cov$SD.Sigma<-sqrt(ETA[[j]]$Cov$post_Sigma2-ETA[[j]]$Cov$post_Sigma^2)
 				}
 				
-				#Rename Omega to G
-				if(ETA[[j]]$model=="RKHS")
-				{
-					ETA[[j]]$Cov$G<-ETA[[j]]$Cov$Omega
-					ETA[[j]]$Cov$SD.G<-ETA[[j]]$Cov$SD.Omega
-					ETA[[j]]$Cov$Omega<-NULL
-					ETA[[j]]$Cov$SD.Omega<-NULL
-				}
-				
 				if(ETA[[j]]$Cov$type%in%c("REC","FA"))
 				{
-					ETA[[j]]$Cov$B<-ETA[[j]]$Cov$post_B
-					ETA[[j]]$Cov$SD.B<-sqrt(ETA[[j]]$Cov$post_B2-ETA[[j]]$Cov$post_B^2)
+					ETA[[j]]$Cov$W<-ETA[[j]]$Cov$post_W
+					ETA[[j]]$Cov$SD.W<-sqrt(ETA[[j]]$Cov$post_W2-ETA[[j]]$Cov$post_W^2)
 				
 					ETA[[j]]$Cov$PSI<-ETA[[j]]$Cov$post_PSI
 					ETA[[j]]$Cov$SD.PSI<-sqrt(ETA[[j]]$Cov$post_PSI2-ETA[[j]]$Cov$post_PSI^2)	
 				}
 				
 				tmp<-which(names(ETA[[j]]$Cov)%in%c("post_Omega","post_Omega2","Omegainv",
-				                                    "post_B","post_B2","post_PSI","post_PSI2",
+				                                    "post_W","post_W2","post_PSI","post_PSI2",
 				                                    "F",
 				                                    "post_Sigma","post_Sigma2"))
 				ETA[[j]]$Cov<-ETA[[j]]$Cov[-tmp] 
@@ -1956,21 +1956,21 @@ Multitrait<-function(y,
 	
 	if(resCov$type%in%c("REC","FA"))
 	{
-		resCov$B<-resCov$post_B
-		resCov$SD.B<-sqrt(resCov$post_B2-resCov$post_B^2)
+		resCov$W<-resCov$post_W
+		resCov$SD.W<-sqrt(resCov$post_W2-resCov$post_W^2)
 				
 		resCov$PSI<-resCov$post_PSI
 		resCov$SD.PSI<-sqrt(resCov$post_PSI2-resCov$post_PSI^2)
 		
-		close(resCov$f_B)
-		resCov$f_B<-NULL
+		close(resCov$f_W)
+		resCov$f_W<-NULL
 		close(resCov$f_PSI)
 		resCov$f_PSI<-NULL
 		
 	}
 	
 	#Deep cleaning!
-	tmp<-which(names(resCov)%in%c("post_R","post_R2","Rinv","post_B","post_B2",
+	tmp<-which(names(resCov)%in%c("post_R","post_R2","Rinv","post_W","post_W2",
 			                      "post_PSI","post_PSI2","F"))
 	resCov<-resCov[-tmp]
 			    
@@ -1994,8 +1994,8 @@ Multitrait<-function(y,
 		{
 			if(ETA[[j]]$Cov$type%in%c("REC","FA"))
 			{
-				close(ETA[[j]]$Cov$f_B)
-				ETA[[j]]$Cov$f_B<-NULL
+				close(ETA[[j]]$Cov$f_W)
+				ETA[[j]]$Cov$f_W<-NULL
 				close(ETA[[j]]$Cov$f_PSI)
 				ETA[[j]]$Cov$f_PSI<-NULL
 				
@@ -2010,7 +2010,7 @@ Multitrait<-function(y,
 		}#End of if SpikeSlab, BRR, RKHS
 	}#End of for
 	
-	#Effect files
+	#Effect files & indicators files
 	for(j in 1:nLT)
 	{
 		if(!is.null(ETA[[j]]$fileEffects))
@@ -2021,25 +2021,36 @@ Multitrait<-function(y,
             
             if(!is.null(ETA[[j]]$compressEffects) && ETA[[j]]$compressEffects)
             {
-            	message("Compressing binary file for term ", j)
+            	message("Compressing binary file for effects for term ", j)
             	compressFile(paste(saveAt,ETA[[j]]$Name,"_beta.bin",sep=""))
             	message("Done")
-            }
-                
+            }        
+        }
+        
+        if(!is.null(ETA[[j]]$fileIndicators))
+        {
+        	flush(ETA[[j]]$fileIndicators)
+            close(ETA[[j]]$fileIndicators)
+            ETA[[j]]$fileIndicators<-NULL
+            
+            #Compress file by default to save a lot of space
+            message("Compressing binary file for indicators for term ", j)
+            compressFile(paste(saveAt,ETA[[j]]$Name,"_d.bin",sep=""))
+            message("Done")
         }
     }
 	
-	SD.yHat<-sqrt(yHat2-yHat^2)
+	SD.ETAHat<-sqrt(ETAHat2-ETAHat^2)
 	
 	#Fit
-	fit<-getDIC(y.back, yHat, post_logLik, cte, complete_records, resCov$R, 
+	fit<-getDIC(y.back, ETAHat, post_logLik, cte, complete_records, resCov$R, 
 				missings, missing_records, Dpatterns, Upatterns, 
 				dUpatterns,dAllMissings)
 	
 	fit$postMeanLogLik<-post_logLik
 	
 	#Return the goodies
-	out<-list(ETA=ETA,resCov=resCov,yHat=yHat,SD.yHat=SD.yHat,
+	out<-list(ETA=ETA,resCov=resCov,ETAHat=ETAHat,SD.ETAHat=SD.ETAHat,
 	          fit=fit)
 	          
 	if(intercept)
@@ -2056,4 +2067,5 @@ Multitrait<-function(y,
 	
 	return(out)
 }
+
 
