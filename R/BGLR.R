@@ -12,7 +12,7 @@ set.X=function(LT)
 	while(i<=n_elements & flag)
 	{
 	   i=i+1;
-	   if(class(LT[[i]])=="formula")
+	   if(is(LT[[i]],"formula"))
 	   {
 	   		flag=FALSE
 			rhs=LT[[i]]
@@ -495,9 +495,9 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
     {
         if(is.null(LT$K)) stop("Kernel for linear term ",j, " was not provided, specify it with list(K=?,model='RKHS'), where ? is the kernel matrix")
 
+		if(!is.matrix(LT$K)) stop("Kernel for linear term ",j, " should be a matrix, the kernel provided is of class ", class(LT$K))
+		
 		LT$K = as.matrix(LT$K)
-
-        if(class(LT$K)!="matrix") stop("Kernel for linear term ",j, " should be a matrix, the kernel provided is of class ", class(LT$K))
 
         if(nrow(LT$K)!=ncol(LT$K)) stop("Kernel for linear term ",j, " is not a square matrix")
 
@@ -1110,7 +1110,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
         y=as.integer(y)
         z=y  
 
-	fname = paste(saveAt, "thresholds.dat", sep = "")
+		fname = paste(saveAt, "thresholds.dat", sep = "")
         fileOutThresholds = file(description = fname, open = "w")
     }
 
@@ -1687,7 +1687,6 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                       ETA[[j]]$post_probIn2 = ETA[[j]]$post_probIn2 * k + (ETA[[j]]$probIn^2)/nSums
                       if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
                           writeBin(object=ETA[[j]]$b*ETA[[j]]$d,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
-			      
                       }#*#
                     }
 
@@ -1716,7 +1715,6 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 						ETA[[j]]$post_S2 = ETA[[j]]$post_S2 * k + (ETA[[j]]$S^2)/nSums
 						if(ETA[[j]]$saveEffects&&(i%%ETA[[j]]$thin)==0){
                             writeBin(object=ETA[[j]]$b*ETA[[j]]$d,con=ETA[[j]]$fileEffects,size=ifelse(ETA[[j]]$storageMode=="single",4,8))
-			    
                         }#*#
                     }
                   }
