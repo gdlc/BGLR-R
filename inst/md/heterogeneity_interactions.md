@@ -1,6 +1,6 @@
 ## Modeling Genetic Heterogenity using Random-effects Interactions
 
-For further details see [de los Campos et al., (JABES, 2015)](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666286) and [Veturi et al. (Genetics, 2019)](https://www.genetics.org/content/211/4/1395.abstract) and [this example](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GxE_usingInteractions.md). For a similar applicaiton involving GxE see [Lopez-Cruz et al. (G3, 2015)](https://www.g3journal.org/content/5/4/569.short), and for one involving multi-breed and GxE see [Yao et al. (J. D. Sci., 2017)](https://www.sciencedirect.com/science/article/pii/S0022030217300450).
+For further details see [de los Campos et al., (JABES, 2015)](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4666286), [Veturi et al. (Genetics, 2019)](https://www.genetics.org/content/211/4/1395.abstract), and [this example](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GxE_usingInteractions.md). For a similar applicaiton involving GxE see [Lopez-Cruz et al. (G3, 2015)](https://www.g3journal.org/content/5/4/569.short), and for one involving multi-breed and GxE see [Yao et al. (J. D. Sci., 2017)](https://www.sciencedirect.com/science/article/pii/S0022030217300450).
 
 **Clustering and displaying PCs**
 ```R
