@@ -6,7 +6,7 @@ The following data and code is reproduced from the supplementary data from [de l
 
 **Citation**: de los Campos G., Pérez-Rodríguez P., Bogard M., Gouache D., and Crossa J. *A data-driven simulation platform to predict cultivars’ performances under uncertain weather conditions* Nature Communications  11, Article number: 4876 (2020).
 
-**Before you run the code below, dowload the following: 
+**Before you run the code below, dowload the following**: 
 
   - [FW.BGLR](https://github.com/gdlc/BGLR-R/blob/master/R/FW_BGLR.R)- function
   - [Sample Data](https://github.com/gdlc/BGLR-R/blob/master/data/sample_FW.RData)
