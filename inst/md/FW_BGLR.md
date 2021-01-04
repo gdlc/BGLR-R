@@ -8,7 +8,7 @@ The following data and code is reproduced from the supplementary data from [de l
 
 **Before you run the code below, dowload the following**: 
 
-  - [FW.BGLR](https://github.com/gdlc/BGLR-R/tree/master/inst/md)- function
+  - [FW.BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/FW_BGLR.R)- function
   - [Sample Data](https://github.com/gdlc/BGLR-R/tree/master/inst/md/sample_FW.RData)
 
 Here we present a function to perform the Finlay-Wilkinson (1963)
