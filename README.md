@@ -71,6 +71,7 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   
   - [17. Multi-trait prediction using eigenvectors](https://github.com/gdlc/BGLR-R/edit/master/inst/md/MULTITRAIT.md)
 
+  - [18. Two-steps Finlay-Wilkinson Regression](https://github.com/gdlc/BGLR-R/edit/master/inst/md/FW.md)
 
 **Other Omics**
 ----------------------------------------------------------------
