@@ -26,7 +26,7 @@ The matrix **X** contains marker information for the varieties given in the
 data.frame. This matrix is used to compute the additive relationships between 
 individuals (Lopez-Cruz et al., 2015) if matrix **G** is not given. 
 
-The function returns a list object with the following elements:
+The function returns a list object with the following elements:m
 
 	- yHat: vector with predicted values for the response variable.
 	- VAR: a data frame with the columns ID (varieties), 
