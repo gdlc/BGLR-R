@@ -36,7 +36,7 @@ The function returns a list object with the following elements:m
 	
 The following R code shows how to load sample data (raw means).
 
-```{r}
+```r
 
  # Load data
   load("sample_FW.RData")
@@ -50,7 +50,7 @@ The code below shows how to load the function and perform the analysis assuming
 that objects pheno and G are already loaded in the R environment.
 
 
-```{r}
+```r
  # Loads BGLR library
   library(BGLR)
 
