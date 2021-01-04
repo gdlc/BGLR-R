@@ -11,6 +11,10 @@ The following data and code is reproduced from the supplementary data from [de l
   - [FW.BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/FW_BGLR.R)- function
   - [Sample Data](https://github.com/gdlc/BGLR-R/blob/master/data/sample_FW.RData)
 
+You will need to source the `FW_BGRL.R` function and load the `sample_FW.RData` data set to run the examples below.
+
+### Two-steps Finlay-Wilkinson Regression using BGLR
+
 Here we present a function to perform the Finlay-Wilkinson (1963)
 analysis in two steps using the BGLR (Pérez and de los Campos) package
 in R (R Core Team, 2019). We created the R function 
