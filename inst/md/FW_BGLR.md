@@ -2,9 +2,10 @@
 
 **Authors**: Gustavo de los Campos <gustavoc@msu.edu> ,  Paulino Perez-Rodriguez <perpdgo@gmail.com>  &  BOGARD Matthieu <M.BOGARD@arvalis.fr> 
 
-The following data and code is reproduced from the supplementary data from [de los Campos et al., Nat. Comm., 2020](https://www.nature.com/articles/s41467-020-18480-y).
+**Citation**: 
 
-**Citation**: de los Campos G., Pérez-Rodríguez P., Bogard M., Gouache D., and Crossa J. *A data-driven simulation platform to predict cultivars’ performances under uncertain weather conditions* Nature Communications  11, Article number: 4876 (2020).
+    - [FW-Function](https://www.nature.com/articles/s41467-020-18480-y)
+    - [BGLR](https://www.genetics.org/content/198/2/483.short)
 
 **Before you run the code below, dowload the following**: 
 
@@ -13,7 +14,13 @@ The following data and code is reproduced from the supplementary data from [de l
 
 You will need to source the `FW_BGRL.R` function and load the `sample_FW.RData` data set to run the examples below.
 
+
 ### Two-steps Finlay-Wilkinson Regression using BGLR
+
+
+The following data and code is reproduced from the supplementary data from [de los Campos et al., Nat. Comm., 2020](https://www.nature.com/articles/s41467-020-18480-y).
+
+
 
 Here we present a function to perform the Finlay-Wilkinson (1963)
 analysis in two steps using the BGLR (Pérez and de los Campos) package
