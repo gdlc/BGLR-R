@@ -501,7 +501,7 @@ void write_bed_(char **bed_file, int *n, int *p, int *out)
                         for(i=0; i<*n; i++)
                         { 
                                 l++;
-                                mask=recode[out[i+j*(*n)]] << 2 * l;
+                                mask=recode[out[i+(long long)j*(*n)]] << 2 * l;
                                 byte = byte | mask ;
                                 if((i+1)%4==0)
                                 {
