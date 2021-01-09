@@ -106,7 +106,8 @@ read_bed=function(bed_file,bim_file,fam_file,na.strings=c("0","-9"),verbose=FALS
            verbose=0
         }
 
-	out=.C("read_bed_",as.character(bed_file),as.integer(n),as.integer(p),as.integer(out),as.integer(verbose))[[4]]
+	bed_file=path.expand(bed_file)
+	out=.C("read_bed_",bed_file,as.integer(n),as.integer(p),as.integer(out),as.integer(verbose))[[4]]
         return(list(n=n,p=p,x=out))
 }
 
@@ -117,6 +118,7 @@ read_bed=function(bed_file,bim_file,fam_file,na.strings=c("0","-9"),verbose=FALS
 #see demo/read_ped.R for an example
 read_ped=function(ped_file)
 {
+	ped_file=path.expand(ped_file)
 	out=.Call("read_ped_",ped_file)
 	return(out)
 }
@@ -139,7 +141,8 @@ write_bed=function(x,n,p,bed_file)
    	if(length(x)!=n*p) stop("length of x is not equal to n*p");
           
 	#Function call
-	.C("write_bed_",as.character(bed_file), as.integer(n), as.integer(p), as.integer(x)) 
+	bed_file=path.expand(bed_file)
+	.C("write_bed_", bed_file, as.integer(n), as.integer(p), as.integer(x))
 }
 
 
