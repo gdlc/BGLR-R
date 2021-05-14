@@ -54,7 +54,7 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   
   - [8. Heritability Estimation: two methods](https://github.com/gdlc/BGLR-R/blob/master/inst/md/heritability.md)
 
-  - [10. Heterogeneous Error Variance Models](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_heteroskedastic.md)
+  - [9. Heterogeneous Error Variance Models](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_heteroskedastic.md)
   
   - [10. GxE Using Interactions](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GxE_usingInteractions.md)
   
