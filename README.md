@@ -71,9 +71,9 @@ This can be fixed it by following the following [advise](http://thecoatlessprofe
   
   - [16. BRR-sets: Guassian prior with set-specific variances](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BRR_sets.md)
   
-  - [17. Multi-trait prediction using eigenvectors](https://github.com/gdlc/BGLR-R/edit/master/inst/md/MULTITRAIT.md)
+  - [17. Multi-trait prediction using eigenvectors](https://github.com/gdlc/BGLR-R/blob/master/inst/md/MULTITRAIT.md)
 
-  - [18. Two-steps Finlay-Wilkinson Regression](https://github.com/gdlc/BGLR-R/edit/master/inst/md/FW_BGLR.md)
+  - [18. Two-steps Finlay-Wilkinson Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/FW_BGLR.md)
 
 **Other Omics**
 ----------------------------------------------------------------
