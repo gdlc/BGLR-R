@@ -1,7 +1,7 @@
 
 ## BGLR: An R Package for (Bayesian) High-Dimensional Regression
 
-[![CRAN status](https://www.r-pkg.org/badges/version/BGLR?color=green)](https://CRAN.R-project.org/package=BGLR) [![CRAN checks](https://cranchecks.info/badges/worst/BGLR)](https://cran.r-project.org/web/checks/check_results_BGLR.html) [![Travis build status](https://travis-ci.com/MarcooLopez/SFSI.svg?branch=master)](https://travis-ci.com/MarcooLopez/SFSI) [![Downloads](http://cranlogs.r-pkg.org/badges/SFSI?color=blue)](http://www.r-pkg.org/pkg/SFSI)
+[![CRAN status](https://www.r-pkg.org/badges/version/BGLR?color=green)](https://CRAN.R-project.org/package=BGLR) [![CRAN checks](https://cranchecks.info/badges/worst/BGLR)](https://cran.r-project.org/web/checks/check_results_BGLR.html) [![Downloads](http://cranlogs.r-pkg.org/badges/SFSI?color=blue)](http://www.r-pkg.org/pkg/SFSI)
 
 The BGLR Package ([Perez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151)) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
 version beta version. The latest stable release can be downloaded from [CRAN](https://cran.r-project.org/web/packages/BGLR/index.html).
