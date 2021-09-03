@@ -90,8 +90,8 @@ setCov.UN<-function(Cov,traits,j,mo,saveAt)
 	
 	if(is.null(Cov$df0))
 	{
-		Cov$df0<-5
-		message("df0 was set to 5")
+		Cov$df0<-traits+1
+		message("df0 was set to ",Cov$df0)
 	}
 	
 	if(is.null(Cov$S0))
@@ -129,8 +129,8 @@ setCov.DIAG<-function(Cov,traits,j,mo,saveAt)
 	
 	if(is.null(Cov$df0))
 	{
-		Cov$df0<-rep(5,traits)
-		message("df0 set to  5 for all the traits")
+		Cov$df0<-rep(traits+1,traits)
+		message("df0 set to  ",traits+1," for all the traits")
 	}
 	
 	if(is.null(Cov$S0))
@@ -170,8 +170,8 @@ setCov.REC<-function(Cov,traits,j,mo,saveAt)
 	
 	if(is.null(Cov$df0))
 	{
-		Cov$df0<-rep(5,traits)
-		message("df0 set to  5 for all the traits")
+		Cov$df0<-rep(traits+1,traits)
+		message("df0 set to ", traits+1, " for all the traits")
 	}
 	
 	if(is.null(Cov$S0))
@@ -242,8 +242,8 @@ setCov.FA<-function(Cov,traits,nD,j,mo,saveAt)
 	
 	if(is.null(Cov$df0))
 	{
-		Cov$df0<-rep(5,traits)
-		message("df0 set to  1 for all the traits")
+		Cov$df0<-rep(traits+1,traits)
+		message("df0 set to ",traits+1," for all the traits")
 	}
 
 	
