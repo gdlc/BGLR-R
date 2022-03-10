@@ -31,7 +31,7 @@
   X.TRN=X[-tst,] ; X.TST=X[tst,]
   
   fm=BGLR(y=yTRN,ETA=list(list(X=X.TRN,model='BRR')),nIter=6000,burnIn=1000)
-  yHat_2=X.TST%*%fm$ETA[[1]]$b
+  yHat_2=X.TST%*%fm$ETA[[1]]$b+fm$mu
 
 ```
 
