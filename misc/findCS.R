@@ -21,7 +21,7 @@ updateSamples=function(B0,CS){
 
 ###
 
-findCS=function(B,lfdr=.01,maxSize=min(ncol(B),10),maxProb=1-lfdr){
+findCS_OLD=function(B,lfdr=.01,maxSize=min(ncol(B),10),maxProb=1-lfdr){
 
   CS=0
 
@@ -65,7 +65,7 @@ findCS=function(B,lfdr=.01,maxSize=min(ncol(B),10),maxProb=1-lfdr){
 ## This function is similar to findCS() but it restrictes the search to SNPs within
 ## a maximum distance to the leading variant (i.e., the one with highest posterior probability of inclussion)
 
-findCS2=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
+nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
                  maxSetProb=.98,maxD=100,bp=1:ncol(B)){
 
   CS=0
@@ -120,3 +120,7 @@ findCS2=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
 
   return(cbind(CS[-1],PROB[-1]))
 }
+
+## This function finds CS recursively
+
+
