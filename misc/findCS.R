@@ -19,8 +19,7 @@ updateSamples=function(B0,CS){
 }
 
 
-###
-
+### now replaced with nextCS()
 findCS_OLD=function(B,lfdr=.01,maxSize=min(ncol(B),10),maxProb=1-lfdr){
 
   CS=0
@@ -62,8 +61,9 @@ findCS_OLD=function(B,lfdr=.01,maxSize=min(ncol(B),10),maxProb=1-lfdr){
 }
 
 
-## This function is similar to findCS() but it restrictes the search to SNPs within
+## This function is similar to findCS_OLD() but it restrictes the search to SNPs within
 ## a maximum distance to the leading variant (i.e., the one with highest posterior probability of inclussion)
+## The function is meant to be called by findCS(), see function below
 
 nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
                  maxSetProb=.98,maxD=100,bp=1:ncol(B)){
@@ -118,7 +118,7 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
   }
   message('========' ,'Done!','==========')
 
-  return(cbind(CS[-1],PROB[-1]))
+  return(cbind('SNPs'=CS[-1],'cumProb'=PROB[-1]))
 }
 
 ## This function finds CS recursively
