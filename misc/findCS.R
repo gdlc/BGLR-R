@@ -74,7 +74,47 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
   return(cbind('SNPs'=CS[-1],'cumProb'=PROB[-1]))
 }
 
-## This function finds CS recursively
+## This function finds CS within chromosome by recursively calling nextCS
+
+ findCS=function(B,minProbIn,maxSize,minSetProb,maxSetProb,maxD,chr,bp,verbose=FALSE){
+ 
+ 	stopifnot(is.logical(B))
+ 
+ 
+    SETS=list()
+    
+    nChr=length(unique(chr))
+    count_chr=1
+    for(i in unique(chr)){
+        ready=FALSE
+	    count_sets=1
+	    
+		SETS[[count_chr]]=list()
+		
+		
+		
+		    tmp<-(chr==i)
+		    B_CHR=B[,tmp]
+		while(!ready){
+   			TMP=nextCS(B=B_CHR,minProbIn=minProbIn,maxSize=maxSize,maxSetProb=maxSetProb,maxD=maxD,bp=bp[tmp],verbose=verbose)
+   			ready=ifelse(nrow(TMP)==0,TRUE,max(TMP[,2,drop=FALSE])<minSetProb)
+
+   			if(!ready){
+        		B_CHR[,TMP[,1]]=FALSE
+        		SETS[[count_chr]][[count_sets]]=cbind('set'=count_sets,TMP)
+        		count_sets=count_sets+1
+   			}
+  
+ 		}
+ 		count_chr=count_chr+1
+ 		if(verbose){ 
+ 			 message('==> chr ',i, ' done','') 
+ 		}
+ 	
+ 	}
+ 	names(SETS)=unique(chr)
+ 	return(SETS)
+}
 
 
 
