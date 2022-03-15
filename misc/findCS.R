@@ -19,54 +19,13 @@ updateSamples=function(B0,CS){
 }
 
 
-### now replaced with nextCS()
-findCS_OLD=function(B,lfdr=.01,maxSize=min(ncol(B),10),maxProb=1-lfdr){
-
-  CS=0
-
-  PROB=0
-
-  nActive=0
-  p=ncol(B)
-
-
-  prob_in=colMeans(B)
-
-  ready=FALSE
-  B0=B
-
-  while(!ready){
-
-     B=updateSamples(B0,CS)
-     prob_in=colMeans(B)
-
-     if(any(prob_in>=lfdr)){
-        tmp=which.max(prob_in)
-        if(length(tmp)>1){
-                tmp=tmp[1] # could be random
-        }
-        CS=c(CS,tmp)
-        PROB=c(PROB,max(PROB)+prob_in[tmp])
-
-        nActive=length(CS)-1
-
-        message('========' ,length(CS)-1 ,'==========')
-        print(cbind(CS[-1],PROB[-1]))
-     }
-     ready=(all(prob_in<lfdr)|(nActive>=maxSize)|(max(PROB)>=maxProb))
-  }
-  message('========' ,'Done!','==========')
-
-  return(cbind(CS[-1],PROB[-1]))
-}
-
 
 ## This function is similar to findCS_OLD() but it restrictes the search to SNPs within
 ## a maximum distance to the leading variant (i.e., the one with highest posterior probability of inclussion)
 ## The function is meant to be called by findCS(), see function below
 
 nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
-                 maxSetProb=.98,maxD=100,bp=1:ncol(B)){
+                 maxSetProb=.98,maxD=100,bp=1:ncol(B), verbose=FALSE){
 
   CS=0
 
@@ -108,12 +67,12 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
 
         nActive=length(CS)-1
 
-        message('========' ,length(CS)-1 ,'==========')
-        print(cbind(CS[-1],PROB[-1]))
+        if(verbose){
+          message('========' ,length(CS)-1 ,'==========')
+          print(cbind(CS[-1],PROB[-1]))
+        }
      }
-
      cycle=cycle+1
-
      ready=(all(prob_in<minProbIn)|(nActive>=maxSize)|(max(PROB)>=maxSetProb))
   }
   message('========' ,'Done!','==========')
@@ -123,4 +82,54 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
 
 ## This function finds CS recursively
 
+
+
+
+####################################
+## Old code
+####################################
+if(FALSE){
+ ### now replaced with nextCS()
+findCS_OLD=function(B,lfdr=.01,maxSize=min(ncol(B),10),maxProb=1-lfdr){
+
+  CS=0
+
+  PROB=0
+
+  nActive=0
+  p=ncol(B)
+
+
+  prob_in=colMeans(B)
+
+  ready=FALSE
+  B0=B
+
+  while(!ready){
+
+     B=updateSamples(B0,CS)
+     prob_in=colMeans(B)
+
+     if(any(prob_in>=lfdr)){
+        tmp=which.max(prob_in)
+        if(length(tmp)>1){
+                tmp=tmp[1] # could be random
+        }
+        CS=c(CS,tmp)
+        PROB=c(PROB,max(PROB)+prob_in[tmp])
+
+        nActive=length(CS)-1
+
+        message('========' ,length(CS)-1 ,'==========')
+        print(cbind(CS[-1],PROB[-1]))
+     }
+     ready=(all(prob_in<lfdr)|(nActive>=maxSize)|(max(PROB)>=maxProb))
+  }
+  message('========' ,'Done!','==========')
+
+  return(cbind(CS[-1],PROB[-1]))
+}
+
+    
+}
 
