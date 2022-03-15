@@ -66,16 +66,10 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
         PROB=c(PROB,max(PROB)+prob_in[tmp])
 
         nActive=length(CS)-1
-
-        if(verbose){
-          message('========' ,length(CS)-1 ,'==========')
-          print(cbind(CS[-1],PROB[-1]))
-        }
      }
      cycle=cycle+1
      ready=(all(prob_in<minProbIn)|(nActive>=maxSize)|(max(PROB)>=maxSetProb))
   }
-  message('========' ,'Done!','==========')
 
   return(cbind('SNPs'=CS[-1],'cumProb'=PROB[-1]))
 }
