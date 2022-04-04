@@ -35,7 +35,7 @@
 
 ```
 
-**(3) Using G-matrix (only valid for GBLUP**
+**(3) Using G-matrix (only valid for GBLUP)**
 
 ```R
   G=tcrossprod(X)/ncol(X)
