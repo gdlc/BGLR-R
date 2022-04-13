@@ -795,7 +795,9 @@ setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow){
     }#*#
 
     return(LT)	
-}#*# end of ELSE statment
+}
+	
+:wq}#*# end of ELSE statment
 	
 	
 #Initialize residual covariance structure
