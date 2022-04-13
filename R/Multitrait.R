@@ -628,6 +628,8 @@ setLT.RKHS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 }
 
 #Set linear term for Fixed effects
+#*#
+if(FALSE){
 setLT.FIXED_mt<-function(LT,traits,j)
 {
 	message("Setting linear term ",j)
@@ -704,7 +706,98 @@ setLT.FIXED_mt<-function(LT,traits,j)
 	return(LT)
 	
 }
+}else{
+	
+#Set linear term for Fixed effects
+setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow){
+        message("Setting linear term ",j)
 
+        if(is.null(LT$common))
+        {
+                LT$common<-TRUE
+                message("matrix of fixed effects X is the same for all the traits,")
+                message("so the same effects are assumed for all the traits")
+        }else{
+                if(LT$common)
+                {
+                        message("matrix for fixed effects X is the same for all the traits,")
+                        message("so the same effects are assumed for all the traits")
+                }else{
+                        message("each trait has a different matrix for fixed X_t, we assume")
+                        message("X=[X_1,...,X_t], k=1,...,t (traits)")
+                }
+        }
+
+        #X
+        if(is.null(LT$X)) stop("X can not be NULL\n")
+        if(!is.matrix(LT$X))  stop("X must be a matrix\n")
+        if(any(is.na(LT$X))) stop("X has NAs\n")
+
+        #Omega
+        LT$Cov<-list()
+        LT$Cov$Omega<-diag(rep(1E6,traits))
+        LT$Cov$Omegainv<-solve(LT$Cov$Omega)
+
+        if(LT$common)
+        {
+                #check rank
+                if(qr(LT$X)$rank<ncol(LT$X)) stop("X is rank deficient")
+
+                LT$x2<-as.vector(colSums(LT$X^2))
+
+
+                #Initialize beta
+                LT$p<-ncol(LT$X)
+
+                LT$beta<-matrix(0,nrow=LT$p,ncol=traits)
+
+                #Objects for saving posterior means for MCMC
+                LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
+                LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
+
+        }else{
+
+                #Number of columns in each X=[X_1,...,X_t], k=1,...,t (traits)
+                LT$p<-floor(ncol(LT$X)/traits)
+                if(traits*LT$p!=ncol(LT$X)) stop("Check the number of columns in X")
+                LT$upper<-LT$p*c(1:traits)
+                LT$lower<-LT$upper+1-LT$p
+
+                #Check the rank of each matrix
+                for(k in 1:traits)
+                {
+                        if(qr(LT$X[,c(LT$lower[k]:LT$upper[k])])$rank<LT$p) stop("X_",k, " is rank deficient")
+                }
+		                #Do not move this code out here!!!
+                #It appears to be repeated but is not the case
+
+                LT$x2<-as.vector(colSums(LT$X^2))
+
+                LT$beta<-matrix(0,nrow=LT$p,ncol=traits)
+
+                #Objects for saving posterior means for MCMC
+                LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
+                LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
+        }
+
+     #*#        
+        if(LT$saveEffects){
+        	if(is.null(LT$storageMode)){LT$storageMode<-"double"}
+
+        if(!LT$storageMode%in%c("single","double")){
+            stop("storageMode of LP ",j," can either be 'single' or 'double' (default)")
+        }
+
+        fname<-paste(saveAt,LT$Name,"_beta.bin",sep="")
+        LT$fileEffects<-file(fname,open='wb')
+        writeBin(object=c(nRow,traits,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
+
+    }#*#
+
+    return(LT)	
+}#*# end of ELSE statment
+	
+	
 #Initialize residual covariance structure
 setResCov<-function(resCov,traits,error,Sy,R2,saveAt)
 {
@@ -1328,7 +1421,8 @@ Multitrait<-function(y,
 						SpikeSlab=setLT.DiracSS_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt,nRow=nRow),
 						BRR=setLT.BRR_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt,nRow=nRow),
 						RKHS=setLT.RKHS_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt),
-						FIXED=setLT.FIXED_mt(LT=ETA[[j]],traits=traits,j=j))
+						#*# FIXED=setLT.FIXED_mt(LT=ETA[[j]],traits=traits,j=j))
+				 		FIXED=setLT.FIXED_mt(LT=ETA[[j]],traits=traits,j=j,saveAt=saveAt,nRow=nRow))
 	
 	} 	#End of cycle for setting linear terms
 	
@@ -1768,7 +1862,7 @@ Multitrait<-function(y,
 			#Saving beta effects and indicator variables
 			for(j in 1:nLT)
 			{
-				if(ETA[[j]]$model%in%c("SpikeSlab","BRR"))
+				if(ETA[[j]]$model%in%c("SpikeSlab","BRR","FIXED"))
 				{
 					if(ETA[[j]]$saveEffects)
 					{
