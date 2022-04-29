@@ -167,5 +167,3 @@ BFDR=function(prob){
     names(bfdr)=origNames
     return(bfdr)
 }
-
-
