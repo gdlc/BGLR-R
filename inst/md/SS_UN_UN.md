@@ -18,7 +18,7 @@ X<-scale(X)/sqrt(ncol(X))
 
 ETA1<-list(list(X=X,model="SpikeSlab",
 		        inclusionProb=list(probIn=rep(1/100,ncol(y)),
-		        counts=rep(110,ncol(y)))))
+		        counts=rep(1E6,ncol(y)))))
 
 #Fit the model
 
