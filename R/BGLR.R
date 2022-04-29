@@ -1785,7 +1785,9 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
             message("---------------------------------------")
             tmp = proc.time()[3]
             message("Iter=",i," Time/Iter=",round(tmp-time,3))
-            message("VarE=",round(varE,3))
+            #message("VarE=",round(varE,3))
+	    #In the case of variance by groups
+	    message("varE=",paste(round(varE,3),collapse=", "))
             time = tmp
         }
     }#end of Gibbs sampler
