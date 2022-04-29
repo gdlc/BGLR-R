@@ -12,7 +12,12 @@ importFrom("MASS","mvrnorm")
 importFrom("methods", "is")
 
 export(BGLR,BLR,
-       read_bed,read_ped, write_bed,readBinMat,getVariances,BFDR,
+       read_bed,
+       read_ped, 
+       write_bed,
+       readBinMat,
+       getVariances,
+       BFDR,
        BLRCross,
        BLRXy,
        Multitrait,
