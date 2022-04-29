@@ -49,14 +49,6 @@ ETA=list(list(X=W, model="FIXED"),
    \item{rmExistingFiles}{(logical) if TRUE removes existing output files from previous runs, default TRUE.}
 }
 
-\details{
-
-}
-
-\value{
-
-}
-
 \references{
 
 de los Campos G., H. Naya, D. Gianola, J. Crossa, A. Legarra, E. Manfredi, K. Weigel and J. Cotes. 2009.
