@@ -74,4 +74,12 @@ version 1.0.9
   statistics X'X and X'y, which is faster when number of individuals (n) is bigger than the number of markers(p).
   
   Added functions to fit multitrait models with arbitrary number of random effects.  
-  
+
+version 1.1.0
+  Added Biochemistry information in data.frame mice.pheno.
+
+  Added genetic map for mice dataset.
+
+  Added support for saving fixed effects.
+
+  Added new routines to speed up computations in Multitrait models.
