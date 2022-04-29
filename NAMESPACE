@@ -27,7 +27,8 @@ export(BGLR,
        vech,
        getGCovar)
 
-exportMethods(BGLR)
+#Actually we are not using S4 methods...
+#exportMethods(BGLR)
 
 #S3method(effects, BGLR)
 S3method(plot, BGLR)
