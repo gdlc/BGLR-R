@@ -882,12 +882,12 @@ welcome=function()
   message("\n");
   message("#--------------------------------------------------------------------#");
   message("#        _\\\\|//_                                                     #");
-  message("#       (` o-o ')      BGLR v1.0.9                                   #");
+  message("#       (` o-o ')      BGLR v1.1.0                                   #");
   message("#------ooO-(_)-Ooo---------------------------------------------------#");
   message("#                      Bayesian Generalized Linear Regression        #");
   message("#                      Gustavo de los Campos, gdeloscampos@gmail.com #");
   message("#    .oooO     Oooo.   Paulino Perez-Rodriguez, perpdgo@gmail.com    #");
-  message("#    (   )     (   )   January, 2020                                 #");
+  message("#    (   )     (   )   April, 2022                                   #");
   message("#_____\\ (_______) /_________________________________________________ #");
   message("#      \\_)     (_/                                                   #");
   message("#                                                                    #");
