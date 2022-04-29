@@ -38,7 +38,7 @@ ETA=list(list(X=W, model="FIXED"),
 
 
 	      For linear regressions the following options are implemented: FIXED (Flat prior), BRR (Gaussian prior), BayesA (scaled-t prior), BL (Double-Exponential prior), 
-              BayesB (two component mixture prior with a point of mass at zero and a sclaed-t slab), BayesC (two component mixture prior with a point of
+              BayesB (two component mixture prior with a point of mass at zero and a scaled-t slab), BayesC (two component mixture prior with a point of
               mass at zero and a Gaussian slab). In linear regressions X can be the incidence matrix for effects or a formula (e.g. \code{~factor(sex) + age})
               in which case the incidence matrix is created internally using the \code{model.matrix} function of R. For Gaussian processes (RKHS) a co-variance matrix
               (K) must be provided. Further details about the models implemented in BGLR see the vignettes in the package. 
