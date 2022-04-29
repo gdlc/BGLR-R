@@ -8,7 +8,6 @@ in R
 
 */
 
-
 #include <R.h>
 #include <Rinternals.h>
 #include <stdlib.h> // for NULL
@@ -31,8 +30,9 @@ extern SEXP sample_beta_groups(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, S
 extern SEXP sample_beta_lower_tri(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sampler_ACSS(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sampler_BRR_mt(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP sampler_BRR_mt_v2(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sampler_DiracSS(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP sampler_DiracSS_mt(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP sampler_DiracSS_mt_v2(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sampler_others(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CMethodDef CEntries[] = {
@@ -50,8 +50,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"sample_beta_lower_tri",     (DL_FUNC) &sample_beta_lower_tri,      9},
     {"sampler_ACSS",              (DL_FUNC) &sampler_ACSS,              13},
     {"sampler_BRR_mt",            (DL_FUNC) &sampler_BRR_mt,            11},
+    {"sampler_BRR_mt_v2",         (DL_FUNC) &sampler_BRR_mt_v2,          9},
     {"sampler_DiracSS",           (DL_FUNC) &sampler_DiracSS,           12},
-    {"sampler_DiracSS_mt",        (DL_FUNC) &sampler_DiracSS_mt,        16},
+    {"sampler_DiracSS_mt_v2",     (DL_FUNC) &sampler_DiracSS_mt_v2,     13},
     {"sampler_others",            (DL_FUNC) &sampler_others,             9},
     {NULL, NULL, 0}
 };
@@ -61,5 +62,4 @@ void R_init_BGLR(DllInfo *dll)
     R_registerRoutines(dll, CEntries, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
-
 
