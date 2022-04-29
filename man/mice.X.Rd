@@ -5,6 +5,7 @@
 
  Is a matrix ( 1814 x 10346) with SNP markers.
 
+ The data can be downloaded from http://mtweb.cs.ucl.ac.uk/mus/www/GSCAN/HS_GENOTYPES/.
 }
 
 \keyword{datasets}
