@@ -6,8 +6,8 @@
 The mice data comes from an experiment carried out to detect and locate QTLs for complex traits in a 
 mice population (Valdar et al. 2006a; 2006b). This data has already been analyzed for comparing genome-assisted 
 genetic evaluation methods (Legarra et al. 2008). The data file consists of 1814 individuals,  
-each genotyped for 10,346 polymorphic markers. The trait here 
-here is body mass index (BMI), and additional information about body weight, season, month and day.
+each genotyped for 10,346 polymorphic markers. The information is related to 
+obesity and biochemistry and other covariates related to the traits.
 
 }
 
@@ -18,8 +18,9 @@ here is body mass index (BMI), and additional information about body weight, sea
 \format{
 
  Matrix mice.A contains the pedigree.
- The matrix mice.X contains the markes information and 
- mice.pheno contains phenotypical information.
+ The matrix mice.X contains the markes information and the map data.frame
+ contains information for the genetic map.
+ The data.frame mice.pheno contains phenotypical information.
 
 }
 
