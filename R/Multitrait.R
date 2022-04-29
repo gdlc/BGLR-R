@@ -628,88 +628,10 @@ setLT.RKHS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 }
 
 #Set linear term for Fixed effects
-#*#
-if(FALSE){
-setLT.FIXED_mt<-function(LT,traits,j)
+#Modified by Gustavo to support saving fixed effects, April 13, 2022
+setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow)
 {
-	message("Setting linear term ",j)
-		
-	if(is.null(LT$common))
-	{
-		LT$common<-TRUE
-		message("matrix of fixed effects X is the same for all the traits,")
-		message("so the same effects are assumed for all the traits")
-	}else{
-		if(LT$common)
-		{
-			message("matrix for fixed effects X is the same for all the traits,")
-			message("so the same effects are assumed for all the traits")	
-		}else{
-			message("each trait has a different matrix for fixed X_t, we assume")
-			message("X=[X_1,...,X_t], k=1,...,t (traits)")
-		}
-	}
-	
-	#X
-	if(is.null(LT$X)) stop("X can not be NULL\n")
-	if(!is.matrix(LT$X))  stop("X must be a matrix\n")
-	if(any(is.na(LT$X))) stop("X has NAs\n")
 
-	#Omega
-	LT$Cov<-list()
-	LT$Cov$Omega<-diag(rep(1E6,traits))
-	LT$Cov$Omegainv<-solve(LT$Cov$Omega)
-	
-	if(LT$common)
-	{
-		#check rank
-		if(qr(LT$X)$rank<ncol(LT$X)) stop("X is rank deficient")
-		
-		LT$x2<-as.vector(colSums(LT$X^2))
-
-
-		#Initialize beta
-		LT$p<-ncol(LT$X)
-
-		LT$beta<-matrix(0,nrow=LT$p,ncol=traits)
-
-		#Objects for saving posterior means for MCMC
-		LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
-		LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
-		
-	}else{
-				
-		#Number of columns in each X=[X_1,...,X_t], k=1,...,t (traits)
-		LT$p<-floor(ncol(LT$X)/traits)
-		if(traits*LT$p!=ncol(LT$X)) stop("Check the number of columns in X")
-		LT$upper<-LT$p*c(1:traits)
-		LT$lower<-LT$upper+1-LT$p
-		
-		#Check the rank of each matrix
-		for(k in 1:traits)
-		{
-			if(qr(LT$X[,c(LT$lower[k]:LT$upper[k])])$rank<LT$p) stop("X_",k, " is rank deficient")
-		}
-		
-		#Do not move this code out here!!!
-		#It appears to be repeated but is not the case
-		
-		LT$x2<-as.vector(colSums(LT$X^2))
-
-		LT$beta<-matrix(0,nrow=LT$p,ncol=traits)
-
-		#Objects for saving posterior means for MCMC
-		LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
-		LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)		
-	}
-	
-	return(LT)
-	
-}
-}else{
-	
-#Set linear term for Fixed effects
-setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow){
         message("Setting linear term ",j)
 
         if(is.null(LT$common))
@@ -780,25 +702,28 @@ setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow){
                 LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
         }
 
-     #*#        
-        if(LT$saveEffects){
-        	if(is.null(LT$storageMode)){LT$storageMode<-"double"}
+     	#*#        
+        if(LT$saveEffects)
+        {
+        	if(is.null(LT$storageMode))
+        	{
+        		LT$storageMode<-"double"
+        	}
 
-        if(!LT$storageMode%in%c("single","double")){
-            stop("storageMode of LP ",j," can either be 'single' or 'double' (default)")
-        }
+        	if(!LT$storageMode%in%c("single","double"))
+        	{
+            	stop("storageMode of LP ",j," can either be 'single' or 'double' (default)")
+        	}
 
-        fname<-paste(saveAt,LT$Name,"_beta.bin",sep="")
-        LT$fileEffects<-file(fname,open='wb')
-        writeBin(object=c(nRow,traits,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
+        	fname<-paste(saveAt,LT$Name,"_beta.bin",sep="")
+        	LT$fileEffects<-file(fname,open='wb')
+        	writeBin(object=c(nRow,traits,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
 
-    }#*#
+    	}#*#
 
-    return(LT)	
+		return(LT)	
 }
-}#*# end of ELSE statment
-	
-	
+
 #Initialize residual covariance structure
 setResCov<-function(resCov,traits,error,Sy,R2,saveAt)
 {
@@ -1422,8 +1347,7 @@ Multitrait<-function(y,
 						SpikeSlab=setLT.DiracSS_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt,nRow=nRow),
 						BRR=setLT.BRR_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt,nRow=nRow),
 						RKHS=setLT.RKHS_mt(LT=ETA[[j]],traits=traits,j=j,Sy=Sy,nLT=nLT,R2=R2,saveAt=saveAt),
-						#*# FIXED=setLT.FIXED_mt(LT=ETA[[j]],traits=traits,j=j))
-				 		FIXED=setLT.FIXED_mt(LT=ETA[[j]],traits=traits,j=j,saveAt=saveAt,nRow=nRow))
+						FIXED=setLT.FIXED_mt(LT=ETA[[j]],traits=traits,j=j,saveAt=saveAt,nRow=nRow))
 	
 	} 	#End of cycle for setting linear terms
 	
@@ -1472,32 +1396,57 @@ Multitrait<-function(y,
 			#SpikeSlab
 			if(ETA[[j]]$model=="SpikeSlab")
 			{
-					for(k in 1:traits)
-					{
-						#cat("k=",k,"\n")	
-		
-						S11 <- ETA[[j]]$Cov$Omega[k,k,drop=FALSE]
-						S22 <- ETA[[j]]$Cov$Omega[-k,-k,drop=FALSE]
-						S12 <- ETA[[j]]$Cov$Omega[k,-k,drop=FALSE]
-						tmp12 <- as.vector(S12%*%solve(S22))
-						tmp11 <- tmp12%*%t(S12)
-						sigma2 <- as.numeric(S11-tmp11)
-		
-						logPriorOdds<-log(ETA[[j]]$inclusionProb$probIn[k]/(1-ETA[[j]]$inclusionProb$probIn[k]))
-		
-						#b, d, beta and error are overwritten with this .Call
-		
-						.Call("sampler_DiracSS_mt", k, logPriorOdds, n, ETA[[j]]$p,
-							  traits, resCov$Rinv, ETA[[j]]$X, error,
+					# for(k in 1:traits)
+# 					{
+# 						#cat("k=",k,"\n")	
+# 		
+# 						S11 <- ETA[[j]]$Cov$Omega[k,k,drop=FALSE]
+# 						S22 <- ETA[[j]]$Cov$Omega[-k,-k,drop=FALSE]
+# 						S12 <- ETA[[j]]$Cov$Omega[k,-k,drop=FALSE]
+# 						tmp12 <- as.vector(S12%*%solve(S22))
+# 						tmp11 <- tmp12%*%t(S12)
+# 						sigma2 <- as.numeric(S11-tmp11)
+# 		
+# 						logPriorOdds<-log(ETA[[j]]$inclusionProb$probIn[k]/(1-ETA[[j]]$inclusionProb$probIn[k]))
+# 		
+# 						#b, d, beta and error are overwritten with this .Call
+# 		
+# 						.Call("sampler_DiracSS_mt", k, logPriorOdds, n, ETA[[j]]$p,
+# 							  traits, resCov$Rinv, ETA[[j]]$X, error,
+# 							  ETA[[j]]$beta,
+# 							  ETA[[j]]$b,
+# 							  ETA[[j]]$d,
+# 							  ETA[[j]]$x2,
+# 							  tmp12,
+# 							  sigma2,
+# 							  ETA[[j]]$Cov$Omegainv[k,-k],
+# 							  ETA[[j]]$Cov$Omegainv[k,k])
+# 		
+# 						#Sampling inclusion probabilities | else
+# 						mrkIn <- sum(ETA[[j]]$d[,k])
+# 						shape1 <- mrkIn + ETA[[j]]$inclusionProb$countsIn[k]
+# 						shape2 <- ETA[[j]]$p - mrkIn + ETA[[j]]$inclusionProb$countsOut[k]
+# 						ETA[[j]]$inclusionProb$probIn[k]=rbeta(shape1 = shape1,
+# 													           shape2 = shape2, 
+# 													           n = 1)
+# 												
+# 					}#End of loop for traits
+					
+					#### BEGIN NEW code 
+
+					logPriorOdds<-log(ETA[[j]]$inclusionProb$probIn/(1-ETA[[j]]$inclusionProb$probIn))
+				
+					.Call("sampler_DiracSS_mt_v2",logPriorOdds,n, ETA[[j]]$p,
+						  traits,resCov$Rinv, ETA[[j]]$X, error,
 							  ETA[[j]]$beta,
 							  ETA[[j]]$b,
 							  ETA[[j]]$d,
 							  ETA[[j]]$x2,
-							  tmp12,
-							  sigma2,
-							  ETA[[j]]$Cov$Omegainv[k,-k],
-							  ETA[[j]]$Cov$Omegainv[k,k])
-		
+							  ETA[[j]]$Cov$Omega,
+							  ETA[[j]]$Cov$Omegainv)
+					
+					for(k in 1:traits)
+					{
 						#Sampling inclusion probabilities | else
 						mrkIn <- sum(ETA[[j]]$d[,k])
 						shape1 <- mrkIn + ETA[[j]]$inclusionProb$countsIn[k]
@@ -1505,8 +1454,11 @@ Multitrait<-function(y,
 						ETA[[j]]$inclusionProb$probIn[k]=rbeta(shape1 = shape1,
 													           shape2 = shape2, 
 													           n = 1)
-												
-					}#End of loop for traits
+						
+					}
+					
+					### END NEW code
+
 					
 					#Sampling from Omega | else						
 					if(ETA[[j]]$Cov$type=="UN")
@@ -1571,19 +1523,30 @@ Multitrait<-function(y,
 			
 			if(ETA[[j]]$model%in%c("BRR","RKHS"))
 			{		
-					for(k in 1:traits)
-					{
-						#cat("k=",k,"\n")	
-						
-						#beta and error are overwritten with this .Call
-						.Call("sampler_BRR_mt", k, n, ETA[[j]]$p,
-							  traits, resCov$Rinv, ETA[[j]]$X, error,
-							  ETA[[j]]$beta,
-							  ETA[[j]]$x2,
-							  ETA[[j]]$Cov$Omegainv[k,-k],
-							  ETA[[j]]$Cov$Omegainv[k,k])
-												
-					}#End of loop for traits
+
+# 					for(k in 1:traits)
+# 					{
+# 						#cat("k=",k,"\n")	
+# 						
+# 						#beta and error are overwritten with this .Call
+# 						.Call("sampler_BRR_mt", k, n, ETA[[j]]$p,
+# 							  traits, resCov$Rinv, ETA[[j]]$X, error,
+# 							  ETA[[j]]$beta,
+# 							  ETA[[j]]$x2,
+# 							  ETA[[j]]$Cov$Omegainv[k,-k],
+# 							  ETA[[j]]$Cov$Omegainv[k,k])
+# 												
+# 					}#End of loop for traits
+
+					### BEGIN NEW code
+					
+					.Call("sampler_BRR_mt_v2", n, ETA[[j]]$p,
+						  traits, resCov$Rinv, ETA[[j]]$X, error,
+						  ETA[[j]]$beta,
+						  ETA[[j]]$x2,
+						  ETA[[j]]$Cov$Omegainv)
+						  
+					### END NEW code
 					
 					#Sampling from Omega | else
 					
@@ -1664,8 +1627,7 @@ Multitrait<-function(y,
 						}#End of loop for traits
 						
 					}else{
-						
-						
+										
 						low<-ETA[[j]]$lower
 						up<-ETA[[j]]$upper
 						
