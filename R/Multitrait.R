@@ -705,10 +705,10 @@ setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow)
      	#*#
      	
      	#Files to save binary files with betas
-		if(is.null(LT$saveEffects))
-		{
-			LT$saveEffects<-FALSE
-		} 
+	if(is.null(LT$saveEffects))
+	{
+		LT$saveEffects<-FALSE
+	} 
      	       
         if(LT$saveEffects)
         {
