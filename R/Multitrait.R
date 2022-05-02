@@ -702,7 +702,14 @@ setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow)
                 LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
         }
 
-     	#*#        
+     	#*#
+     	
+     	#Files to save binary files with betas
+		if(is.null(LT$saveEffects))
+		{
+			LT$saveEffects<-FALSE
+		} 
+     	       
         if(LT$saveEffects)
         {
         	if(is.null(LT$storageMode))
