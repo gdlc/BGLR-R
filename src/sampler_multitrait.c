@@ -436,13 +436,23 @@ SEXP sampler_BRR_mt_v2(SEXP n,
         	 mu=s3/v;
             
         	 cbeta[j]=mu+sqrt(1.0/v)*norm_rand();
-        	 
+        	
+		 //Update the error, e_k and xe_k
+                 //e_k = shift*xj + e_k
+                 //once we update e_k, we can compute xe_k = xj' * e_k, but it is more efficient
+                 //if we update first xe_k = xj' * (shift * xj + e_k)=shift*xj'*xj + xj'*e_k
+                 //so that we avoid a call to ddot
+
+                 shift=betaOld-cbeta[j];
+                 xe[k]=shift*px2[j]+xe[k];
+                 F77_NAME(daxpy)(&rows, &shift,xj,&inc, cerror, &inc);
+ 
         	 //Update the error
-        	 shift=betaOld-cbeta[j];
-        	 F77_NAME(daxpy)(&rows, &shift,xj,&inc, cerror, &inc);
+        	 //shift=betaOld-cbeta[j];
+        	 //F77_NAME(daxpy)(&rows, &shift,xj,&inc, cerror, &inc);
         	 
         	 //update xe
-        	 xe[k]=F77_NAME(ddot)(&rows,xj,&inc,cerror,&inc);
+        	 //xe[k]=F77_NAME(ddot)(&rows,xj,&inc,cerror,&inc);
         	 
         }
         
@@ -826,14 +836,23 @@ SEXP sampler_DiracSS_mt_v2(SEXP lpo,
         	betaOld=cbeta[j];
         
         	cbeta[j]=cd[j]*cb[j];
-        
+
+		//Update the error, e_k and xe_k
+                //e_k = shift*xj + e_k
+                //once we update e_k, we can compute xe_k = xj' * e_k, but it is more efficient
+                //if we update first xe_k = xj' * (shift * xj + e_k)=shift*xj'*xj + xj'*e_k
+                //so that we avoid a call to ddot
+                
+                shift=betaOld-cbeta[j];
+                xe[k]=shift*px2[j]+xe[k];
+                F77_NAME(daxpy)(&rows, &shift,xj,&inc, cerror, &inc);
+
         	//Update the error
-        	shift=betaOld-cbeta[j];
-        	F77_NAME(daxpy)(&rows, &shift,xj,&inc, cerror, &inc);
+        	//shift=betaOld-cbeta[j];
+        	//F77_NAME(daxpy)(&rows, &shift,xj,&inc, cerror, &inc);
         	
         	//Update xe
-        	xe[k]=F77_NAME(ddot)(&rows,xj,&inc,cerror,&inc);
-        	
+        	//xe[k]=F77_NAME(ddot)(&rows,xj,&inc,cerror,&inc);
         	
         } //loop for k
         
