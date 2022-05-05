@@ -102,7 +102,7 @@ SEXP sampler_DiracSS_mt(SEXP trait,
     {
         
         //j-th column of X
-        xj=pX+j*rows;
+        xj=pX+(long long)j*rows;
         
         s1=0;
         for(t=0; t<traits;t++)
@@ -266,7 +266,7 @@ SEXP sampler_BRR_mt(SEXP trait,
     {
         
         //j-th column of X
-        xj=pX+j*rows;
+        xj=pX+(long long)j*rows;
         
         s1=0;
         for(t=0; t<traits;t++)
@@ -387,7 +387,7 @@ SEXP sampler_BRR_mt_v2(SEXP n,
     {
         
         //j-th column of X
-        xj=pX+j*rows;
+        xj=pX+(long long)j*rows;
         
         //Compute [x_j'*e_1,...,x_j'*e_traits]
         for(t=0; t<traits;t++)
@@ -740,7 +740,7 @@ SEXP sampler_DiracSS_mt_v2(SEXP lpo,
     {
     
     	//j-th column of X
-        xj=pX+j*rows;
+        xj=pX+(long long)j*rows;
         
         //Compute [x_j'*e_1,...,x_j'*e_traits]
         for(t=0; t<traits;t++)
