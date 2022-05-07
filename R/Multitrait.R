@@ -596,7 +596,7 @@ setLT.RKHS_mt<-function(LT,traits,j,Sy,nLT,R2,saveAt)
 	{
 		message("Checking variance co-variance matrix K  for linear term ",j)
 		if(nrow(LT$K)!=ncol(LT$K)) stop("variance covariance matrix must be square")
-		LT$EVD <- eigen(LT$K)
+		LT$EVD <- eigen(LT$K,symmetric=TRUE)
 		message("Ok")
 	}
 	
