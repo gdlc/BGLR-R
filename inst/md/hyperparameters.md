@@ -45,7 +45,7 @@ at zero and a slab (Gaussian in case of BayesC, scaled-t in case of BayesB). One
 hyper-parameters is the proportion of non-zero effects. BGLR assigns a beta prior to this parameter; the
 Beta prior is index by two shape parameters (shape1 and shape2 in R) that can be thought as the number of prior
 failures and successes in Bernoulli trials, we label them as counts0 and counts1, respectively. Alternatively you
-can provide counts and probIn (success probability) and BGLR sets counts1=counts*probIn and counts0=counts*(1-probIn).
+can provide counts and probIn (success probability) and BGLR sets counts1=counts\*probIn and counts0=counts\*(1-probIn).
 The mean of the prior distribution is given by counts1/(counts1+counts0)=probIn. Setting counts0=counts1=1 gives a uniform
 prior.  As the number of counts approaches infinity the prior collapses to a point of mass at the prior mean. 
 By default, BGLR sets counts0=counts1=5. The following example illustrates how to fit BayesB with flat prior and by fixing the
