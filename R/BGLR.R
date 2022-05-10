@@ -521,7 +521,7 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
 		
 		LT$K=sweep(sweep(LT$K,1L,weights,"*"),2L,weights,"*")
     
-    	tmp =eigen(LT$K)
+    	tmp =eigen(LT$K,symmetric=TRUE)
     	LT$V =tmp$vectors
     	LT$d =tmp$values
 		rm(tmp)
