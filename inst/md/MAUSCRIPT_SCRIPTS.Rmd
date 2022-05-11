@@ -1,0 +1,115 @@
+---
+title: "Manuscript Scripts"
+author: "Paulino Pérez-Rodríguez & Gustavo de los Campos"
+#Note: Save and open as UTF-8 in order to display correcly the accents
+#date: "9/8/2021"
+
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,eval=FALSE,class.source = "numberLines lineAnchors")
+```
+
+### Box 1: Multi-trait GBLUP with unstructured and structured covariances
+
+```{r}
+library(BGLR)
+data(wheat)
+K<-tcrossprod(scale(wheat.X,center=TRUE)) 
+K<-K/mean(diag(K))
+Y<-wheat.Y # 4 traits
+
+# Fitting a GBLUP un-structured cov-matrices 
+ LP<-list(mar=list(K=K,model="RKHS"))
+ set.seed(123)
+ fmUN<-Multitrait(y=Y,ETA=LP,nIter=10000,burnIn=5000,
+                  saveAt="UN_",verbose=FALSE)
+
+# Retrieving estimates and posterior SD
+ fmUN$resCov$R          # residual co-variance matrix
+ fmUN$resCov$SD.R
+
+ fmUN$ETA$mar$Cov$Omega # genomic covariance matrix
+ fmUN$ETA$mar$Cov$SD.Omega
+
+ fmUN$ETA$mar$u         # predicted random effects
+
+```
+
+
+### Box 2: Multi-trait GBLUP with structured covariance matrices
+
+
+```{r}
+#(continued from Box 1)
+
+# Genetic (co)variance recursive (not fully), Residual (co)variance diagonal
+ # Matrix specifying loading among traits 2=>3,2=>4,3=>4
+ M1<-matrix(nrow = 4, ncol = 4, FALSE)
+ M1[3,2]<-M1[4,2]<-M1[4,3]<-TRUE
+ CovREC<-list(type="REC",M=M1)
+ LP<-list(mar=list(K=K,model="RKHS",Cov=CovREC))
+
+ CovDIAG<-list(type="DIAG")
+ 
+ set.seed(456)
+ fmRD<-Multitrait(y=Y,ETA=LP,nIter=10000,burnIn=5000,
+                  resCov=CovDIAG,saveAt= "REC_DIAG_",
+                  verbose=FALSE)
+
+ fmRD$resCov$R
+ fmRD$ETA$mar$Cov$Omega   # genomic covariance
+ fmRD$ETA$mar$Cov$W       # recursive genetic effects 
+ fmRD$ETA$mar$u           # predicted genetic effects
+ fmRD$ETA$mar$Cov$PSI     # scaling factors
+
+ 
+# Omega-FA(2), R-diagonal 
+ M2<-matrix(nrow=4,ncol=1,FALSE)
+ M2[2:4,1]<-TRUE
+ CovFA<-list(type="FA",M=M2)
+ LP<-list(mar=list(K=K,model="RKHS",Cov=CovFA))
+
+ set.seed(789)
+ fmFAD<-Multitrait(y=Y,ETA=LP,nIter=10000,burnIn=5000,
+                   resCov=CovDIAG,saveAt= "FA_DIAG_",
+                   verbose=FALSE)
+ fmFAD$resCov$R
+ fmFAD$ETA$mar$Cov$Omega   # genomic covariance
+ fmFAD$ETA$mar$Cov$W       # factor scores 
+ fmFAD$ETA$mar$u           # predicted genetic effects
+ fmFAD$ETA$mar$Cov$PSI     # scaling factors
+
+```
+
+
+###  Box 3: Fitting a Multitrait Spike Slab model
+
+```{r}
+fmSS<-Multitrait(y=Y,ETA=list(list(X=X,model='SpikeSlab',
+                 saveEffects=TRUE)),nIter=12000,burnIn=2000)
+```
+
+
+### Box 4: Prediction
+
+```{r}
+
+K<-tcrossprod(X)
+K<-K/mean(diag(K))
+
+LP<-list(list(K=K,model="RKHS"))
+
+#Fit multivariate GBLUP with UN-structured covariance matrixes
+fmG<-Multitrait(y=YNa,ETA=LP,nIter=10000,burnIn=5000,thin=10,
+                verbose=FALSE)
+
+#Missing values for trait 3
+whichNa3<-fmG$missing_records[fmG$patterns[,3]]
+Y[whichNa3,3]          #Observed values
+fmG$ETAHat[whichNa3,3] #Predicted values
+
+```
