@@ -114,5 +114,5 @@ We also have improved the sampling routines to speed up computations. Next we in
 **Supplementary scripts for the draft of the paper "Multi-trait Bayesian Shrinkage and Variable Selection Models with the BGLR R-package"**
 
 - [1. Manuscript scripts](https://github.com/gdlc/BGLR-R/blob/master/inst/md/MAUSCRIPT_SCRIPTS.Rmd)
-- [2. SupplementaryFileS2_Scripts](https://github.com/gdlc/BGLR-R/blob/master/inst/md/SupplementaryFileS2_SCRIPTS.md)
+- [2. SupplementaryFileS2_Scripts](https://github.com/gdlc/BGLR-R/blob/master/inst/md/SupplementaryFileS2_SCRIPTS.Rmd)
 
