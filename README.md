@@ -111,7 +111,7 @@ We also have improved the sampling routines to speed up computations. Next we in
 - [7. Ridge Regression + Additive relationship matrix](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BRR_UN_RKHS_UN.md)
 - [8. Spike Slab](https://github.com/gdlc/BGLR-R/blob/master/inst/md/SS_UN_UN.md)
 
-**Supplementary scripts for the drat Multi-trait Bayesian Shrinkage and Variable Selection Models with the BGLR R-package **
+**Supplementary scripts for the drat Multi-trait Bayesian Shrinkage and Variable Selection Models with the BGLR R-package**
 
 -[1. Manuscript scripts] (https://github.com/gdlc/BGLR-R/blob/master/inst/md/MAUSCRIPT_SCRIPTS.md)
 -[2. SupplementaryFileS2_Scripts] (https://github.com/gdlc/BGLR-R/blob/master/inst/md/SupplementaryFileS2_SCRIPTS.md)
