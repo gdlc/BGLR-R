@@ -29,7 +29,7 @@ version beta version. The latest stable release can be downloaded from [CRAN](ht
 ld: library not found for -lgfortran
 ```
 
-This can be fixed it by following the following [advise](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
+This can be fixed it by following these [steps](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
 
 ## 1. Single-Trait Models
