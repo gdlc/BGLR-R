@@ -1,0 +1,17 @@
+
+
+## A forward approach to identify credible sets in Bayesian Variable Selection Models
+
+
+
+#### Toy simulation example
+
+
+
+#### Collecting samples using BGLR
+
+
+#### Posterior probabilities of individual SNPs
+
+
+#### Finding Credible Sets
