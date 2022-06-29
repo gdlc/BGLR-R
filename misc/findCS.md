@@ -1,5 +1,3 @@
-
-
 ## A forward approach to identify credible sets in Bayesian Variable Selection Models
 
 
