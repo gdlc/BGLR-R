@@ -113,7 +113,7 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
  	
  	}
  	names(SETS)=unique(chr)
- 	return(SETS[[1]])
+ 	return(SETS)
 }
 
 
