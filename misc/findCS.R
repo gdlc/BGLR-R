@@ -78,7 +78,9 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
 
  findCS=function(B,minProbIn,maxSize,minSetProb,maxSetProb,maxD,chr,bp,verbose=FALSE){
  
- 	stopifnot(is.logical(B))
+   if(!is.logical(B)){
+      B=(B!=0)
+   }
  
  
     SETS=list()
