@@ -4,7 +4,7 @@
 
 **Citations**: [FW-Function](https://www.nature.com/articles/s41467-020-18480-y)and [BGLR](https://www.genetics.org/content/198/2/483.short) R-package.
 
-**Before you run the code below, dowload the** [FW.BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/FW_BGLR.R) function and the following  [Sample Data](https://github.com/gdlc/BGLR-R/blob/master/data/sample_FW.RData).
+**Before you run the code below, dowload the** [FW.BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/FW_BGLR.R)  function and the following  [Sample Data](https://github.com/gdlc/BGLR-R/blob/master/data/sample_FW.RData).
 
 You will need to source the `FW_BGLR.R` function and load the `sample_FW.RData` data set to run the examples below.
 
