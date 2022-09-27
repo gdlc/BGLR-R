@@ -1,7 +1,4 @@
-
-
 ###
-
 updateSamples=function(B0,CS){
      if(length(CS)>0){
         p=ncol(B0)
@@ -15,7 +12,6 @@ updateSamples=function(B0,CS){
     }else{
       return(B0)
     }
-
 }
 
 
