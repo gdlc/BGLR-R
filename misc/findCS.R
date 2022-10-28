@@ -1,4 +1,24 @@
 ###
+
+ # A function to find segments with elevated PIP
+ CS.SEGMENTS=function(B,setBFDR,chr,pos,maxD,minProb=0.05){
+   if(!is.logical(B[1,1])){
+   	B=B!=0
+   }
+   PIP=colMeans(B)
+   LFDR=1-PIP
+   
+   DS=segments(LFDR,chr=chr,bp=pos,threshold=1-minProb,gap=maxD)
+   DS$setPIP=NA
+   for(i in 1:nrow(DS)){
+		DS$setPIP[i]=mean(apply(FUN=any,X=B[,DS$start[i]:DS$end[i]]!=0,MARGIN=1))
+   }
+   DS$BFDR=cumsum(1-DS$setPIP)/(1:nrow(DS))
+   DS=DS[DS$BFDR<=setBFDR,]
+   return(DS)
+}
+
+###
 updateSamples=function(B0,CS){
      if(length(CS)>0){
         p=ncol(B0)
