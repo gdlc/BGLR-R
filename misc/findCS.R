@@ -42,7 +42,10 @@ updateSamples=function(B0,CS){
 
 nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
                  maxSetProb=.98,maxD=100,bp=1:ncol(B), verbose=FALSE){
-
+  if(is.null(colnames(B))){
+    colnames(B)=1:nrow(B)	  
+  }
+  colNames=colnames(B)
   CS=0
 
   PROB=0
@@ -87,7 +90,7 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
      ready=(all(prob_in<minProbIn)|(nActive>=maxSize)|(max(PROB)>=maxSetProb))
   }
 
-  return(cbind('SNPs'=CS[-1],'cumProb'=PROB[-1]))
+  return(cbind('SNPs'=colNames[CS[-1]],'cumProb'=PROB[-1]))
 }
 
 ## This function finds CS within chromosome by recursively calling nextCS
