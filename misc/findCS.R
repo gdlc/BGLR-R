@@ -43,7 +43,7 @@ updateSamples=function(B0,CS){
 nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
                  maxSetProb=.98,maxD=100,bp=1:ncol(B), verbose=FALSE){
   if(is.null(colnames(B))){
-    colnames(B)=1:nrow(B)	  
+    colnames(B)=1:ncol(B)	  
   }
   colNames=colnames(B)
   CS=0
