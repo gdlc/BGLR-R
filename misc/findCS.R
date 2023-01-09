@@ -114,8 +114,8 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
 		
 		
 		
-		    tmp<-(chr==i)
-		    B_CHR=B[,tmp]
+		tmp<-(chr==i)
+		B_CHR=B[,tmp,drop=FALSE]
 		while(!ready){
    			TMP=nextCS(B=B_CHR,minProbIn=minProbIn,maxSize=maxSize,maxSetProb=maxSetProb,maxD=maxD,bp=bp[tmp],verbose=verbose)
    			ready=ifelse(nrow(TMP)==0,TRUE,max(TMP[,2,drop=FALSE])<minSetProb)
