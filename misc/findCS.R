@@ -41,7 +41,7 @@ updateSamples=function(B0,CS){
 ## The function is meant to be called by findCS(), see function below
 
 nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
-                 maxSetProb=.98,maxD=100,bp=1:ncol(B), verbose=FALSE){
+                 maxSetProb=.98,maxD=1e12,bp=1:ncol(B), verbose=FALSE){
   if(is.null(colnames(B))){
     colnames(B)=1:ncol(B)	  
   }
