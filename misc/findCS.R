@@ -188,3 +188,52 @@ findCS_OLD=function(B,lfdr=.01,maxSize=min(ncol(B),10),maxProb=1-lfdr){
     
 }
 
+
+## Backward elimination
+
+
+dropOne0=function(B,j){
+	mean(apply(X=B[,-j,drop=FALSE],MARGIN=1,FUN=any))
+}
+dropOne=function(B,set=1:ncol(B)){
+	probs=unlist(lapply(FUN=dropOne0,X=set,B=B))
+	return(which.min(probs))
+}
+
+
+BKW=function(B,minProb=.8){
+    p=ncol(B)
+	DS=1:p
+	RS=integer()
+		
+	colnames(B)=1:p
+	
+	p=ncol(B)
+	
+	probs=mean(apply(X=B,MARGIN=1,FUN=any))
+	ready=probs < minProb
+	counter=0
+	
+	while(!ready){
+		counter=counter+1		
+		tmp=dropOne(B)
+		DS=DS[DS!=as.integer(colnames(B)[tmp])]
+		RS=c(RS,as.integer(colnames(B)[tmp]))
+		B=B[,-tmp,drop=FALSE]
+	    	probs=c(probs,mean(apply(X=B,MARGIN=1,FUN=any)))
+		ready= (min(probs) < minProb)| ncol(B)==1
+		if(ready & (length(RS)>0)){
+		    tmp=length(RS)
+		    DS=c(DS,RS[tmp])
+		    RS=RS[-tmp]
+		    probs=probs[-length(probs)]
+		}
+	}
+	return(list(DS=DS,RS=RS,prob=probs[-1]))
+}
+
+
+#set.seed(122345)
+#B=matrix(nrow=100,ncol=10,runif(1000)>.5)
+#BKW(B)
+
