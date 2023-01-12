@@ -90,7 +90,7 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
      ready=(all(prob_in<minProbIn)|(nActive>=maxSize)|(max(PROB)>=maxSetProb))
   }
 
-  return(cbind('SNPs'=colNames[CS[-1]],'cumProb'=PROB[-1]))
+  return(data.frame('SNPs'=colNames[CS[-1]],'cumProb'=PROB[-1]))
 }
 
 ## This function finds CS within chromosome by recursively calling nextCS
