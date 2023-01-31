@@ -6,6 +6,19 @@
 The BGLR Package ([Perez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151)) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
 version beta version. The latest stable release can be downloaded from [CRAN](https://cran.r-project.org/web/packages/BGLR/index.html).
 
+
+#### Citation
+
+Please use the following references
+   - [Perez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151)
+   
+and
+
+  - [Perez & de los Campos, 2022](https://academic.oup.com/genetics/article/222/1/iyac112/6655691) 
+
+for BGLR and Multitrait, respectively.
+
+
 #### Installation
 
 **From CRAN (stable release)**.
