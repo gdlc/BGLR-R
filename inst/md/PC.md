@@ -1,4 +1,4 @@
-**Estimating the proportion of variance explained by PC**
+### Estimating the proportion of variance explained by PC
 
 For further details see Janss et al. [Genetics, 2014](http://www.ncbi.nlm.nih.gov/pubmed/?term=janss+de+los+campos+sorensen) and references therein.
 
@@ -32,3 +32,6 @@ For further details see Janss et al. [Genetics, 2014](http://www.ncbi.nlm.nih.go
 ```
 
 [Return to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
+
+
+
