@@ -1,0 +1,429 @@
+%R CMD Sweave --pdf --clean BLRXy-extdoc.Rnw && open BLRXy-extdoc.pdf
+
+%\VignetteIndexEntry{BLRXy-extdoc}
+\documentclass[article,shortnames,nojss]{jss}
+
+%Extra packages
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{subfig}
+\usepackage{appendix}
+\usepackage{rotating}
+
+\newlength{\RoundedBoxWidth}
+\newsavebox{\GrayRoundedBox}
+\newenvironment{GrayBox}[1][\dimexpr\textwidth-4.5ex]%
+   {\setlength{\RoundedBoxWidth}{\dimexpr#1}
+    \begin{lrbox}{\GrayRoundedBox}
+       \begin{minipage}{\RoundedBoxWidth}}%
+   {   \end{minipage}
+    \end{lrbox}
+    \begin{center}
+    \begin{tikzpicture}%
+       \draw node[draw=black,fill=black!10,rounded corners,%
+             inner sep=2ex,text width=\RoundedBoxWidth]%
+             {\usebox{\GrayRoundedBox}};
+    \end{tikzpicture}
+    \end{center}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% declarations for jss.cls %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% almost as usual
+\author{Paulino P\'erez-Rodr\'iguez\\Colegio de Postgraduados, M\'exico \And
+        Gustavo de los Campos \\Michigan State University, USA}
+\title{BLRXy: A function for biobank size data analysis}
+
+%% for pretty printing and a nice hypersummary also set:
+\Plainauthor{Paulino P\'erez-Rodr\'guez, Gustavo de los Campos} %% comma-separated
+\Plaintitle{BLRXy: A function for biobank size data analysis} %% without formatting
+\Shorttitle{BLRXy: A function for biobank size data analysis} %% a short title (if necessary)
+
+%% an abstract and keywords
+\Abstract{
+  The BGLR R-package implements various types of shrinkage/variable selection 
+  Bayesian procedures for both univariate and multivariate response variables 
+  via Markov Chain Monte Carlo (MCMC) sampling. In the univariate case the algorithms 
+  developed were optimized for the case when the number of covariates ($p$) 
+  vastly exceeds the number of phenotypical records ($n$). Modern biobanks 
+  contains large amounts of genetic/genomic information in which in many 
+  cases $p>>n$, in which case existing routines implemented in 
+  BGLR do not scale with the sample size. We have developed the function 
+  \code{BLRXy} that implements most of the univariate models 
+  included in the original version of the package using algorithms optimized 
+  for the case that $p>>n$.  Samples from the posterior distributions 
+  are obtained using Gibbs sampler and Metropolis algorithms, 
+  heavy computational parts are performed using compiled routines 
+  developed using the C programming language. In this note we present 
+  an overview of the models implemented, and application example and 
+  a benchmark of the proposed routines for different sample sizes 
+  and number of covariates. 
+}
+
+\Keywords{High-dimensional regression, Gibbs sampler, Metropolis algorithm}
+\Plainkeywords{High-dimensional regression, Gibbs sampler, Metropolis algorithm} %% without formatting
+
+
+%% The address of (at least) one author should be given
+%% in the following format:
+\Address{
+
+  Paulino P\'erez-Rodr\'iguez \\
+  Socio Econom\'ia Estad\'istica e Inform\'atica \\
+  Colegio de Postgraduados, M\'exico\\
+  E-mail: \email{perpdgo@colpos.mx}\\
+  
+  Gustavo de los Campos\\
+  Department of Epidemiology and Biostatistics \\ 
+  Michigan State University, USA\\
+  Telephone: +1/517/353-8623 \\
+  E-mail: \email{gustavoc@msu.edu}\\
+  \url{https://epibio.msu.edu/faculty/deloscampos}
+  
+}
+
+%% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+%% include your article here, just as usual
+%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:Intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The BGLR function of the homonymous R-package \citep{Perez:2014}  
+implements Bayesian shrinkage and variable selection models for parametric 
+and semi-parametric regressions \citep{delosCampos:2013b, Meuwissen:2001}. 
+The software was originally tailored for single-trait regressions involving many more 
+covariates ($p$) than sample size ($n$, i.e., $p>>n$). Many modern data sets, 
+including data from human biobanks and large-scale genomic evaluations, 
+can have a very large sample size (hundreds of thousands of individuals 
+with phenotype and genotype records). In some of these data sets sample 
+size can vastly exceed the number of predictors.
+In such settings computational performance and speed can be improved by 
+implementing algorithms using summary statistics 
+($\boldsymbol y'\boldsymbol y$, 
+$\boldsymbol X' \boldsymbol X$, and $\boldsymbol X' \boldsymbol y$) 
+as opposed to algorithms that use phenotypes ($\boldsymbol y$) 
+and incidence matrices ($\boldsymbol X$) directly for computations 
+as it is the case of the \code{BGLR} R-function.  
+Thus, to offer efficient software for biobank-sized data we 
+added to the BGLR package the \code{BLRXy} function which generates 
+posterior samples using summary statistics as inputs; the function 
+has a much faster performance than BGLR when $n>>p$. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Models and Methods}
+\label{sec:Models}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Consider a linear regression model of the form:
+
+\begin{equation}
+  \label{eq:linearModel}
+  \boldsymbol y = \boldsymbol X \boldsymbol \beta + \boldsymbol e,
+\end{equation}
+
+where $\boldsymbol y=(y_1,\dots,y_n)'$ is a vector of phenotypes 
+of dimension $n \times 1$, $\boldsymbol X=\left\{x_{ij}\right\}$ 
+is a matrix of genotypes of dimension $n \times p$, 
+$\boldsymbol \beta=(\beta_1,...,\beta_p)'$ is a vector of marker
+effects of dimension $p \times 1$ and $\boldsymbol e=(e_1,...,e_n)'$ 
+is a vector of error terms of dimension $n \times 1$.
+For ease of presentation we assume that the phenotype and the 
+SNP genotypes have been centered; therefore, we do not include 
+an intercept and covariates. Relaxing this assumption possess 
+no conceptual or computational difficulty.
+
+\vspace{0.5cm}
+\textit{Likelihood}
+\vspace{0.5cm}
+
+For a quantitative (possibly transformed) trait the errors will be assumed to 
+be IID (identically and independently distributed) normal 
+$e_i \sim NIID(0,\sigma^2_e)$; therefore, the conditional distribution 
+of the data given the model parameters 
+$\boldsymbol \theta=\left\{\boldsymbol \beta, \sigma^2_e\right\}$ 
+becomes:
+
+\begin{equation}
+\label{eq:likelihood}
+p(\boldsymbol y | \boldsymbol \theta) = MVN(\boldsymbol y| \boldsymbol X \boldsymbol \beta, \boldsymbol I \sigma^2_e)%
+                                      = (2\pi \sigma^2_e)^{-n/2} \exp\left\{ -\frac{1}{2\sigma^2_e} %
+                                      (\boldsymbol y - \boldsymbol X \boldsymbol \beta)'% 
+                                      (\boldsymbol y - \boldsymbol X \boldsymbol \beta) \right\},                               \end{equation}
+                                      
+where $MVN(\boldsymbol y| \boldsymbol X \boldsymbol \beta, \boldsymbol I \sigma^2_e)$ stands for multivariate
+normal density with mean $\boldsymbol X \boldsymbol \beta$ and (co)variance matrix 
+$\boldsymbol I \sigma^2_e$.
+
+\vspace{0.5cm}
+\textit{Prior distributions}
+\vspace{0.5cm}
+
+The prior distribution specifies probabilities over the possible values of the model unknowns, 
+$\boldsymbol \theta=\left\{\boldsymbol \beta, \sigma^2_e\right\}$. Implicitly the prior 
+also specifies probabilities over models; the choice of prior plays a very important 
+role in error control. In the model above-described the most critical component is the 
+prior of marker effects. Let $p(\boldsymbol \theta | H)$ the prior distribution for 
+$\boldsymbol \theta $ given a set of hyper parameters $H$. Different prior distributions 
+can be assigned to the elements in $\boldsymbol \beta$, which induces shrinkage 
+of estimates that depend on the size of effect \citep{Gianola:2013},
+so different priors that are assigned to $\boldsymbol \beta$ lead to different models, 
+e.g. Bayesian Ridge Regression, Double Exponential \citep[LASSO;][]{Park:2008}, 
+Scaled t \citep[BayesA;][]{Meuwissen:2001}, Scaled t-mixture \citep[BayesB;][]{Meuwissen:2001}, 
+Gaussian mixture \citep[BayesC;][]{Habier:2011} among many others 
+\citep[see][for further details]{Gianola:2013}. 
+
+
+\vspace{0.5cm}
+\textit{Posterior inferences}
+\vspace{0.5cm}
+
+The posterior distribution of $\boldsymbol \theta$ can be obtained by applying the Bayes' theorem 
+and it is proportional to the product of the conditional distribution of the data given 
+the unknowns  \eqref{eq:likelihood} times the prior, that is 
+$p(\boldsymbol \theta | \boldsymbol y, H) \propto p(\boldsymbol y | \boldsymbol \theta) p(\boldsymbol \theta|H)$.
+This posterior distribution does not have closed form in general; however when 
+we assign Gaussian (Bayesian Ridge Regression), double exponential (LASSO), 
+Gaussian mixture (Bayes C), Scaled t-mixture (BayesB) distribution to the 
+elements of $\boldsymbol \beta$ and a scaled inverse chi-squared distribution 
+or inverted gamma distribution to $\sigma^2_e$ the fully conditional distributions 
+$p(\boldsymbol \beta | else)$ and $p(\sigma^2_e |else)$ do have closed form
+\citep[see for example][]{Gianola:2013,delosCampos:2013b}. Therefore, samples can be collected using 
+a Gibbs sampler \citep{Geman:1984}. Because $p$ (the number of SNP effects) 
+is often large, sampling marker effects is the most computationally involved step of 
+each cycle of the sampler. 
+
+
+The likelihood function \eqref{eq:likelihood}, and therefore the posterior distribution can be expressed 
+either in terms of the vector of phenotypes and the matrix of genotypes 
+$\left\{\boldsymbol y, \boldsymbol X \right\}$ or 
+in terms of summary statistics 
+$\left\{\boldsymbol y' \boldsymbol y, %
+\boldsymbol X' \boldsymbol y,
+\boldsymbol X' \boldsymbol X \right\}$. Sampling from the posterior distribution 
+using a posterior distribution expressed in terms of 
+$\left\{\boldsymbol y, \boldsymbol X \right\}$
+requires using operators with complexity $O(n)$;
+these computations must be repeated for each effect in the model, 
+leading to an algorithm with complexity $O(np)$ per cycle of the sampler. 
+It can be shown that the full conditional distributions for
+$\beta_j | else$ for well-known Bayesian models (e.g. Bayesian Ridge Regression, 
+Bayesian LASSO, BayesA, BayesB, BayesC) is normal, with mean and variance equal 
+to the solution(inverse of the coefficient of the left hand side) of the following 
+equation \citep[see][for further details]{delosCampos:2009a}:
+
+\begin{equation}
+\label{eq:conditionalBeta}
+\left( \frac{1}{\sigma^2_e} \boldsymbol x_j' \boldsymbol x_j + \frac{1}{\vartheta_j} \right) \beta_j = %
+\frac{1}{\sigma^2_e} \boldsymbol x_j' \boldsymbol e_j, 
+\end{equation}
+
+where $\boldsymbol x_j$ is the $j$-th column of $\boldsymbol X$, 
+$\boldsymbol e_j=\boldsymbol y - \boldsymbol X_{-j} \boldsymbol \beta_{-j}$, 
+with $\boldsymbol X_{-j}$ the matrix $\boldsymbol X$ after removing the 
+$j$-th column, $\boldsymbol \beta_{-j}$ the vector $\boldsymbol \beta$ after 
+removing the $j$-th entry, $\vartheta_j$ is a variance associated to marker $j$ and
+depends on the prior assigned to marker effects.
+Note that estimating the posterior mode for $\boldsymbol \beta$,
+by using the Gibbs sampler has a computational complexity that is equivalent 
+to use the Backfitting or Gauss-Seidel algorithms \citep{Golu:1996}. Algorithms implementations 
+based in this strategy do not scale well for large-$n$ problems, that is 
+when $n>>p$. Thus, to meet the challenges emerging with big data we 
+have developed alternative algorithms with computational complexity independent 
+of sample size. 
+
+When $n\geq p$ substantial improvements in computational performance, 
+can be achieved by implementing the Gibbs sampler using cross products
+$\left\{\boldsymbol y' \boldsymbol y, %
+\boldsymbol X' \boldsymbol y,
+\boldsymbol X' \boldsymbol X \right\}$
+as inputs, although the RAM memory requirements may increase. 
+In this case equation \eqref{eq:conditionalBeta} can be rewritten in 
+terms of the summary statistics and therefore sample $\beta_j | else$  
+using these inputs, that is:
+
+\begin{equation}
+\label{eq:conditionalBetaSummary}
+\left( \frac{1}{\sigma^2_e} \boldsymbol x_j' \boldsymbol x_j + \frac{1}{\vartheta_j} \right) \beta_j = %
+\frac{1}{\sigma^2_e} \left[ \boldsymbol x_j' \boldsymbol y - (\boldsymbol x_j ' \boldsymbol X \boldsymbol \beta %
+-\beta_j \boldsymbol x_j' \boldsymbol x_j ) \right],
+\end{equation}
+
+where $\boldsymbol x_j' \boldsymbol x_j$ corresponds to the $j$-th diagonal element from 
+$\boldsymbol X' \boldsymbol X$, $\boldsymbol x_j' \boldsymbol y$ corresponds to 
+the $j$-th row from $\boldsymbol X' \boldsymbol y$ and 
+$\boldsymbol x_j' \boldsymbol X$ corresponds to 
+the $j$-th column from $\boldsymbol X' \boldsymbol X$.
+This will lead to an updating algorithm per cycle of the sampler of complexity $O(p)$, 
+because all required heavy computational inputs were already pre-computed.
+Computing $\boldsymbol X' \boldsymbol X$ can be both memory and 
+computationally demanding. However, the computation of $\boldsymbol X' \boldsymbol X$ 
+is an ``embarrassingly parallel'' problem \citep{Pacheco:2011};  blocks of $\boldsymbol X' \boldsymbol X$
+can be computed separately at multiple nodes in a cluster 
+and the blocks can then be (virtually) merged. In modern computing platforms 
+where multicore CPU's are available, multithread optimized version of 
+BLAS (Basic Linear Algebra Subprograms) are available and can be used to 
+compute blocks of $\boldsymbol X' \boldsymbol X$ or even the full matrix. 
+
+Model \eqref{eq:linearModel} can be further extended to include other predictors 
+by defining a linear predictor $\boldsymbol \eta=E(\boldsymbol y | \boldsymbol \theta)$
+that represents the conditional expectation function which is given by 
+$\boldsymbol \eta = \sum_{k=1}^K \boldsymbol X_k \boldsymbol \beta_k$, 
+so that the model can be rewritten as $\boldsymbol y=\boldsymbol \eta + \boldsymbol e$, 
+where $\boldsymbol X_k$ are matrixes of predictors and $\boldsymbol \beta_k$ corresponds 
+to vectors of regression coefficients associated to $\boldsymbol X_k$. 
+Let $\boldsymbol \theta$ represent the set of unknowns in the model, i.e., 
+$\boldsymbol \beta_k$'s, residual variance, etc., and let
+$p(\boldsymbol \theta | H)$ the prior assigned to $\boldsymbol \theta$ given a set of 
+hyperparameters. Then the likelihood 
+$p(\boldsymbol y | \boldsymbol \theta)=MVN(\boldsymbol y | \boldsymbol \eta, \boldsymbol I \sigma^2_e)$, 
+and therefore the posterior distribution $p(\boldsymbol \theta| \boldsymbol y, H)$ is given by 
+$p(\boldsymbol \theta | \boldsymbol y, H) \propto p(\boldsymbol y | \boldsymbol \theta) p(\boldsymbol \theta | H)$.
+By defining $\boldsymbol X:=[\boldsymbol X_1,...,\boldsymbol X_K]$ and 
+$\boldsymbol \beta=(\boldsymbol \beta_1',...,\boldsymbol \beta_K')'$ and if entries 
+in $\boldsymbol \beta_k, k=1,...,K$ are assigned 
+either Gaussian, Laplace, scaled t, scaled t-mixtures mixtures of normal distributions, 
+then the entries the conditional distributions of $\beta_{kj} | else$ are normally distributed 
+as explained before. 
+
+Recently, \cite{Zhao:2020}, proposed another strategy to speed up computations 
+in Bayesian Regression models for whole genomic prediction. The authors use an 
+Orthogonal data augmentation strategy  \citep[e.g.][]{Xiong:2016} 
+to orthogonalize the Gibbs sampler and therefore sample marker effects 
+independently in  parallel.
+
+The strategy is interesting, but it adds some computational burden 
+to the original problem, for example: 1) Computation of the biggest 
+eigen-value for the matrix $\boldsymbol X' \boldsymbol X$, 
+2) Computation of the Cholesky decomposition of a matrix of order $p \times p$,
+3) Sampling from imputed phenotypes $\boldsymbol y_{imp}$ at each iteration 
+of Gibbs sampler which is a vector of order $p \times 1$, 
+4) Sampling marker effects based on a matrix of augmented genotypes of 
+dimension $(n+p)\times p$. Apart from that, it is well known 
+that augmenting the data in this way, will slow down convergency 
+to the posterior distribution. It is also well known that parallel 
+computing approaches do not scale linearly with the number of available 
+processors because there exists always an overhead in times due to 
+communication between processes and access to shared resources. 
+Therefore we think that there is still room for improvement for 
+fitting the models using summary statistics under this context.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Software}
+\label{sec:Software}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The BGLR package \citep{Perez:2014} includes a set of routines to perform 
+genomic regression and prediction for continuous (censored and uncensored) 
+and discrete traits. The software package includes a wide variety of parametric 
+and semi-parametric models used in genomics (e.g. Bayesian Ridge Regression, 
+BayesA, BayesB, BayesC, Reproducing Kernel Hilbert Spaces, etc.). 
+The software was designed and optimized to fit efficiently the models in the case 
+that $p>>n$. The BGLR package has been continuously updated since its 
+initial release, including bug fixes, improving algorithms, adding new models, 
+examples, improving documentation, etc. The updates have has been 
+released initially in the package's github website 
+(\url{https://github.com/gdlc/BGLR-R}) and once that have been tested 
+extensively have been incorporated to the stable release available at CRAN.
+
+In the case of the models described previously we have developed a new set of 
+routines written in the C and R programming languages  and optimized 
+them for the case when the sample size ($n$) is much larger 
+that the number of predictors ($p$). The routines can be accessed through 
+the function \code{BLRXy} included in BGLR package. The \code{BLRXy} 
+function is able to obtain posterior samples from this distribution 
+collected using a Gibbs Sampler when the priors assigned to 
+$\boldsymbol\beta_k$ corresponds to a flat prior (FIXED), 
+Gaussian (BRR), Scaled-t (BayesA), Gaussian mixture (BayesC) 
+and Scaled t-mixture (BayesB), 
+see Tables 1 and S1 in the BGLR package 
+\citep{Perez:2014}. Internally, the function computes summary statistics, 
+$\left\{\boldsymbol y' \boldsymbol y, %
+\boldsymbol X' \boldsymbol y,
+\boldsymbol X' \boldsymbol X \right\}$, with 
+$\boldsymbol X=[\boldsymbol X_1,...,\boldsymbol X_K]$ 
+and performs all the calculations based on these inputs. 
+The user interface in the \code{BLRXy} function for specifying prior distributions 
+is exactly the same that for the case of the \code{BGLR} function.
+The software is also able to deal with 
+response vector that contains missing values, internally, after the model is 
+fitted the missing values are predicted using as point estimates the 
+posterior mean of the estimated parameters. Missing values are not allowed for the 
+predictors. The routine \code{BLRXy} is a wrapper for the function \code{BLRCross} that works 
+directly with $\left\{\boldsymbol y, \boldsymbol X' \boldsymbol y,
+\boldsymbol X' \boldsymbol X \right\}$ and can be used for 
+example when only this summary statistics are available or when 
+due to  time and resources efficiency, these quantities have been 
+already pre-computed.  The syntax of the \code{BLRCross} routine is 
+also list based and is described in the user's manual for the 
+BGLR package. For sake of simplicity we only illustrate the use of 
+the \code{BLRXy} routine. 
+
+We benchmarked our current implementation of the proposed algorithm in the 
+\code{BLRXy} function against \code{BGLR} function (Figure \ref{fig:benchmark}).  
+For models involving 10K SNPs, the current implementation completes 
+1,000 cycles of the Gibbs sampler in less than 80 seconds (panel A in Figure 1). 
+For problems involving $n \sim p$ the proposed algorithm is approximately 
+twice as fast than \code{BGLR}. However, for problems involving 
+$n>p$ the proposed algorithm is one (e.g., 32 times faster, 1/0.032) 
+or two orders of magnitude faster (e.g. 333 times faster, 1/0.003). 
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=0.75\textwidth]{fig_1_BLRXy}
+  \caption{Computational performance of the proposed algorithm. 
+           A) Seconds needed to complete 1,000 cycles of the Gibbs sampler; 
+           B) Time required by the proposed algorithm to collect 1, 000 samples relative 
+           to the time needed for the same task by BGLR.}
+  \label{fig:benchmark}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Examples}
+\label{sec:Examples}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{GrayBox}
+\small
+\textbf{Box 1: Fitting BayesA with simulated data}
+\begin{verbatim}
+
+load("mice.RData")
+
+p=1000
+n=1500
+
+X<-scale(mice.X[1:n,1:p],center=TRUE)
+A<-mice.A
+
+A<-A[1:n,1:n]
+
+QTL<-seq(from=50,to=p-50,by=80)
+b<-rep(0,p)
+b[QTL]<-1
+signal<-as.vector(X%*%b)
+ 
+error<-rnorm(sd=sd(signal),n=n)
+y<-error+signal
+y<-2+y
+
+#BayesA, missing values not present
+ETA<-list(list(X=X,model="BayesA"))
+fm1<-BLRXy(y=y,ETA=ETA)
+plot(fm1$yHat,y)
+
+\end{verbatim}
+\end{GrayBox}
+
+
+%At the end, the bibliography
+\bibliography{references-BLRXy}
+
+\end{document}
