@@ -14,7 +14,7 @@ RKHS.Groups=function(y,K,group,...){
  
  for(i in 1:nGroups){
  	tmp=which(group==groups[i])
- 	EVD=eigen(k[tmp,tmp,drop=FALSE],symmetric=TRUE)
+ 	EVD=eigen(K[tmp,tmp,drop=FALSE],symmetric=TRUE)
  	PC=sweep(x=EVD$vectors[,EVD$values>1e-8],STATS=sqrt(EVD$values[EVD$values>1e-8]),FUN='*',MARGIN=2L)
  	
  	X=matrix(nrow=n,ncol=ncol(PC),0)
