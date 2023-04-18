@@ -1,5 +1,5 @@
 
-RKHS.MultiGroup=function(y,K,group,...){
+RKHS.Groups=function(y,K,group,...){
  Z=as.matrix(model.matrix(~factor(group)))[,-1,drop=FALSE]
  ETA=list(int=list(X=Z,model='FIXED'))
  
