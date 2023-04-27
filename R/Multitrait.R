@@ -1246,7 +1246,8 @@ Multitrait<-function(y,
 	n<-nrow(y)
 	
 	#Compute sample variance covariance matrix
-	Sy<-cov(y,use="complete.obs")
+	Sy<-cov(y,use="pairwise.complete.obs")
+	Sy[is.na(Sy)]=0
 	
 	#Deep copy of y, DO NOT REPLACE with y.back<-y, it does not work, both objects 
 	#share the same memory address
