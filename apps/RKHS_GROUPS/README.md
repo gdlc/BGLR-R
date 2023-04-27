@@ -11,8 +11,9 @@ The following features are worth mentioning:
   - Errors are assumed to be un-correlated wihtin and between groups.
 
 
-## Example
+## Example 1: SNP-by-ancestry group
 
+In this example we identigy two clusters (of wheat inbred lines) and model SNP-by-group interactions
 **Data and data**
 
 ```r
@@ -42,19 +43,19 @@ The following features are worth mentioning:
  G=G/mean(diag(G))
 ```
 
-## 3. Sourcing the app
+**Sourcing the app**
 
 ```r
  source('https://raw.githubusercontent.com/gdlc/BGLR-R/master/apps/RKHS_GROUPS/RKHS_GROUPS.R')
 ```
 
-## 4. Fitting the model
+**Fitting the model**
 
 ```r
  fm=RKHS.Groups(y=wheat.Y[,1],K=G,group=group)
 ```
 
-## 5. Extracting results
+**Extracting results**
 
 ```r
  INTERCEPTS=c(fm$mu,fm$ETA$int$b)
