@@ -35,10 +35,7 @@ Please cite [Perez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/250
 ld: library not found for -lgfortran
 ```
 
-This can be fixed it by following these steps:
-
- - Install Xcode (from the apple store)
- - Install gfortan using [this](https://github.com/fxcoudert/gfortran-for-macOS/releases)
+This can be fixed it by installing gfortan, for mac os you can use [this](https://github.com/fxcoudert/gfortran-for-macOS/releases)
 
 Useful references:
 
