@@ -35,7 +35,15 @@ Please cite [Perez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/250
 ld: library not found for -lgfortran
 ```
 
-This can be fixed it by following these [steps](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
+This can be fixed it by following these steps:
+
+ - Install Xcode (from the apple store)
+ - Install gfortan using [this](https://github.com/fxcoudert/gfortran-for-macOS/releases)
+
+Useful references:
+
+ - [link1](https://yiqingxu.org/public/BigSurError.pdf).
+ - [link2](http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error/).
 
 
 ## 1. Single-Trait Models
