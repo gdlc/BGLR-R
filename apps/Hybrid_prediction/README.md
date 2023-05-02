@@ -34,7 +34,7 @@ height and grain yield for 100 out of 400 possible hybrids originated from 40 in
 1600 rows exist for the 400 possible hybrids evaluated in 4 locations but only 100 crosses have phenotypic information. The purpose is to
 predict the other 300 crosses.
 
-``r
+```r
 
 #Load the library
 library(BGLR)
