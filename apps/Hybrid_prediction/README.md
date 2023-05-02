@@ -84,6 +84,24 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
 #3)G2
 #4)H
 
-
 ```
+
+**Sourcing the app**
+
+```r
+ source('https://raw.githubusercontent.com/gdlc/BGLR-R/master/apps/Hybrid_prediction/Hybrid_prediction.R')
+```
+
+**Fitting the model**
+
+```r
+ fm=RKHS.Groups(y=wheat.Y[,1],K=G,group=group)
+```
+
+**Extracting results**
+````
+
+````
+
+
 
