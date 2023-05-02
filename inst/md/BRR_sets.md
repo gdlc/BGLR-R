@@ -82,3 +82,5 @@ is used to inform `BRR_sets`.
  points(x=QTL,y=x[QTL],col=2,cex=.7,pch=19)
 
 ```
+
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
