@@ -7,7 +7,7 @@ RKHS.Hybrid_prediction<-function(y, location, id1, id2, idH,
 {
 	location<-as.character(location)
 	location<-factor(location)
-	ZE<-model.matrix(~Location-1)
+	ZE<-model.matrix(~location-1)
 	
 	id1<-as.character(id1)
 	id1<-factor(id1,levels=rownames(G1))
