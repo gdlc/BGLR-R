@@ -28,3 +28,5 @@ where
 - $\boldsymbol e \sim MN(\boldsymbol 0, \sigma^2_e \boldsymbol I)$, with $\boldsymbol I$, the identity matrix.
 
 ## Example
+
+For illustrative purposes we consider the maize dataset described in [Covarrubias-Pazaran, 2016](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156744)
