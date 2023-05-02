@@ -1,6 +1,6 @@
 ### Censored Regression
 
-BGLR supports right, left and interval censoring. For censored outcomes the response is represented with a triplet $a_i$,$y_i$,$b_i$, where $a_i$ and $b_i$ are the lower and upper bounds for the phenotype $(y_i)$. The following table describes the configuration of the tripled for un-censored, right, left and interval censored data
+BGLR supports right, left and interval censoring. For censored outcomes the response is represented with a triplet $a_i, y_i, b_i$, where $a_i$ and $b_i$ are the lower and upper bounds for the phenotype $(y_i)$. The following table describes the configuration of the tripled for un-censored, right, left and interval censored data
 
 Case               | $a_i$  |  $y_i$  | $b_i$
 -------------------|-----|------|----
