@@ -29,7 +29,7 @@ where
 
 ## Example
 
-For illustrative purposes we consider the maize dataset described in [Covarrubias-Pazaran, 2016](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156744), and included in the <em>sommer package</em> briefly the dataset contains phenotypic data for plant 
+For illustrative purposes we consider the maize dataset described in [Covarrubias-Pazaran, 2016](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156744), and included in the <em>sommer package</em>. The dataset contains phenotypic data for plant 
 height and grain yield for 100 out of 400 possible hybrids originated from 40 inbreed lines belonging to two heterotic groups, 20 lines each,
 1600 rows exist for the 400 possible hybrids evaluated in 4 locations but only 100 crosses have phenotypic information. The purpose is to
-predict the other 300 croses.
+predict the other 300 crosses.
