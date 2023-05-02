@@ -87,3 +87,5 @@ Lopez-Cruz M., J. Crossa, D. Bonnett, S. Dreisigacker, J. Poland, J.L. Jannink, 
 Pérez, P. and G. de los Campos. 2014. Genome-Wide Regression and Prediction with the BGLR Statistical Package. Genetics, 198: 483-495.
 
 R Core Team. 2019. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
+
+[Back to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
