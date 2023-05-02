@@ -6,4 +6,6 @@ using genotipic information from parents. The data that we have available is as 
 - Genotypic information from males and females (genomic relationship matrixes).
 - Phenotypic information for some hybrids.
 
+The desired output is the prediction of hybrids.
 
+For more details see: 
