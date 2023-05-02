@@ -23,3 +23,5 @@ where
 - $\boldsymbol g_1$ is a vector or random effects for the general combining ability for males, $g_1 \sim MN(\boldsymbol 0, \sigma^2_1 \boldsymbol G_1)$, with $\boldsymbol G_1$ the genomic relationship matrix for males.
 - $\boldsymbol Z_2$ is an incidence matrix for females.
 - $\boldsymbol g_2$ is a vector or random effects for the general combining ability for females, $g_2 \sim MN(\boldsymbol 0, \sigma^2_2 \boldsymbol G_2)$, with $\boldsymbol G_2$ the genomic relationship matrix for females.
+- $\boldsymbol Z_h$ is the incidence matrix for hybrids.
+- $\boldsymbol h_f$ is a vector of random effects for specific combining ability of hybrids, $\boldsymbol h \sim MN(\boldsymbol \sigma^2_h \boldsymbol H)$, where $\boldsymbol H=\boldsymbol G_1 \boldsymbol G_2$
