@@ -26,3 +26,5 @@ where
 - $\boldsymbol Z_h$ is the incidence matrix for hybrids.
 - $\boldsymbol h_f$ is a vector of random effects for specific combining ability of hybrids, $\boldsymbol h \sim MN(\boldsymbol \sigma^2_h \boldsymbol H)$, where $\boldsymbol H=\boldsymbol G_1 \otimes \boldsymbol G_2$, the symbol $\otimes$ denotes the Kronecker product of two matrices.
 - $\boldsymbol e \sim MN(\boldsymbol 0, \sigma^2_e \boldsymbol I)$, with $\boldsymbol I$, the identity matrix.
+
+## Example
