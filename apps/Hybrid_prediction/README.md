@@ -95,7 +95,7 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
 **Fitting the model**
 
 ```r
- fm=RKHS.Groups(y=wheat.Y[,1],K=G,group=group)
+ fm<-RKHS.Hybrid_prediction(pheno,G1,G2,H)
 ```
 
 **Extracting results**
