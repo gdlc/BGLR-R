@@ -8,7 +8,7 @@ using genotipic information from parents. The data that we have available is as 
 
 The desired output is the prediction of hybrids.
 
-For more details see [Acosta-Pech et al., 2017](https://pubmed.ncbi.nlm.nih.gov/28401254/) and references therein.
+For more details see [Acosta-Pech et al.(2017)](https://pubmed.ncbi.nlm.nih.gov/28401254/) and references therein.
 
 Briefly the statistical model for predicting hybrid performance is as follows:
 
@@ -29,7 +29,7 @@ where
 
 ## Example
 
-For illustrative purposes we consider the maize dataset described in [Covarrubias-Pazaran, 2016](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156744), and included in the <em>sommer package</em>. The dataset contains phenotypic data for plant 
+For illustrative purposes we consider the maize dataset described in [Covarrubias-Pazaran (2016)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156744), and included in the <em>sommer package</em>. The dataset contains phenotypic data for plant 
 height and grain yield for 100 out of 400 possible hybrids originated from 40 inbreed lines belonging to two heterotic groups, 20 lines each,
 1600 rows exist for the 400 possible hybrids evaluated in 4 locations but only 100 crosses have phenotypic information. The purpose is to
 predict the other 300 crosses.
@@ -43,7 +43,7 @@ library(BGLR)
 
 #Load the data, you need to download the file "cornHybrid.RData" included in this app
 #This loads a list, from where we extract the information
-load("cornHybrid.RData")
+load('https://raw.githubusercontent.com/gdlc/BGLR-R/master/apps/Hybrid_prediction/cornHybrid.RData')
 
 #Extract the hybid information, a data.frame with columns: 
 #1)Location, 2)GCA1, ids for parent1, 
