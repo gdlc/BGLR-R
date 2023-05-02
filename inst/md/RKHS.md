@@ -33,7 +33,7 @@ Examples (modified) from [de los Campos et al., Genetics Research, 2010](http://
 
 ```R
  h=c(.01,.1,.4,.8,1.5,3,5)
- PMSE<-numeric() ; VARE<-numeric(); VARU<-numeric() ;
+ PMSE<-numeric(); VARE<-numeric(); VARU<-numeric();
  pD<-numeric(); DIC<-numeric()
  fmList<-list()
 
