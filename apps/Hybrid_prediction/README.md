@@ -43,7 +43,7 @@ library(BGLR)
 
 #Load the data, you need to download the file "cornHybrid.RData" included in this app
 #This loads a list, from where we extract the information
-load('https://raw.githubusercontent.com/gdlc/BGLR-R/master/apps/Hybrid_prediction/cornHybrid.RData')
+load('cornHybrid.RData')
 
 #Extract the hybid information, a data.frame with columns: 
 #1)Location, 2)GCA1, ids for parent1, 
