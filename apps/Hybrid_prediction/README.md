@@ -70,8 +70,8 @@ rownames(G1)
 GCA2<-unique(pheno$GCA2)
 selected<-rownames(G)%in%GCA2
 G2<-G[selected,selected]
-dim(G1)
-rownames(G1)
+dim(G2)
+rownames(G2)
 
 #Generate H
 #kronecker, make.dimmanes is necessary to identify the hybrids
