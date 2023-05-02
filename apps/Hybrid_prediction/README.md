@@ -42,5 +42,5 @@ library(BGLR)
 #Load the data, you need to download the file "cornHybrid.RData" included in this app
 load("cornHybrid.RData")
 
-``
+```
 
