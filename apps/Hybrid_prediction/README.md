@@ -95,7 +95,15 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
 **Fitting the model**
 
 ```r
- fm<-RKHS.Hybrid_prediction(pheno,G1,G2,H)
+ fm<-RKHS.Hybrid_prediction(y=pheno$Yield,
+                            location=pheno$Location,
+                            id1=pheno$GCA1,
+                            id2=pheno$GCA2,
+                            idH=pheno$SCA,
+                            G1=G1,
+                            G2=G2,
+                            H=H,
+                            verbose=TRUE)
 ```
 
 **Extracting results**
