@@ -27,8 +27,8 @@
 **(2) Splitting both X and y into training and testing sets**
 
 ```R
-  yTRN=y[-tst]   ; yTST=y[tst]
-  X.TRN=X[-tst,] ; X.TST=X[tst,]
+  yTRN=y[-tst]; yTST=y[tst]
+  X.TRN=X[-tst,]; X.TST=X[tst,]
   
   fm=BGLR(y=yTRN,ETA=list(list(X=X.TRN,model='BRR')),nIter=6000,burnIn=1000)
   yHat_2=fm$mu+as.vector(X.TST%*%fm$ETA[[1]]$b)
