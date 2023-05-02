@@ -40,7 +40,30 @@ predict the other 300 crosses.
 library(BGLR)
 
 #Load the data, you need to download the file "cornHybrid.RData" included in this app
+#This loads a list, from where we extract the information
 load("cornHybrid.RData")
+
+#We extract the hybid information, a data.frame with columns: 1)Location, 2)GCA1, ids for parent1, 3)GCA2, ids fro parent 2,
+#4)SCA id for hybrids, 5)Yield and 6)PlantHeight
+
+pheno<-cornHybrid$hybrid
+head(pheno)
+
+#We extract the relationship matrix for parents, 
+G<-cornHybrid$K
+dim(G)
+colnames(G)
+
+G1<-G[levels(pheno$GCA1), levels(pheno$GCA1)]
+dim(G1)
+rownames(G1)
+
+G2<-G[levels(pheno$GCA2), levels(pheno$GCA2)]
+dim(G2)
+rownames(G2)
+
+#Generate H
+
 
 ```
 
