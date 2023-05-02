@@ -108,6 +108,31 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
 
 **Extracting results**
 ````
+#Variance component for parent 1
+fm$ETA[[2]]$varU
+
+#Variance component for parent 2
+fm$ETA[[3]]$varU
+
+#Variance component for hybrids
+fm$ETA[[4]]$varU
+
+#Variance component for error
+fm$varE
+
+#predictions
+predictions<-data.frame(Loc=pheno$Location, yObs=pheno$Yield,yPred=fm$yHat,hybrid=pheno$SCA)
+head(predictions)
+
+#BLUPs
+#Parent1
+fm$ETA[[2]]$u
+
+#Parent2
+fm$ETA[[3]]$u
+
+#Hybrid
+fm$ETA[[4]]$u
 
 ````
 
