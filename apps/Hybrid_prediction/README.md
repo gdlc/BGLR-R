@@ -33,3 +33,14 @@ For illustrative purposes we consider the maize dataset described in [Covarrubia
 height and grain yield for 100 out of 400 possible hybrids originated from 40 inbreed lines belonging to two heterotic groups, 20 lines each,
 1600 rows exist for the 400 possible hybrids evaluated in 4 locations but only 100 crosses have phenotypic information. The purpose is to
 predict the other 300 crosses.
+
+``r
+
+#Load the library
+library(BGLR)
+
+#Load the data, you need to download the file "cornHybrid.RData" included in this app
+load("cornHybrid.RData")
+
+``
+
