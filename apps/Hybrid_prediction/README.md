@@ -49,7 +49,7 @@ load('cornHybrid.RData')
 #1)Location, 2)GCA1, ids for parent1, 
 #3)GCA2, ids fro parent 2,
 #4)SCA id for hybrids, 5)Yield and 6)PlantHeight
-
+pheno<-cornHybrid$hybrid
 head(pheno)
 
 pheno$GCA1<-as.character(pheno$GCA1)
