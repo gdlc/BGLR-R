@@ -13,5 +13,5 @@ For more details see [Acosta-Pech et al., 2017](https://pubmed.ncbi.nlm.nih.gov/
 Briefly the statistical model for predicting hybrid performance is as follows:
 
 $$
-\boldsymbol y = \boldsymbol Z_E \boldsymbol \beta_E + \boldsymbol Z_1 \boldsymbol g_1 + \bolsymbol Z_2 \boldsymbol g_2 + \boldsymbol Z_h \boldsymbol h + \boldsymbol e, 
+\boldsymbol y = \boldsymbol Z_E \boldsymbol \beta_E + \boldsymbol Z_1 \boldsymbol g_1 + \boldsymbol Z_2 \boldsymbol g_2 + \boldsymbol Z_h \boldsymbol h + \boldsymbol e, 
 $$
