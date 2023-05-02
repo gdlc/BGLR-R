@@ -108,6 +108,9 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
 
 **Extracting results**
 ````
+
+#WARNING: work in progress, we still need to check output formats
+
 #Variance component for parent 1
 fm$ETA[[2]]$varU
 
