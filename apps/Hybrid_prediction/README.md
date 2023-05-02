@@ -43,26 +43,44 @@ library(BGLR)
 #This loads a list, from where we extract the information
 load("cornHybrid.RData")
 
-#We extract the hybid information, a data.frame with columns: 1)Location, 2)GCA1, ids for parent1, 3)GCA2, ids fro parent 2,
+#Extract the hybid information, a data.frame with columns: 
+#1)Location, 2)GCA1, ids for parent1, 
+#3)GCA2, ids fro parent 2,
 #4)SCA id for hybrids, 5)Yield and 6)PlantHeight
 
-pheno<-cornHybrid$hybrid
 head(pheno)
 
-#We extract the relationship matrix for parents, 
-G<-cornHybrid$K
-dim(G)
-colnames(G)
+pheno$GCA1<-as.character(pheno$GCA1)
+pheno$GCA2<-as.character(pheno$GCA2)
+pheno$SCA<-as.character(pheno$SCA)
 
-G1<-G[levels(pheno$GCA1), levels(pheno$GCA1)]
+#Extract relationship matrix for both parents
+G<-cornHybrid$K
+
+#Genomic relationship matrix for parent 1
+GCA1<-unique(pheno$GCA1)
+selected<-rownames(G)%in%GCA1
+G1<-G[selected,selected]
 dim(G1)
 rownames(G1)
 
-G2<-G[levels(pheno$GCA2), levels(pheno$GCA2)]
-dim(G2)
-rownames(G2)
+#Genomic relationship matrix for parent 2
+GCA2<-unique(pheno$GCA2)
+selected<-rownames(G)%in%GCA2
+G2<-G[selected,selected]
+dim(G1)
+rownames(G1)
 
 #Generate H
+#kronecker, make.dimmanes is necessary to identify the hybrids
+#with the label Parent 1:Parent 2, using the same convention in pheno data.frame
+H<-kronecker(G1,G2,make.dimnames=TRUE)
+
+#At this point we need to have 4 objects:
+#1)pheno
+#2)G1
+#3)G2
+#4)H
 
 
 ```
