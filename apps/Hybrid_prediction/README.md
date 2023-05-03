@@ -95,6 +95,7 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
 **Fitting the model**
 
 ```r
+ set.seed(456)
  fm<-BRR.Hybrid_prediction(y=pheno$Yield,
                             location=pheno$Location,
                             id1=pheno$GCA1,
@@ -103,6 +104,9 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
                             G1=G1,
                             G2=G2,
                             H=H,
+                            nIter=10000,
+                            burnIn=5000,
+                            thin=10,
                             verbose=TRUE)
 ```
 
