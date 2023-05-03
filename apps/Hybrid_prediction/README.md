@@ -95,7 +95,7 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
 **Fitting the model**
 
 ```r
- fm<-RKHS.Hybrid_prediction(y=pheno$Yield,
+ fm<-BRR.Hybrid_prediction(y=pheno$Yield,
                             location=pheno$Location,
                             id1=pheno$GCA1,
                             id2=pheno$GCA2,
@@ -107,18 +107,15 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
 ```
 
 **Extracting results**
-````
-
-#WARNING: work in progress, we still need to check output formats
-
+````r
 #Variance component for parent 1
-fm$ETA[[2]]$varU
+fm$ETA[[2]]$varB
 
 #Variance component for parent 2
-fm$ETA[[3]]$varU
+fm$ETA[[3]]$varB
 
 #Variance component for hybrids
-fm$ETA[[4]]$varU
+fm$ETA[[4]]$varB
 
 #Variance component for error
 fm$varE
@@ -127,7 +124,7 @@ fm$varE
 predictions<-data.frame(Loc=pheno$Location, yObs=pheno$Yield,yPred=fm$yHat,hybrid=pheno$SCA)
 head(predictions)
 
-#BLUPs
+#Posterior means for random effects
 #Parent1
 fm$ETA[[2]]$u
 
@@ -138,6 +135,3 @@ fm$ETA[[3]]$u
 fm$ETA[[4]]$u
 
 ````
-
-
-
