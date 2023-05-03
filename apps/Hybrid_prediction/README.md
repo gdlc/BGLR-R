@@ -33,6 +33,10 @@ $$
 \boldsymbol y = \boldsymbol Z_E \boldsymbol \beta_E + \boldsymbol Z_1^\ast \boldsymbol g_1^\ast + \boldsymbol Z_2^\ast \boldsymbol g_2^\ast + \boldsymbol Z_h^\ast \boldsymbol h^\ast + \boldsymbol e, 
 $$
 
+where
+
+- $\boldsymbol Z_1^\ast = \boldsymbol Z_1 \boldsymbol \Gamma_1 \boldsymbol \Lambda_1^{\frac{1/2}}$
+
 ## Example
 
 For illustrative purposes we consider the maize dataset described in [Covarrubias-Pazaran (2016)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156744), and included in the <em>sommer package</em>. The dataset contains phenotypic data for plant 
