@@ -39,6 +39,10 @@ where
 - $\boldsymbol Z_2^\ast = \boldsymbol Z_2 \boldsymbol \Gamma_2 \boldsymbol \Lambda_2^{\frac{1}{2}}$, with $\boldsymbol \Gamma_2$, $\boldsymbol \Lambda_2$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol G_2$, $\boldsymbol g_2^\ast \sim MN(\boldsymbol 0, \sigma^2_2 \boldsymbol I)$.
 - $\boldsymbol Z_h^\ast = \boldsymbol Z_h \boldsymbol \Gamma_h \boldsymbol \Lambda_h^{\frac{1}{2}}$, with $\boldsymbol \Gamma_h$, $\boldsymbol \Lambda_h$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol H$, $\boldsymbol h^\ast \sim MN(\boldsymbol 0, \sigma^2_h \boldsymbol I)$.
 
+The last model can be fitted in BGLR easily using ``Bayesian Ridge Regression'' and after the model is fitted the posterior mean of random effects is obtained as follows:
+
+- $\hat \bolsymbol g_1$
+
 ## Example
 
 For illustrative purposes we consider the maize dataset described in [Covarrubias-Pazaran (2016)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156744), and included in the <em>sommer package</em>. The dataset contains phenotypic data for plant 
