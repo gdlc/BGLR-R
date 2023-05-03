@@ -35,7 +35,7 @@ $$
 
 where
 
-- $\boldsymbol Z_1^\ast = \boldsymbol Z_1 \boldsymbol \Gamma_1 \boldsymbol \Lambda_1^{\frac{1/2}}$
+- $\boldsymbol Z_1^\ast = \boldsymbol Z_1 \boldsymbol \Gamma_1 \boldsymbol \Lambda_1$
 
 ## Example
 
