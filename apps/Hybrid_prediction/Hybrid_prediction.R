@@ -1,9 +1,9 @@
 
 
 BRR.Hybrid_prediction<-function(y, location, id1, id2, idH,
-								 G1, G2, H, 
-                                 nIter=10000,burnIn=5000,thin=10,
-                                 verbose=FALSE)
+				G1, G2, H, 
+                                nIter=10000,burnIn=5000,thin=10,
+                                verbose=FALSE)
 {
 
 
