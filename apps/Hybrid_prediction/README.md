@@ -46,7 +46,7 @@ The last model can be fitted in BGLR easily using ``Bayesian Ridge Regression'' 
 - $\hat{\boldsymbol h}_1 = \boldsymbol \Gamma_h \boldsymbol \Lambda_h^{\frac{1}{2}} \hat{\boldsymbol h}^\ast$.
 
 Computations can be handled automatically by the app <em>BRR.Hybrid_prediction</em> and user just needs to provide 
-locations, ids for parents, ids for hybrids and response variable.
+locations, ids for parents, ids for hybrids, genomic relationship matrices and response variable.
 
 ## Example
 
