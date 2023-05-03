@@ -30,7 +30,7 @@ where
 The model can be rewritten as:
 
 $$
-\boldsymbol y = \boldsymbol Z_E \boldsymbol \beta_E + \boldsymbol Z_1^\ast \boldsymbol g_1^\ast + \boldsymbol Z_2^\ast \boldsymbol g_2 + \boldsymbol Z_h \boldsymbol h + \boldsymbol e, 
+\boldsymbol y = \boldsymbol Z_E \boldsymbol \beta_E + \boldsymbol Z_1^\ast \boldsymbol g_1^\ast + \boldsymbol Z_2^\ast \boldsymbol g_2^\ast + \boldsymbol Z_h \boldsymbol h + \boldsymbol e, 
 $$
 
 ## Example
