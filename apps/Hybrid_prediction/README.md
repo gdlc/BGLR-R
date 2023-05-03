@@ -41,7 +41,7 @@ where
 
 The last model can be fitted in BGLR easily using ``Bayesian Ridge Regression'' and after the model is fitted the posterior mean of random effects is obtained as follows:
 
-- $\hat \bolsymbol g_1$
+- $\hat \boldsymbol g_1$
 
 ## Example
 
