@@ -27,6 +27,12 @@ where
 - $\boldsymbol h_f$ is a vector of random effects for specific combining ability of hybrids, $\boldsymbol h \sim MN(\boldsymbol \sigma^2_h \boldsymbol H)$, where $\boldsymbol H=\boldsymbol G_1 \otimes \boldsymbol G_2$, the symbol $\otimes$ denotes the Kronecker product of two matrices.
 - $\boldsymbol e \sim MN(\boldsymbol 0, \sigma^2_e \boldsymbol I)$, with $\boldsymbol I$, the identity matrix.
 
+The model can be rewritten as:
+
+$$
+\boldsymbol y = \boldsymbol Z_E \boldsymbol \beta_E + \boldsymbol Z_1^\ast \boldsymbol g_1^\ast + \boldsymbol Z_2^\ast \boldsymbol g_2 + \boldsymbol Z_h \boldsymbol h + \boldsymbol e, 
+$$
+
 ## Example
 
 For illustrative purposes we consider the maize dataset described in [Covarrubias-Pazaran (2016)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156744), and included in the <em>sommer package</em>. The dataset contains phenotypic data for plant 
