@@ -1,4 +1,4 @@
-## Hybrid prediction using GBLUP
+## Hybrid prediction using GBLUP and BRR
 
 This app fits GBLUP models to predict hybrid performance. The problem is to predict hybrid performance 
 using genotipic information from parents. The data that we have available is as follows:
