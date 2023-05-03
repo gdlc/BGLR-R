@@ -24,7 +24,7 @@ where
 - $\boldsymbol Z_2$ is an incidence matrix for females.
 - $\boldsymbol g_2$ is a vector or random effects for the general combining ability for females, $g_2 \sim MN(\boldsymbol 0, \sigma^2_2 \boldsymbol G_2)$, with $\boldsymbol G_2$ the genomic relationship matrix for females.
 - $\boldsymbol Z_h$ is the incidence matrix for hybrids.
-- $\boldsymbol h_f$ is a vector of random effects for specific combining ability of hybrids, $\boldsymbol h \sim MN(\boldsymbol \sigma^2_h \boldsymbol H)$, where $\boldsymbol H=\boldsymbol G_1 \otimes \boldsymbol G_2$, the symbol $\otimes$ denotes the Kronecker product of two matrices.
+- $\boldsymbol h$ is a vector of random effects for specific combining ability of hybrids, $\boldsymbol h \sim MN(\boldsymbol 0, \sigma^2_h \boldsymbol H)$, where $\boldsymbol H=\boldsymbol G_1 \otimes \boldsymbol G_2$, the symbol $\otimes$ denotes the Kronecker product of two matrices.
 - $\boldsymbol e \sim MN(\boldsymbol 0, \sigma^2_e \boldsymbol I)$, with $\boldsymbol I$, the identity matrix.
 
 The model can be rewritten as:
@@ -37,6 +37,7 @@ where
 
 - $\boldsymbol Z_1^\ast = \boldsymbol Z_1 \boldsymbol \Gamma_1 \boldsymbol \Lambda_1^{\frac{1}{2}}$, with $\boldsymbol \Gamma_1$, $\boldsymbol \Lambda_1$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol G_1$, $\boldsymbol g_1^\ast \sim MN(\boldsymbol 0, \sigma^2_1 \boldsymbol I)$.
 - $\boldsymbol Z_2^\ast = \boldsymbol Z_2 \boldsymbol \Gamma_2 \boldsymbol \Lambda_2^{\frac{1}{2}}$, with $\boldsymbol \Gamma_2$, $\boldsymbol \Lambda_2$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol G_2$, $\boldsymbol g_2^\ast \sim MN(\boldsymbol 0, \sigma^2_2 \boldsymbol I)$.
+- $\boldsymbol Z_h^\ast = \boldsymbol Z_h \boldsymbol \Gamma_h \boldsymbol \Lambda_h^{\frac{1}{2}}$, with $\boldsymbol \Gamma_h$, $\boldsymbol \Lambda_h$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol H$, $\boldsymbol h^\ast \sim MN(\boldsymbol 0, \sigma^2_h \boldsymbol I)$.
 
 ## Example
 
