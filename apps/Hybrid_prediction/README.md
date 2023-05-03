@@ -45,6 +45,9 @@ The last model can be fitted in BGLR easily using ``Bayesian Ridge Regression'' 
 - $\hat{\boldsymbol g}_2 = \boldsymbol \Gamma_2 \boldsymbol \Lambda_2^{\frac{1}{2}} \hat{\boldsymbol g}_2^\ast$.
 - $\hat{\boldsymbol h}_1 = \boldsymbol \Gamma_h \boldsymbol \Lambda_h^{\frac{1}{2}} \hat{\boldsymbol h}^\ast$.
 
+Computations can be handled automatically by the app <em>BRR.Hybrid_prediction</em> and user just needs to provide 
+locations, ids for parents, ids for hybrids and response variable.
+
 ## Example
 
 For illustrative purposes we consider the maize dataset described in [Covarrubias-Pazaran (2016)](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156744), and included in the <em>sommer package</em>. The dataset contains phenotypic data for plant 
