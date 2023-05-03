@@ -35,8 +35,8 @@ $$
 
 where
 
-- $\boldsymbol Z_1^\ast = \boldsymbol Z_1 \boldsymbol \Gamma_1 \boldsymbol \Lambda_1^{\frac{1}{2}}$, with $\boldsymbol \Gamma_1$, $\boldsymbol \Lambda_1$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol G_1$, $g_1^\ast \sim MN(\boldsymbol 0, \sigma^2_1 \boldsymbol I)$.
-- $\boldsymbol Z_2^\ast = \boldsymbol Z_2 \boldsymbol \Gamma_2 \boldsymbol \Lambda_2^{\frac{1}{2}}$, with $\boldsymbol \Gamma_2$, $\boldsymbol \Lambda_2$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol G_2$, $g_2^\ast \sim MN(\boldsymbol 0, \sigma^2_2 \boldsymbol I)$.
+- $\boldsymbol Z_1^\ast = \boldsymbol Z_1 \boldsymbol \Gamma_1 \boldsymbol \Lambda_1^{\frac{1}{2}}$, with $\boldsymbol \Gamma_1$, $\boldsymbol \Lambda_1$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol G_1$, $\boldsymbol g_1^\ast \sim MN(\boldsymbol 0, \sigma^2_1 \boldsymbol I)$.
+- $\boldsymbol Z_2^\ast = \boldsymbol Z_2 \boldsymbol \Gamma_2 \boldsymbol \Lambda_2^{\frac{1}{2}}$, with $\boldsymbol \Gamma_2$, $\boldsymbol \Lambda_2$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol G_2$, $\boldsymbol g_2^\ast \sim MN(\boldsymbol 0, \sigma^2_2 \boldsymbol I)$.
 
 ## Example
 
