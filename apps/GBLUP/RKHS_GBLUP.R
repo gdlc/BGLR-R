@@ -105,23 +105,4 @@ RKHS.GBLUP<-function(y,FEffects=NULL,GID,K,data=NULL,
 	   
 	   return(fm)
 }
-
-##########################################################################################
-library(BGLR)
-data(mice)
-pheno<-mice.pheno
-pheno$GENDER<-as.factor(pheno$GENDER)
-pheno$Litter<-as.factor(pheno$Litter)
-
-X<-mice.X
-Z<-scale(X,center=TRUE,scale=TRUE)
-G<-tcrossprod(Z)/ncol(Z)
-
-fm<-RKHS.GBLUP(y=pheno$Obesity.BMI,
-               FEffects=~GENDER+Litter,
-               GID=pheno$SUBJECT.NAME,
-               K=G,
-               data=pheno)
-               
-plot(fm)
            
