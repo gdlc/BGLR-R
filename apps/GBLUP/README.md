@@ -1,35 +1,36 @@
 ## Fitting GBLUP model
 
-This app fits GBLUP model. 
-
-Briefly the statistical model for predicting hybrid performance is as follows:
+This app fits GBLUP model. Consider the model:
 
 $$
-\boldsymbol y = \boldsymbol Z_E \boldsymbol \beta_E + \boldsymbol Z_1 \boldsymbol g_1 + \boldsymbol Z_2 \boldsymbol g_2 + \boldsymbol Z_h \boldsymbol h + \boldsymbol e, 
-$$
-
-where 
-
-- $\boldsymbol Z_E$ is an incidence matrix for environments, $\boldsymbol \beta_E$ is the efect of the environments.
-- $\boldsymbol Z_1$ is an incidence matrix for males.
-- $\boldsymbol g_1$ is a vector or random effects for the general combining ability for males, $g_1 \sim MN(\boldsymbol 0, \sigma^2_1 \boldsymbol G_1)$, with $\boldsymbol G_1$ the genomic relationship matrix for males.
-- $\boldsymbol Z_2$ is an incidence matrix for females.
-- $\boldsymbol g_2$ is a vector or random effects for the general combining ability for females, $g_2 \sim MN(\boldsymbol 0, \sigma^2_2 \boldsymbol G_2)$, with $\boldsymbol G_2$ the genomic relationship matrix for females.
-- $\boldsymbol Z_h$ is the incidence matrix for hybrids.
-- $\boldsymbol h$ is a vector of random effects for specific combining ability of hybrids, $\boldsymbol h \sim MN(\boldsymbol 0, \sigma^2_h \boldsymbol H)$, where $\boldsymbol H=\boldsymbol G_1 \otimes \boldsymbol G_2$, the symbol $\otimes$ denotes the Kronecker product of two matrices.
-- $\boldsymbol e \sim MN(\boldsymbol 0, \sigma^2_e \boldsymbol I)$, with $\boldsymbol I$, the identity matrix.
-
-The model can be rewritten as:
-
-$$
-\boldsymbol y = \boldsymbol Z_E \boldsymbol \beta_E + \boldsymbol Z_1^\ast \boldsymbol g_1^\ast + \boldsymbol Z_2^\ast \boldsymbol g_2^\ast + \boldsymbol Z_h^\ast \boldsymbol h^\ast + \boldsymbol e, 
+\boldsymbol y= \boldsymbol 1 \mu + \boldsymbol X \boldsymbol \beta + \boldsymbol Z \boldsymbol u + \boldsymbol e, 
 $$
 
 where
 
-- $\boldsymbol Z_1^\ast = \boldsymbol Z_1 \boldsymbol \Gamma_1 \boldsymbol \Lambda_1^{\frac{1}{2}}$, with $\boldsymbol \Gamma_1$, $\boldsymbol \Lambda_1$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol G_1$, $\boldsymbol g_1^\ast \sim MN(\boldsymbol 0, \sigma^2_1 \boldsymbol I)$.
-- $\boldsymbol Z_2^\ast = \boldsymbol Z_2 \boldsymbol \Gamma_2 \boldsymbol \Lambda_2^{\frac{1}{2}}$, with $\boldsymbol \Gamma_2$, $\boldsymbol \Lambda_2$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol G_2$, $\boldsymbol g_2^\ast \sim MN(\boldsymbol 0, \sigma^2_2 \boldsymbol I)$.
-- $\boldsymbol Z_h^\ast = \boldsymbol Z_h \boldsymbol \Gamma_h \boldsymbol \Lambda_h^{\frac{1}{2}}$, with $\boldsymbol \Gamma_h$, $\boldsymbol \Lambda_h$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol H$, $\boldsymbol h^\ast \sim MN(\boldsymbol 0, \sigma^2_h \boldsymbol I)$.
+- $\boldsymbol y$ is the vector of phenotypes of dimmension $n \times 1$.
+- $\boldsymbol 1$ is a vector of ones of dimmensions $n \times 1$.
+- $\mu$ is an intercept.
+- $\boldsymbol X$ is a matrix of fixed effects of dimmensions $n \times p$.
+- $\boldsymbol \beta$ is a vector of fixed effects of dimmensions $p \times 1$.
+- $\boldsymbol Z$ is an incidence matrix of dimensions $n \times r$.
+- $\boldsymbol u$ is a vector of random effects of dimensions $r \times 1$, $\boldsymbol u \sim MN(\boldsymbol 0, \boldsymbol \sigma^2_u \boldsymbol K)$, 
+  with $\boldsymbol K$ a relationship matrix of dimensions $r \times r$, $\sigma^2_u$ the variance parameter associated to $\boldsymbol u$.
+-$\boldsymbol e$, the vector of residuals of dimmensions $n \times 1$, 
+ $\boldsymbol e \sim MN(\boldsymbol 0, \boldsymbol \sigma^2_e \boldsymbol I)$, $\sigma^2_e$, the variance parameter associated to $\boldsymbol e$.
+- We assume that $\boldsymbol e$ and $\boldsymbol u$ are independent.
+
+
+The model can be rewritten as:
+
+
+$$
+\boldsymbol y= \boldsymbol 1 \mu + \boldsymbol X \boldsymbol \beta + \boldsymbol Z^{\ast} \boldsymbol u^{\ast} + \boldsymbol e, 
+$$, 
+
+where
+
+- $\boldsymbol Z^\ast = \boldsymbol Z \boldsymbol \Gamma \boldsymbol \Lambda_1^{\frac{1}{2}}$, with $\boldsymbol \Gamma$, $\boldsymbol \Lambda$ the eigen-vectors and eigen values obtained from the eigen-value decomposition from $\boldsymbol K$, $\boldsymbol u^\ast \sim MN(\boldsymbol 0, \sigma^2_u \boldsymbol I)$.
 
 The last model can be fitted in BGLR easily using ``Bayesian Ridge Regression'' and after the model is fitted the posterior mean of random effects is obtained as follows:
 
