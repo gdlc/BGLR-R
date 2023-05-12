@@ -1,5 +1,3 @@
-rm(list=ls())
-
 #Fits a GBLUP model
 #y: response variable, NAs allowed
 #FEffects: formula for fixed effects
