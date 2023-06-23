@@ -116,7 +116,7 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
  diag(G)=diag(G)+1/1e4
  L=t(chol(G)) 
  
- fm5=BGLR( y=y,ETA=list(list(X=L,model='BRR')),nIter=nIter,
+ fm5=BGLR( y=y,ETA=list(list(X=L,model='BRR',lower_tri=TRUE)),nIter=nIter, 
 	   burnIn=burnIn,saveAt='chol_')
 			
  varE=scan( 'chol_varE.dat')
