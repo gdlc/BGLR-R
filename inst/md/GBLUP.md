@@ -129,7 +129,6 @@ This strategy can be used to avoid computing the eigen-decomposition internally.
 <div id="QR" />
 
 
-
 ---------------------------------------------
 **(6)Using QR-factorization**
 
