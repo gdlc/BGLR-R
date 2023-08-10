@@ -4,7 +4,7 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/BGLR?color=green)](https://CRAN.R-project.org/package=BGLR) [![CRAN checks](https://badges.cranchecks.info/worst/BGLR.svg)](https://cran.r-project.org/web/checks/check_results_BGLR.html) [![Downloads](http://cranlogs.r-pkg.org/badges/BGLR?color=blue)](http://www.r-pkg.org/pkg/BGLR)
 
 [![CRAN status](https://www.r-pkg.org/badges/version/SFSI?color=green)](https://CRAN.R-project.org/package=BGLR)
-[![CRAN checks](https://cranchecks.info/worst/BGLR.svg)](https://cran.r-project.org/web/checks/check_results_BGLR.html)
+[![CRAN checks](https://badges.cranchecks.info/worst/BGLR.svg)](https://cran.r-project.org/web/checks/check_results_BGLR.html)
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/BGLR)](http://www.r-pkg.org/pkg/BGLR)
 [![Downloads/month](http://cranlogs.r-pkg.org/badges/BGLR?color=blue)](http://www.r-pkg.org/pkg/BGLR)
 
