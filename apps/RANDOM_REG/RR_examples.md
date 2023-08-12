@@ -1,5 +1,4 @@
 ```r
-
 library(BGLR)
 library(data.table)
 Y=fread('/mnt/research/quantgen/projects/G2F/data/PHENO.csv',data.table=FALSE)
