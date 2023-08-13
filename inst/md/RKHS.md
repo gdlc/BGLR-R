@@ -12,6 +12,9 @@ Examples (modified) from [de los Campos et al., Genetics Research, 2010](http://
   D<-as.matrix(dist(X,method="euclidean"))^2
   D<-D/mean(D)
   h<-1
+
+### KERNEL ######################################
+  K<-exp(-h*D)
   
 ### GENERATES TESTING SET #######################
  set.seed(12345)
