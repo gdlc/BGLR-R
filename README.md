@@ -1,7 +1,7 @@
 
 ## BGLR: An R Package for (Bayesian) High-Dimensional Regression
 
-[![CRAN status](https://www.r-pkg.org/badges/version/SFSI?color=green)](https://CRAN.R-project.org/package=BGLR)
+[![CRAN status](https://www.r-pkg.org/badges/version/BGLR?color=green)](https://CRAN.R-project.org/package=BGLR)
 [![CRAN checks](https://badges.cranchecks.info/worst/BGLR.svg)](https://cran.r-project.org/web/checks/check_results_BGLR.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/BGLR)](http://www.r-pkg.org/pkg/BGLR)
 [![Downloads](http://cranlogs.r-pkg.org/badges/BGLR?color=blue)](http://www.r-pkg.org/pkg/BGLR)
