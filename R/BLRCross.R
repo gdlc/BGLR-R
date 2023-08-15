@@ -173,9 +173,17 @@ setLT.BayesB.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
   	LT$countsIn=LT$counts * LT$probIn
   	LT$countsOut=LT$counts - LT$countsIn
   	
-  	#Set the initial value for S
-    if(LT$df0<=0) stop("df0>0 in ",LT$model," in order to set S")
-    LT$S=var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
+  	#Default value for the scale parameter associated with the distribution assigned to the variance of 
+    #marker effects
+    if(is.null(LT$S0))
+    {
+    	if(LT$df0<=0) stop("df0>0 in ",LT$model," in order to set S0")
+    	LT$S0=var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
+    	if(verbose)
+    	{
+    		message("Scale parameter in LP ",j," was missing and was set to ",LT$S0)
+    	}
+    }
     
     if(is.null(LT$shape0))
     {
@@ -185,16 +193,18 @@ setLT.BayesB.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     
     if(is.null(LT$rate0))
     {
-    	LT$rate0=(LT$shape0-1)/LT$S
+    	LT$rate0=(LT$shape0-1)/LT$S0
     	message("rate0 in LP ",j," was missing and was set to ",LT$rate0)
     	
     }
+    
+    LT$S=LT$S0
   	
   	LT$a=rep(0, LT$p)	
   	LT$d=rbinom(n = LT$p, size = 1, prob = LT$probIn)
   	LT$b=LT$a*LT$d  #b=a*d, for compatibility with BGLR we use b instead of beta in linear terms
   	
-  	LT$varB = rep(LT$S/(LT$df0+2),LT$p)
+  	LT$varB = rep(LT$S0/(LT$df0+2),LT$p)
   	
   	fname=paste(saveAt,LT$Name,"_parBayesB.dat",sep="")
   	
@@ -948,7 +958,7 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
     			RSS=ans[[4]]
     			
     			#Sampling hyper-parameters   
-    			SS=sum((ETA[[j]]$a)^2)+ETA[[j]]$S
+    			SS=(ETA[[j]]$a)^2 + ETA[[j]]$S
     			DF=ETA[[j]]$df0+1
     			ETA[[j]]$varB=SS/rchisq(n=ETA[[j]]$p,df=DF)
     			
