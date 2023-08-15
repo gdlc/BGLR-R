@@ -711,7 +711,7 @@ setLT.BayesBandC=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles, groups
     		LT$rate0=(LT$shape0-1)/LT$S0
   	}
         LT$S=LT$S0
-  	LT$varB = LT$varB=rep(LT$S0/(LT$df0+2),LT$p)
+  	LT$varB =rep(LT$S0/(LT$df0+2),LT$p)
         fname=paste(saveAt,LT$Name,"_parBayesB.dat",sep="")
   }else{
 	LT$varB = LT$S0
