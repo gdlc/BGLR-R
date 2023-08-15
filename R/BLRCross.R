@@ -1413,6 +1413,8 @@ BLRXy<-function(y, intercept=TRUE, ETA,
 {
 	nLT <- ifelse(is.null(ETA), 0, length(ETA))
 	
+	n<-length(y)
+	
 	if(!(nLT>0)) stop("ETA should have at least one component\n")
 	
 	if(is.null(names(ETA)))
