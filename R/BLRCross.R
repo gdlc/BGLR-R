@@ -2,7 +2,7 @@
 #Prediction of Total Genetic Value Using Genome-Wide Dense Marker Maps
 #Genetics 157: 1819-1829, Modified so that the Scale parameter is estimated from data (a gamma prior is assigned)
 
-setLT.BayesA.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
+setLT.BayesA.Cross=function(prior,vy,j,p,idColumns,sumVarX,R2,nLT,verbose,
                       saveAt,rmExistingFiles,thin,nIter,burnIn)
 {	
 	#Just a copy of values provided by user
@@ -45,7 +45,7 @@ setLT.BayesA.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
   	if(is.null(LT$S0))
   	{
   		if(LT$df0<=0) stop("df0>0 in ",LT$model," in order to set S0");
-     	LT$S0=var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)
+     	LT$S0=vy*LT$R2/(LT$MSx)*(LT$df0+2)
      	if(verbose)
      	{
      		message("Scale parameter in LP ",j," was missing and was set to ",LT$S0)
@@ -111,7 +111,7 @@ setLT.BayesA.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 #Set linear term for BayesB
 ##########################################################################################
 
-setLT.BayesB.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
+setLT.BayesB.Cross=function(prior,vy,j,p,idColumns,sumVarX,R2,nLT,verbose,
 					  saveAt,rmExistingFiles,thin,nIter,burnIn)
 {	
 	#Just a copy of values provided by user
@@ -178,7 +178,7 @@ setLT.BayesB.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
     if(is.null(LT$S0))
     {
     	if(LT$df0<=0) stop("df0>0 in ",LT$model," in order to set S0")
-    	LT$S0=var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
+    	LT$S0=vy*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
     	if(verbose)
     	{
     		message("Scale parameter in LP ",j," was missing and was set to ",LT$S0)
@@ -255,7 +255,7 @@ setLT.BayesB.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 #Set linear term for BayesC
 ##########################################################################################
 
-setLT.BayesC.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
+setLT.BayesC.Cross=function(prior,vy,j,p,idColumns,sumVarX,R2,nLT,verbose,
                       saveAt,rmExistingFiles,thin,nIter,burnIn)
 {	
 	#Just a copy of values provided by user
@@ -321,7 +321,7 @@ setLT.BayesC.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
   	if(is.null(LT$S0))
   	{
   		if(LT$df0<=0) stop("df0>0 in ",LT$model," in order to set S0");
-     	LT$S0=var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
+     	LT$S0=vy*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
      	if(verbose)
      	{
      		message("Scale parameter in LP ",j," was missing and was set to ",LT$S0)
@@ -417,7 +417,7 @@ metropc=function(c,varB,b,d,shape1,shape2)
 
 
 
-setLT.SSVS.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
+setLT.SSVS.Cross=function(prior,vy,j,p,idColumns,sumVarX,R2,nLT,verbose,
                     saveAt,rmExistingFiles,thin,nIter,burnIn)
 {	
 	#Just a copy of values provided by user
@@ -512,7 +512,7 @@ setLT.SSVS.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
   	if(is.null(LT$S0))
   	{
   		if(LT$df0<=0) stop("df0>0 in ",LT$model," in order to set S0");
-     	LT$S0=var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
+     	LT$S0=vy*LT$R2/(LT$MSx)*(LT$df0+2)/LT$probIn
      	if(verbose)
      	{
      		message("Scale parameter in LP ",j," was missing and was set to ",LT$S0)
@@ -573,7 +573,7 @@ setLT.SSVS.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
 #Set linear term for Bayesian Ridge Regression
 ##########################################################################################
 
-setLT.BRR.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
+setLT.BRR.Cross=function(prior,vy,j,p,idColumns,sumVarX,R2,nLT,verbose,
                    saveAt,rmExistingFiles,thin,nIter,burnIn)
 {	
 	#Just a copy of values provided by user
@@ -614,7 +614,7 @@ setLT.BRR.Cross=function(prior,y,j,p,idColumns,sumVarX,R2,nLT,verbose,
   	if(is.null(LT$S0))
   	{
   		if(LT$df0<=0) stop("df0>0 in ",LT$model," in order to set S0");
-     	LT$S0=var(y, na.rm = TRUE)*LT$R2/(LT$MSx)*(LT$df0+2)
+     	LT$S0=vy*LT$R2/(LT$MSx)*(LT$df0+2)
      	if(verbose)
      	{
      		message("Scale parameter in LP ",j," was missing and was set to ",LT$S0)
@@ -752,7 +752,8 @@ setLT.RKHS.Cross=function(LT,j)
 }
 
 
-BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
+BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
+                 XX,Xy,nIter=1500,burnIn=500,
                  thin=5,R2=0.5,
                  S0=NULL,df0=5,
                  priors=NULL,
@@ -772,11 +773,32 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
 		burnIn=as.integer(nIter/2)
 		message("burnIn was set to ",burnIn, " because burnIn can not be bigger than nIter")
 	}
-
-	#Assuming all efects are zero
-    RSS=sum(y^2)
 	
-    n=length(y)
+	if(is.null(y))
+	{
+		message("Since y was not provided, you must provide my, vy and n")
+		message("my: sample mean of y")
+		message("vy: sample variance of y")
+		message("n: sample size")
+		
+		if(is.null(my)) stop("you must provide my")
+		if(is.null(vy)) stop("you must provide vy")
+		if(is.null(n)) stop("you must provide n")
+		
+		#Sum of squares of y
+		ssy=(n-1)*vy + n*my^2
+	}else{
+	
+		message("you provided y, so my, vy and n will be ignored (if provided)")
+	
+		ssy=sum(y^2)
+		my=mean(y)
+		vy=var(y)
+		n=length(y)
+	}
+
+	#Assuming all efects are zero, including the intercept, if it exists...
+    RSS=ssy
     
     p=ncol(XX)
     
@@ -784,10 +806,8 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
     nCols=table(idPriors)
     
     if(p!=sum(nCols)) stop("The number of columns in X'X is different to the number of elements in idPriors\n")
-    
-    varY=var(y,na.rm=TRUE)
-    
-    varE=varY*(1-R2)
+        
+    varE=vy*(1-R2)
     
     if(is.null(S0))
     {
@@ -841,7 +861,7 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
             }
     		
     		ETA[[j]]=switch(priors[[j]]$model,
-    						BayesA=setLT.BayesA.Cross(prior=priors[[j]],y=y,j=j,p=nCols[j],
+    						BayesA=setLT.BayesA.Cross(prior=priors[[j]],vy=vy,j=j,p=nCols[j],
     											idColumns=idColumns,sumVarX=sumVarX,
     											R2=R2,nLT=nLT,verbose=verbose,
     											saveAt=saveAt,
@@ -849,7 +869,7 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
     											thin=thin,
     											nIter=nIter,
     											burnIn=burnIn),
-    						BayesB=setLT.BayesB.Cross(prior=priors[[j]],y=y,j=j,p=nCols[j],
+    						BayesB=setLT.BayesB.Cross(prior=priors[[j]],vy=vy,j=j,p=nCols[j],
     											idColumns=idColumns,sumVarX=sumVarX,
     											R2=R2,nLT=nLT,verbose=verbose,
     											saveAt=saveAt,
@@ -857,7 +877,7 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
     											thin=thin,
     											nIter=nIter,
     											burnIn=burnIn),
-    						BayesC=setLT.BayesC.Cross(prior=priors[[j]],y=y,j=j,p=nCols[j],
+    						BayesC=setLT.BayesC.Cross(prior=priors[[j]],vy=vy,j=j,p=nCols[j],
     											idColumns=idColumns,sumVarX=sumVarX,
     											R2=R2,nLT=nLT,verbose=verbose,
     											saveAt=saveAt,
@@ -865,7 +885,7 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
     											thin=thin,
     											nIter=nIter,
     											burnIn=burnIn),
-    						BRR=setLT.BRR.Cross(prior=priors[[j]],y=y,j=j,p=nCols[j],
+    						BRR=setLT.BRR.Cross(prior=priors[[j]],vy=vy,j=j,p=nCols[j],
     											idColumns=idColumns,sumVarX=sumVarX,
     											R2=R2,nLT=nLT,verbose=verbose,
     											saveAt=saveAt,
@@ -873,7 +893,7 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
     											thin=thin,
     											nIter=nIter,
     											burnIn=burnIn),
-    						RKHS=setLT.BRR.Cross(prior=priors[[j]],y=y,j=j,p=nCols[j],
+    						RKHS=setLT.BRR.Cross(prior=priors[[j]],vy=vy,j=j,p=nCols[j],
     											idColumns=idColumns,sumVarX=sumVarX,
     											R2=R2,nLT=nLT,verbose=verbose,
     											saveAt=saveAt,
@@ -885,7 +905,7 @@ BLRCross=function(y,XX,Xy,nIter=1500,burnIn=500,
     						                  Name=priors[[j]]$Name,
     						                  saveAt=saveAt,
     						                  rmExistingFiles=rmExistingFiles),
-    						SSVS=setLT.SSVS.Cross(prior=priors[[j]],y=y,j=j,p=nCols[j],
+    						SSVS=setLT.SSVS.Cross(prior=priors[[j]],vy=vy,j=j,p=nCols[j],
     											idColumns=idColumns,sumVarX=sumVarX,
     											R2=R2,nLT=nLT,verbose=verbose,
     											saveAt=saveAt,
