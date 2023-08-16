@@ -8,18 +8,22 @@
 
 \usage{
 
-BLRCross(y,XX,Xy,nIter=1500,burnIn=500,
-          thin=5,R2=0.5,
-          S0=NULL,df0=5,
-          priors=NULL,
-          idPriors=NULL,
-          verbose=TRUE,
-          saveAt = "", 
-          rmExistingFiles=TRUE)
+BLRCross(y=NULL,my=NULL,vy=NULL,n=NULL,
+         XX,Xy,nIter=1500,burnIn=500,
+         thin=5,R2=0.5,
+         S0=NULL,df0=5,
+         priors=NULL,
+         idPriors=NULL,
+         verbose=TRUE,
+         saveAt = "", 
+         rmExistingFiles=TRUE)
 }
 
 \arguments{
-   \item{y}{A numeric vector of length n.}
+   \item{y}{A numeric vector of length n, NAs not allowed, if NULL you must provide my, vy and n.}
+   \item{my}{numeric, sample mean of y. If NULL you must provide y.}
+   \item{vy}{numeric, sample variance of y. If NULL you must provide y.}
+   \item{n}{integer, sample size. If NULL you must provide y.}
    \item{XX}{A matrix, XX=crossprod(X), with X an incidence matrix of dimension n times p.}
    \item{Xy}{A numeric vector of length p, Xy=crossprod(X,y).}
    \item{nIter,burnIn, thin}{(integer) the number of iterations, burn-in and thinning.}
@@ -81,13 +85,18 @@ Xy=as.vector(crossprod(X,y))
 
 #Example 1
 
-#BayesA
+## BayesA ################################################################################
 priors=list(list(model="BayesA"))
 idPriors=rep(1,p)
-fm1=BLRCross(y=y,XX=XX,Xy=Xy,nIter=1000,priors=priors,idPriors=idPriors)
+fm1=BLRCross(y=y,XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
 plot(as.vector(X\%*\%fm1$ETA[[1]]$b),y)
 
-#BayesB
+#summary statistics
+fm1s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
+plot(as.vector(X\%*\%fm1s$ETA[[1]]$b),y)
+
+## BayesB ################################################################################
 priors=list(list(model="BayesB"))
 idPriors=idPriors=rep(1,p)
 fm1=BLRCross(y=y,XX=XX,Xy=Xy,nIter=10000,burnIn=5000,priors=priors,idPriors=idPriors)
@@ -95,7 +104,14 @@ plot(as.vector(X\%*\%fm1$ETA[[1]]$b),y)
 plot(fm1$ETA[[1]]$b)
 points(QTL,b[QTL],col="red")
 
-#BayesC
+#summary statistics
+fm1s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
+plot(as.vector(X\%*\%fm1s$ETA[[1]]$b),y)
+plot(fm1s$ETA[[1]]$b)
+points(QTL,b[QTL],col="red")
+
+## BayesC ################################################################################
 priors=list(list(model="BayesC",R2=NULL,df0=NULL,S0=NULL,probIn=1/100,counts=1E6))
 idPriors=rep(1,p)
 
@@ -107,13 +123,27 @@ points(QTL,b[QTL],col="red")
 plot(fm1$ETA[[1]]$d)
 points(QTL,b[QTL],col="red")
 
-#SSVS (Absolutly Continuous Spike Slab)
+#summary statistics
+fm1s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
+plot(as.vector(X\%*\%fm1s$ETA[[1]]$b),y)
+plot(fm1s$ETA[[1]]$b)
+points(QTL,b[QTL],col="red")
+
+
+## SSVS (Absolutely Continuous Spike Slab) ###############################################
 priors=list(list(model="SSVS",R2=NULL,df0=NULL,S0=NULL,probIn=NULL,counts=NULL))
 idPriors=rep(1,p)
 
 fm1=BLRCross(y=y,XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
 plot(as.vector(X\%*\%fm1$ETA[[1]]$b),y)
 plot(fm1$ETA[[1]]$b)
+
+#summary statistics
+fm1s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
+plot(as.vector(X\%*\%fm1s$ETA[[1]]$b),y)
+plot(fm1s$ETA[[1]]$b)
 
 priors=list(list(model="SSVS",R2=NULL,df0=NULL,S0=NULL,probIn=NULL,
                       counts=NULL,cprobIn=0.5,ccounts=2))
@@ -123,12 +153,24 @@ fm1=BLRCross(y=y,XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
 plot(as.vector(X\%*\%fm1$ETA[[1]]$b),y)
 plot(fm1$ETA[[1]]$b)
 
-#Ridge Regression
+#summary statistics
+fm1s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
+
+plot(as.vector(X\%*\%fm1s$ETA[[1]]$b),y)
+plot(fm1s$ETA[[1]]$b)
+
+## Ridge Regression ######################################################################
 priors=list(list(model="BRR",R2=NULL,df0=NULL,S0=NULL))
 idPriors=rep(1,p)
 
 fm1=BLRCross(y=y,XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
 plot(as.vector(X\%*\%fm1$ETA[[1]]$b),y)
+
+#summary statistics
+fm1s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
+plot(as.vector(X\%*\%fm1s$ETA[[1]]$b),y)
 
 #Example 2
 priors=list(list(model="BayesC",R2=NULL,df0=NULL,S0=NULL,probIn=NULL,counts=NULL),
@@ -141,6 +183,13 @@ bHat=c(fm2$ETA[[1]]$b,fm2$ETA[[2]]$b)
 plot(as.vector(X\%*\%bHat),y)
 plot(bHat)
 
+#summary statistics
+fm2s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
+bHat=c(fm2s$ETA[[1]]$b,fm2s$ETA[[2]]$b)
+plot(as.vector(X\%*\%bHat),y)
+plot(bHat)
+
 #Example 3
 priors=list(list(model="BayesC",R2=NULL,df0=NULL,S0=NULL,probIn=NULL,counts=NULL),
             list(model="BRR",R2=NULL,df0=NULL,S0=NULL))
@@ -148,6 +197,13 @@ idPriors=c(rep(1,p/2),rep(2,p/2))
 
 fm3=BLRCross(y=y,XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
 bHat=c(fm3$ETA[[1]]$b,fm3$ETA[[2]]$b)
+plot(as.vector(X\%*\%bHat),y)
+plot(bHat)
+
+#summary statistics
+fm3s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,priors=priors,idPriors=idPriors)
+bHat=c(fm3s$ETA[[1]]$b,fm3s$ETA[[2]]$b)
 plot(as.vector(X\%*\%bHat),y)
 plot(bHat)
 
@@ -170,6 +226,12 @@ bHat=c(fm0$ETA[[1]]$b,fm0$ETA[[2]]$b,fm0$ETA[[3]]$b)
 plot(y,X\%*\%bHat)
 plot(bHat)
 
+#summary statistics
+fm0s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,burnIn=5000,priors=priors,idPriors=idPriors)
+bHat=c(fm0s$ETA[[1]]$b,fm0s$ETA[[2]]$b,fm0s$ETA[[3]]$b)
+plot(y,X\%*\%bHat)
+plot(bHat)
 
 priors=list(list(model="FIXED"),
             list(model="BayesC",R2=NULL,df0=NULL,S0=NULL,probIn=1/100,counts=1e6),
@@ -182,6 +244,14 @@ bHat=c(fm0$ETA[[1]]$b,fm0$ETA[[2]]$b,fm0$ETA[[3]]$b,fm0$ETA[[4]]$b)
 plot(y,X\%*\%bHat)
 plot(bHat)
 
+#summary statistics
+fm0s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,burnIn=5000,priors=priors,idPriors=idPriors)
+
+bHat=c(fm0s$ETA[[1]]$b,fm0s$ETA[[2]]$b,fm0s$ETA[[3]]$b,fm0$ETA[[4]]$b)
+plot(y,X\%*\%bHat)
+plot(bHat)
+              
 
 priors=list(list(model="FIXED"),
             list(model="BayesC",R2=NULL,df0=NULL,S0=NULL,probIn=1/100,counts=1e6),
@@ -192,10 +262,15 @@ idPriors=c(1,rep(2,250),rep(3,250),rep(4,250),rep(5,250))
 
 fm0=BLRCross(y=y,XX=XX,Xy=Xy,nIter=10000,burnIn=5000,priors=priors,idPriors=idPriors)
 bHat=c(fm0$ETA[[1]]$b,fm0$ETA[[2]]$b,fm0$ETA[[3]]$b,fm0$ETA[[4]]$b,fm0$ETA[[5]]$b)
-
 plot(y,X\%*\%bHat)
 plot(bHat)
 
+#summary statistics
+fm0s=BLRCross(my=mean(y),vy=var(y),n=length(y),
+              XX=XX,Xy=Xy,nIter=10000,burnIn=5000,priors=priors,idPriors=idPriors)
+bHat=c(fm0s$ETA[[1]]$b,fm0s$ETA[[2]]$b,fm0s$ETA[[3]]$b,fm0s$ETA[[4]]$b,fm0s$ETA[[5]]$b)
+plot(y,X\%*\%bHat)
+plot(bHat)
 
 priors=list(list(model="FIXED"),
             list(model="BayesC",R2=NULL,df0=NULL,S0=NULL,probIn=1/100,counts=1e6),
@@ -207,10 +282,16 @@ idPriors=c(1,rep(2,200),rep(3,200),rep(4,200),rep(5,200),rep(6,200))
 
 fm0=BLRCross(y=y,XX=XX,Xy=Xy,nIter=10000,burnIn=5000,priors=priors,idPriors=idPriors)
 bHat=c(fm0$ETA[[1]]$b,fm0$ETA[[2]]$b,fm0$ETA[[3]]$b,fm0$ETA[[4]]$b,fm0$ETA[[5]]$b,fm0$ETA[[6]]$b)
-
 plot(y,X\%*\%bHat)
 plot(bHat)
 
+#summary statistics
+fm0s=BLRCross(my=mean(y),vy=var(y),n=length(y),XX=XX,Xy=Xy,nIter=10000,burnIn=5000,
+              priors=priors,idPriors=idPriors)
+bHat=c(fm0s$ETA[[1]]$b,fm0s$ETA[[2]]$b,fm0s$ETA[[3]]$b,fm0s$ETA[[4]]$b,
+       fm0s$ETA[[5]]$b,fm0s$ETA[[6]]$b)
+plot(y,X\%*\%bHat)
+plot(bHat)
 
 }
 
