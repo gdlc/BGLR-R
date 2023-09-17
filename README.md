@@ -125,6 +125,7 @@ We also have improved the sampling routines to speed up computations. Next we in
 - [6. Ridge Regression](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BRR_UN_UN.md)
 - [7. Ridge Regression + Additive relationship matrix](https://github.com/gdlc/BGLR-R/blob/master/inst/md/BRR_UN_RKHS_UN.md)
 - [8. Spike Slab](https://github.com/gdlc/BGLR-R/blob/master/inst/md/SS_UN_UN.md)
+- [9. Fixed effects][https://github.com/gdlc/BGLR-R/blob/master/inst/md/Fixed_effects_multitrait.md]
 
 **Supplementary scripts for the draft of the paper "Multi-trait Bayesian Shrinkage and Variable Selection Models with the BGLR R-package"**
 
