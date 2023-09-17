@@ -637,7 +637,7 @@ setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow)
         if(is.null(LT$common))
         {
                 LT$common<-TRUE
-                message("matrix of fixed effects X is the same for all the traits,")
+                message("matrix for fixed effects X is the same for all the traits,")
                 message("so the same effects are assumed for all the traits")
         }else{
                 if(LT$common)
@@ -645,8 +645,13 @@ setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow)
                         message("matrix for fixed effects X is the same for all the traits,")
                         message("so the same effects are assumed for all the traits")
                 }else{
-                        message("each trait has a different matrix for fixed X_t, we assume")
+                        message("each trait has its own set of predictors, we assumme")
                         message("X=[X_1,...,X_t], k=1,...,t (traits)")
+                        
+                    	if(is.null(LT$idColumns))
+                    	{
+                    		stop("You need to provide the vector idColumns \n which indicates which columns in X affect each trait")
+                    	}
                 }
         }
 
@@ -655,13 +660,13 @@ setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow)
         if(!is.matrix(LT$X))  stop("X must be a matrix\n")
         if(any(is.na(LT$X))) stop("X has NAs\n")
 
-        #Omega
-        LT$Cov<-list()
-        LT$Cov$Omega<-diag(rep(1E6,traits))
-        LT$Cov$Omegainv<-solve(LT$Cov$Omega)
-
         if(LT$common)
         {
+       		 	#Omega
+        		LT$Cov<-list()
+        		LT$Cov$Omega<-diag(rep(1E6,traits))
+        		LT$Cov$Omegainv<-solve(LT$Cov$Omega)
+        		
                 #check rank
                 if(qr(LT$X)$rank<ncol(LT$X)) stop("X is rank deficient")
 
@@ -679,36 +684,46 @@ setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow)
 
         }else{
 
-                #Number of columns in each X=[X_1,...,X_t], k=1,...,t (traits)
-                LT$p<-floor(ncol(LT$X)/traits)
-                if(traits*LT$p!=ncol(LT$X)) stop("Check the number of columns in X")
-                LT$upper<-LT$p*c(1:traits)
-                LT$lower<-LT$upper+1-LT$p
-
-                #Check the rank of each matrix
-                for(k in 1:traits)
-                {
-                        if(qr(LT$X[,c(LT$lower[k]:LT$upper[k])])$rank<LT$p) stop("X_",k, " is rank deficient")
-                }
-		                #Do not move this code out here!!!
+				if(ncol(LT$X)!=length(LT$idColumns))
+				{
+					stop("Number of columns in X does not match with length of idColumns")
+				}
+				
+				#Check the rank of each matrix
+				for(k in 1:traits)
+				{
+						Ck<-which(LT$idColumns==k)
+						if(length(Ck)>0)
+						{
+							if(qr(LT$X[,Ck])$rank<length(Ck)) stop("X_",k, " is rank deficient")	
+						}else{
+							message("covariates for fixed effects for trait ",k, " were not provided")
+						}
+				}
+				
+		        #Do not move this code out here!!!
                 #It appears to be repeated but is not the case
 
                 LT$x2<-as.vector(colSums(LT$X^2))
 
-                LT$beta<-matrix(0,nrow=LT$p,ncol=traits)
+				#Stack the betas for each trait in one single vector, it is not possible
+				#to use a matrix because each matrix in [X_1,...,X_t], k=1,...,t (traits)
+				#can have different number of columns 
+				
+                LT$beta<-rep(0,ncol(LT$X))
 
                 #Objects for saving posterior means for MCMC
-                LT$post_beta<-matrix(0,nrow=LT$p,ncol=traits)
-                LT$post_beta2<-matrix(0,nrow=LT$p,ncol=traits)
+                LT$post_beta<-rep(0,ncol(LT$X))
+                LT$post_beta2<-rep(0,ncol(LT$X))
         }
 
      	#*#
      	
-     	#Files to save binary files with betas
-	if(is.null(LT$saveEffects))
-	{
-		LT$saveEffects<-FALSE
-	} 
+     	#Files to save binary files with betas     	
+		if(is.null(LT$saveEffects))
+		{
+			LT$saveEffects<-FALSE
+		} 
      	       
         if(LT$saveEffects)
         {
@@ -724,7 +739,13 @@ setLT.FIXED_mt<-function(LT,traits,j,saveAt,nRow)
 
         	fname<-paste(saveAt,LT$Name,"_beta.bin",sep="")
         	LT$fileEffects<-file(fname,open='wb')
-        	writeBin(object=c(nRow,traits,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
+        	
+        	if(LT$common)
+        	{
+        		writeBin(object=c(nRow,traits,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
+        	}else{
+        		writeBin(object=c(nRow,ncol(LT$X)),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
+        	}
 
     	}#*#
 
@@ -1635,27 +1656,23 @@ Multitrait<-function(y,
 						}#End of loop for traits
 						
 					}else{
-										
-						low<-ETA[[j]]$lower
-						up<-ETA[[j]]$upper
-						
+					
 						for(k in 1:traits)
 						{
-							#Exactly the same routine as before, but instead of X, with 
 							#X=[X_1,...,X_t], k=1,...,t (traits), we pass as
-							#argument X_k, and the corresponding sum of squares of columns
 							
-							Xk<-ETA[[j]]$X[,c(low[k]:up[k]),drop=FALSE]
-							x2k<-ETA[[j]]$x2[c(low[k]:up[k])]
+							Ck<-which(ETA[[j]]$idColumns==k)
+							
+							if(length(Ck)>0)
+							{
+								Xk<-ETA[[j]]$X[,Ck,drop=FALSE]
+								x2k<-ETA[[j]]$x2[Ck]
+								#beta and error are overwritten with this .Call
+								.Call("sampler_BRR_mt_fixed", k, n, Ck,length(Ck),
+								  	   traits, resCov$Rinv, Xk, error,
+								  		ETA[[j]]$beta, x2k)
+							}
 													
-							#beta and error are overwritten with this .Call
-							.Call("sampler_BRR_mt", k, n, ETA[[j]]$p,
-								  traits, resCov$Rinv, Xk, error,
-								  ETA[[j]]$beta,
-								  x2k,
-								  ETA[[j]]$Cov$Omegainv[k,-k],
-								  ETA[[j]]$Cov$Omegainv[k,k])
-								  
 						}#End of loop for traits
 						
 					}
