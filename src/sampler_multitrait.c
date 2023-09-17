@@ -318,6 +318,116 @@ SEXP sampler_BRR_mt(SEXP trait,
     return(R_NilValue);
 }
 
+
+/*
+
+Bayesian Ridge Regression
+
+*/
+
+SEXP sampler_BRR_mt_fixed(SEXP trait,
+                 		  SEXP n,
+                 		  SEXP idColumns,
+                 		  SEXP nCol,
+                 		  SEXP nTraits,
+                 		  SEXP Rinv,
+                 		  SEXP X,
+                 		  SEXP e,
+                 		  SEXP beta,
+                 		  SEXP x2)
+{
+    double s1, s3, betaOld, shift;
+    double *pRinv;          //Pointer to Rinv
+    double *cRinv;          //Pointer to a column of Rinv
+    double *pX;             //Pointer to X
+    double *xj;             //Pointer to a columns of X
+    double *perror;         //Pointer to error
+    double *cerror;         //Pointer to column of error
+    double *pbeta;          //Pointer to beta vector
+    double *px2;            //Pointer to x2
+    int *pidColumns;		//Pointer to idColumns 
+    double mu;
+    double v;
+    
+    int j, p, k, traits, t, rows;
+    int j_global;
+    
+    int inc=1;
+    
+    p=INTEGER_VALUE(nCol);
+    traits=INTEGER_VALUE(nTraits);
+    k=INTEGER_VALUE(trait)-1;       //In C we begin to count in 0
+    rows=INTEGER_VALUE(n);
+    
+    PROTECT(Rinv=AS_NUMERIC(Rinv));
+    pRinv=NUMERIC_POINTER(Rinv);
+    
+    PROTECT(X=AS_NUMERIC(X));
+    pX=NUMERIC_POINTER(X);
+    
+    PROTECT(e=AS_NUMERIC(e));
+    perror=NUMERIC_POINTER(e);
+    
+    PROTECT(beta=AS_NUMERIC(beta));
+    pbeta=NUMERIC_POINTER(beta);
+        
+    PROTECT(x2=AS_NUMERIC(x2));
+    px2=NUMERIC_POINTER(x2);
+    
+    PROTECT(idColumns=AS_INTEGER(idColumns));
+    pidColumns=INTEGER_POINTER(idColumns);
+       
+    GetRNGstate();
+    
+    for(j=0; j<p;j++)
+    {
+        
+        /*
+    	Substract one because in C we begin to count in 0
+    	*/
+    	  
+    	j_global=pidColumns[j]-1;
+        
+        //j-th column of X
+        xj=pX+(long long)j*rows;
+        
+        s1=0;
+        for(t=0; t<traits;t++)
+        {
+            //t-th column of Rinv and error
+            cRinv=pRinv+t*traits;
+            cerror=perror+t*rows;
+            s1+=cRinv[k]*F77_NAME(ddot)(&rows,xj,&inc,cerror,&inc);
+        }
+        
+        //k-th column of Rinv and error
+        cRinv=pRinv+k*traits;
+        cerror=perror+k*rows;
+            
+        //Sample from the conditional
+        betaOld=pbeta[j_global];
+
+        s3=s1+cRinv[k]*pbeta[j_global]*px2[j];
+        v=cRinv[k]*px2[j] + 1.0E-6;
+        mu=s3/v;
+            
+        pbeta[j_global]=mu+sqrt(1.0/v)*norm_rand();
+        
+        //Update the error
+        
+        shift=betaOld-pbeta[j_global];
+        F77_NAME(daxpy)(&rows, &shift,xj,&inc, cerror, &inc);
+        
+    }
+    
+    PutRNGstate();
+    
+    UNPROTECT(6);
+    
+    return(R_NilValue);
+}
+
+
 /*
 
 Bayesian Ridge Regression version 2
