@@ -1474,8 +1474,8 @@ BLRXy<-function(y, intercept=TRUE, ETA,
 				#Keep only the rows without missing values
 				if(missings)
 				{
-					ETA[[j]]$X_NAs<-ETA[[j]]$X[whichNA,]
-					ETA[[j]]$X<-ETA[[j]]$X[!whichNA,]
+					ETA[[j]]$X_NAs<-ETA[[j]]$X[whichNA,,drop=FALSE]
+					ETA[[j]]$X<-ETA[[j]]$X[!whichNA,,drop=FALSE]
 				}
 			}else{
 				stop("Error in ETA[[", j, "]], X is NULL")
