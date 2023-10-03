@@ -19,7 +19,7 @@ BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2
  d=rep(1,p) # indicator variable for the group
  POST.PROB=matrix(nrow=p,ncol=nComp,0)
 
- S0.b=df0.b*as.vector((vy*(1-R2)/sum(diag(C))))/2
+ S0.b=df0.b*as.vector((vy*R2/sum(diag(C))))
  varB=S0.b/df0.b
 
  priorProb=priorProb/sum(priorProb)
