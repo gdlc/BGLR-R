@@ -11,7 +11,7 @@
 ##
 
 BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
-                df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp), priorProb=rep(1/nComp,nComp),verbose=TRUE){
+                df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp), priorProb=rep(1/nComp,nComp),priorCounts=rep(2*nComp,nComp),verbose=TRUE){
 
  # nIter=150;burnIn=50;R2=.5;nComp=matrix(ncol(B0));df0.E=5;S0.E=vy*R2*df0.E;df0.b=rep(5,nComp);alpha=.1;my=mean(y); vy=var(y); B0=cbind(rep(0,p),-1,1)
  p=ncol(C) 
