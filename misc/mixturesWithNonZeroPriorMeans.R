@@ -90,7 +90,7 @@ if(FALSE){
  b0=rep(0,p)
  b0[QTL]=rep(c(-1,1),each=5)
 
- colQTL=ifelse(b0==0,8,ifelse(b0==1,2,4))
+ 
  signal=X%*%b0
  error=rnorm(n=n,sd=sd(signal))
  y=signal+error
@@ -104,12 +104,13 @@ if(FALSE){
  
  source('https://raw.githubusercontent.com/gdlc/BGLR-R/master/misc/mixturesWithNonZeroPriorMeans.R')
  tmp=MMS(C=C,rhs=rhs,my=mean(y),vy=var(y),B0=cbind(rep(0,p),-1,1),nIter=1500,burnIn=500)
- 
- 
- 
-  plot(tmp$POST.PROB[,1],col=colQTL,pch=ifelse(colQTL==8,1,19),ylim=c(0,1))
-  plot(tmp$POST.PROB[,2],col=colQTL,pch=ifelse(colQTL==8,1,19),ylim=c(0,1))
-  plot(tmp$POST.PROB[,3],col=colQTL,pch=ifelse(colQTL==8,1,19),ylim=c(0,1))
+
+ colQTL=ifelse(b0==0,8,ifelse(b0==1,2,4))
+ pointQTL=ifelse(colQTL==8,1,19)
+  par(mfrow=c(3,1))
+  plot(tmp$POST.PROB[,1],col=colQTL,pch=pointQTL,ylim=c(0,1))
+  plot(tmp$POST.PROB[,2],col=colQTL,pch=pointQTL,ylim=c(0,1))
+  plot(tmp$POST.PROB[,3],col=colQTL,pch=pointQTL,ylim=c(0,1))
 
 }
 
