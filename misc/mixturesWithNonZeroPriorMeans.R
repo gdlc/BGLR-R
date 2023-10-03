@@ -77,6 +77,8 @@ BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2
 		 counts[k]=DF
 		 
 	 }
+
+	compProb=rDirichlet(counts+priorCount)
  
 	 ## computing posterior mean of mixture probabilities
 	 for(k in 1:nComp){
@@ -92,6 +94,14 @@ BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2
  	return(list(b=postMeanB,POST.PROB=POST.PROB,postMeanVarB=postMeanVarB))
  
 }
+## A function to sample from a Dirichlet
+
+rDirichlet=function(counts){
+    x=rgamma(n=length(counts),shape=counts)
+	return(x/sum(x))
+}
+
+
 
 ## Example
 
