@@ -1,5 +1,5 @@
 # A Gibbs Sampler for a Bayesian Mixture Model
-# C=X'X, rhs=X'y, my=mean(y), vy=var(y)
+# C=X'X, rhs=X'y, my=mean(y), vy=var(y),n=length(y)
 # Note: we don't include an intercept, so, before computing X'y, X'X, you should center X and y arount their means.
 # B0, a matrix with prior estiamtes of marker effects, as many columns as prior estimates. We also suggest including one column
 #     full of zeroes, to allow for just plain shrinkage towards zero, if needed (this is the default value)
@@ -10,7 +10,7 @@
 #  ...
 ##
 
-BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
+BMM=function(C,rhs,my,vy,n,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
                 df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp), priorProb=rep(1/nComp,nComp),priorCounts=rep(2*nComp,nComp),verbose=TRUE){
 
  # nIter=150;burnIn=50;R2=.5;nComp=matrix(ncol(B0));df0.E=5;S0.E=vy*R2*df0.E;df0.b=rep(5,nComp);alpha=.1;my=mean(y); vy=var(y); B0=cbind(rep(0,p),-1,1)
@@ -19,7 +19,7 @@ BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2
  d=rep(1,p) # indicator variable for the group
  POST.PROB=matrix(nrow=p,ncol=nComp,0)
 
- S0.b=df0.b*as.vector((vy*R2/sum(diag(C))))
+ S0.b=df0.b*as.vector((vy*R2/sum(diag(C)),n))
  varB=S0.b/df0.b
 
  priorProb=priorProb/sum(priorProb)
