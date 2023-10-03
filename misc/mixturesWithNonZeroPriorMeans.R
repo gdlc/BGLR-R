@@ -56,7 +56,7 @@ for(i in 1:nIter){
  
 	 ## Sampling mixture components 
 	 for(k in 1:nComp){
-		 PROBS[,k]=dnorm(b,mean=B0[,k],sd=sqrt(varB[k]))*compProb[k]	
+		 PROBS[,k]=dnorm(b,mean=B0[,k],sd=sqrt(varB[k]))#*compProb[k]	
 	 }
  
 	 d=apply(FUN=sample,x=1:nComp,X=PROBS,size=1,MARGIN=1,replace=TRUE)
