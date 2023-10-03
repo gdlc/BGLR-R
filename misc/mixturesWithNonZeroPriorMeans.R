@@ -1,4 +1,5 @@
 
+
 # A Gibbs Sampler for a Bayesian Mixture Model
 BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
                 df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp)){
@@ -15,7 +16,7 @@ BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
  postMeanB=rep(0,p)
  postMeanVarB=rep(0,nComp)
 
- varE=SE.E/df0.E 
+ varE=S0.E/df0.E 
 
  PROBS=matrix(nrow=p,ncol=nComp)
  	
