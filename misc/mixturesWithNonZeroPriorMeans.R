@@ -1,7 +1,7 @@
 
-
-MMS=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
-                df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp),alpha=.1){
+# A Gibbs Sampler for a Bayesian Mixture Model
+BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
+                df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp)){
 
  # nIter=150;burnIn=50;R2=.5;nComp=matrix(ncol(B0));df0.E=5;S0.E=vy*R2*df0.E;df0.b=rep(5,nComp);alpha=.1;my=mean(y); vy=var(y); B0=cbind(rep(0,p),-1,1)
  p=ncol(C) 
@@ -9,7 +9,7 @@ MMS=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
  d=rep(1,p) # indicator variable for the group
  POST.PROB=matrix(nrow=p,ncol=nComp,0)
 
- S0.b=df0.b*as.vector((vy*(1-R2)/sum(diag(C))))*100
+ S0.b=df0.b*as.vector((vy*(1-R2)/sum(diag(C))))/2
  varB=S0.b/df0.b
 
  postMeanB=rep(0,p)
@@ -103,7 +103,7 @@ if(FALSE){
  B0=cbind(rep(0,p),-1,1)
  
  source('https://raw.githubusercontent.com/gdlc/BGLR-R/master/misc/mixturesWithNonZeroPriorMeans.R')
- tmp=MMS(C=C,rhs=rhs,my=mean(y),vy=var(y),B0=cbind(rep(0,p),-1,1),nIter=1500,burnIn=500)
+ tmp=BMM(C=C,rhs=rhs,my=mean(y),vy=var(y),B0=cbind(rep(0,p),-1,1),nIter=1500,burnIn=500)
 
  colQTL=ifelse(b0==0,8,ifelse(b0==1,2,4))
  pointQTL=ifelse(colQTL==8,1,19)
