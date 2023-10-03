@@ -29,6 +29,7 @@ BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2
 	
  postMeanB=rep(0,p)
  postMeanVarB=rep(0,nComp)
+ postProb=rep(0,nComp)
 
  varE=S0.E/df0.E 
  counts=priorCounts/nComp
@@ -36,7 +37,7 @@ BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2
  PROBS=matrix(nrow=p,ncol=nComp)
  	
  	
-	for(i in 1:nIter){
+for(i in 1:nIter){
  
 	 ## Future C code
 	 for(j in 1:p){
@@ -79,6 +80,7 @@ BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2
 	 }
 
 	compProb=rDirichlet(counts+priorCount)
+	postProb=postProb+compProb/nIter
  
 	 ## computing posterior mean of mixture probabilities
 	 for(k in 1:nComp){
@@ -89,10 +91,9 @@ BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2
 	 # Sampling error variances
 	 # we also need to add prior probabilities for the mixtures...
 	 if(verbose){ print(i) }
-	 }
+  } 
 
- 	return(list(b=postMeanB,POST.PROB=POST.PROB,postMeanVarB=postMeanVarB))
- 
+   return(list(b=postMeanB,POST.PROB=POST.PROB,postMeanVarB=postMeanVarB,postProb=postProb))
 }
 ## A function to sample from a Dirichlet
 
