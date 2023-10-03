@@ -17,7 +17,7 @@ BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
  postMeanVarB=rep(0,nComp)
 
  varE=S0.E/df0.E 
-
+ print(varE)
  PROBS=matrix(nrow=p,ncol=nComp)
  	
  	
