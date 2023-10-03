@@ -15,6 +15,8 @@ BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
  postMeanB=rep(0,p)
  postMeanVarB=rep(0,nComp)
 
+ varE=SE.E/df0.E 
+
  PROBS=matrix(nrow=p,ncol=nComp)
  	
  	
@@ -63,6 +65,9 @@ BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
 		 tmp=(d==k)
 		 POST.PROB[tmp,k]=POST.PROB[tmp,k]+1/nIter
 	  }
+
+	 # Sampling error variances
+	 # we also need to add prior probabilities for the mixtures...
 	
 	 }
 
