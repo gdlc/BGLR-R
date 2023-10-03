@@ -203,4 +203,6 @@ for(i in 1:nIter){
 
  
 }
+
+return(list(b=postMeanB,POST.PROB=POST.PROB,postMeanVarB=postMeanVarB))
 }
