@@ -25,9 +25,9 @@ MMS=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
 	
 		offset=sum(C[j,-j]*b[-j])
 		rhs_j=(rhs[j]-offset)/varE
-		rhs_j=rhs_j+B0[j,d[j]]/priors$var[d[j]]
+		rhs_j=rhs_j+B0[j,d[j]]/varB[d[j]]
  
-		lhs_j=C[j,j]/varE+1/priors$var[d[j]]	
+		lhs_j=C[j,j]/varE+1/varB[d[j]]	
 		sol=rhs_j/lhs_j
 		b[j]=rnorm(n=1,mean=sol,sd=sqrt(1/lhs_j))
 	 }
