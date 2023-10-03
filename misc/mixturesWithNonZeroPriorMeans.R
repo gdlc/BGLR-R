@@ -49,7 +49,8 @@ MMS=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
 		 DF=sum(tmp)
 		 SS=S0.b[k]
 		 if(DF>0){
-			 SS=SS+sum(b[tmp]^2)
+			 bStar=b[tmp]-B0[tmp,k]
+			 SS=SS+sum(bStar^2)
 		 }
 		 DF=DF+df0.b[k]
 	 
