@@ -79,7 +79,7 @@ for(i in 1:nIter){
 		 
 	 }
 
-	compProb=rDirichlet(counts+priorCount)
+	compProb=rDirichlet(counts+priorCounts)
 	postProb=postProb+compProb/nIter
  
 	 ## computing posterior mean of mixture probabilities
