@@ -1,6 +1,6 @@
 # A Gibbs Sampler for a Bayesian Mixture Model
 BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
-                df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp)){
+                df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp),verbose=FALSE){
 
  # nIter=150;burnIn=50;R2=.5;nComp=matrix(ncol(B0));df0.E=5;S0.E=vy*R2*df0.E;df0.b=rep(5,nComp);alpha=.1;my=mean(y); vy=var(y); B0=cbind(rep(0,p),-1,1)
  p=ncol(C) 
@@ -67,7 +67,7 @@ BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
 
 	 # Sampling error variances
 	 # we also need to add prior probabilities for the mixtures...
-	
+	 if(verbose) print(i)
 	 }
 
  	return(list(b=postMeanB,POST.PROB=POST.PROB,postMeanVarB=postMeanVarB))
