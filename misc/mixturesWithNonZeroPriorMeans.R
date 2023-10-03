@@ -1,5 +1,3 @@
-
-
 # A Gibbs Sampler for a Bayesian Mixture Model
 BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
                 df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp)){
