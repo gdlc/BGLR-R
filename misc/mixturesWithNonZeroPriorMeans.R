@@ -67,7 +67,7 @@ BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
 
 	 # Sampling error variances
 	 # we also need to add prior probabilities for the mixtures...
-	 if(verbose) print(i)
+	 if(verbose){ print(i) }
 	 }
 
  	return(list(b=postMeanB,POST.PROB=POST.PROB,postMeanVarB=postMeanVarB))
