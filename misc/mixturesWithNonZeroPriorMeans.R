@@ -1,6 +1,17 @@
 # A Gibbs Sampler for a Bayesian Mixture Model
-BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
-                df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp),verbose=TRUE){
+# C=X'X, rhs=X'y, my=mean(y), vy=var(y)
+# Note: we don't include an intercept, so, before computing X'y, X'X, you should center X and y arount their means.
+# B0, a matrix with prior estiamtes of marker effects, as many columns as prior estimates. We also suggest including one column
+#     full of zeroes, to allow for just plain shrinkage towards zero, if needed (this is the default value)
+# nIter, burnIn: the number of iterations and burnIn used for the Gibbs Sampler
+# R2: the prior proportion of variance of y explained by the model (this is used to derive hyper-parameters for the prior variances)
+# priorProb a vector of prior probabilities for the mixture compoentns (as many entries as columsn in B0), we internally scale it to add up to one
+# priorCounts, the number of counts associated to priorProb, using priorCounts very large (e.g., 1e8) fixes the prior probabilities. The default value is 2*ncol(B0)
+#  ...
+##
+
+BMM=function(C,rhs,my,vy,B0=matrix(nrow=ncol(C),ncol=1,0),nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
+                df0.E=5,S0.E=vy*R2*df0.E,df0.b=rep(5,nComp), priorProb=rep(1/nComp,nComp),verbose=TRUE){
 
  # nIter=150;burnIn=50;R2=.5;nComp=matrix(ncol(B0));df0.E=5;S0.E=vy*R2*df0.E;df0.b=rep(5,nComp);alpha=.1;my=mean(y); vy=var(y); B0=cbind(rep(0,p),-1,1)
  p=ncol(C) 
@@ -11,11 +22,17 @@ BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
  S0.b=df0.b*as.vector((vy*(1-R2)/sum(diag(C))))/2
  varB=S0.b/df0.b
 
+ priorProb=priorProb/sum(priorProb)
+ compProb=priorProb
+
+ postMeanCompProb=rep(0,nComp)
+	
  postMeanB=rep(0,p)
  postMeanVarB=rep(0,nComp)
 
  varE=S0.E/df0.E 
-
+ counts=priorCounts/nComp
+	
  PROBS=matrix(nrow=p,ncol=nComp)
  	
  	
@@ -38,12 +55,12 @@ BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
  
 	 ## Sampling mixture components 
 	 for(k in 1:nComp){
-		 PROBS[,k]=dnorm(b,mean=B0[,k],sd=sqrt(varB[k]))	
+		 PROBS[,k]=dnorm(b,mean=B0[,k],sd=sqrt(varB[k]))*compProb[k]	
 	 }
  
 	 d=apply(FUN=sample,x=1:nComp,X=PROBS,size=1,MARGIN=1,replace=TRUE)
 
-	 ## Sampling the variance of the mixture components
+	 ## Sampling the variance and the prior probabilities of the mixture components
 	 for(k in 1:nComp){
 		 tmp=(d==k)
 	 
@@ -53,10 +70,12 @@ BMM=function(C,rhs,my,vy,B0,nIter=150,burnIn=50,R2=.5,nComp=matrix(ncol(B0)),
 			 bStar=b[tmp]-B0[tmp,k]
 			 SS=SS+sum(bStar^2)
 		 }
-		 DF=DF+df0.b[k]
-	 
-		 varB[k]=SS/rchisq(df=DF,n=1) 
+		 
+		 varB[k]=SS/rchisq(df=DF+df0.b[k],n=1) 
 		 postMeanVarB[k]= postMeanVarB[k]+varB[k]/nIter
+
+		 counts[k]=DF
+		 
 	 }
  
 	 ## computing posterior mean of mixture probabilities
