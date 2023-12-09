@@ -686,11 +686,11 @@ double tmp12_sigma2(double *pOmega, int traits, int k, double *tmp12)
     	F77_NAME(dgesv)(&neq,&neq,S22,&neq,ipiv,Identity,&neq,&info);
     	
     	if(info < 0){
-    		error("argument %d of Lapack routine %s had invalid value",-info);
+    		error("argument %d of Lapack routine dgesv had invalid value",-info);
     	}
     	
 	if(info > 0){
-		error("Lapack routine %s: system is exactly singular: U[%d,%d] = 0", info, info);	
+		error("Lapack routine dgesv, system is exactly singular: U[%d,%d] = 0", info, info);	
 	}
 	
     	//for(m=0; m<(traits-1)*(traits-1);m++)
