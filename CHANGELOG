@@ -83,3 +83,6 @@ version 1.1.0
   Added support for saving fixed effects.
 
   Added new routines to speed up computations in Multitrait models.
+
+version 1.1.1
+  Small bug fix when printing error information from dgesv routine in file sampler_multitrait.c
