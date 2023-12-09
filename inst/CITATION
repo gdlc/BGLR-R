@@ -1,7 +1,7 @@
 citHeader("To cite BGLR in publications use:")
 
-citEntry(
-    entry = "Article",
+bibentry(
+    entry = "article",
     title = "Genome-Wide Regression and Prediction with the BGLR Statistical Package",
     author = c(
         person("Paulino", "Perez"),
