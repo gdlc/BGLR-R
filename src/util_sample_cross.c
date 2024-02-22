@@ -120,7 +120,9 @@ SEXP sampler_DiracSS(SEXP nCol,
          	pb[j]=z*sqrt(pvarB[j]);
          	pbeta[j_global]=0;
          }
-         
+
+	 Rprintf("Z=%f\n",RSS);
+	     
          pRSS[0]+=(pow(pbeta[j_global],2) - pow(old_beta,2))*Cjj  -2*(pbeta[j_global]-old_beta)*(rhs-offset);
 
     }
