@@ -1,7 +1,7 @@
 
 ### GxE using marker-by-environment interactions
 
-The following examples illustrate how to implement marker-by-environments interaction models using BGLR, for further details about these models see [Lopez-Cruz et al. (2015)](http://www.g3journal.org/content/5/4/569.full?sid=81d404b6-7d0f-4ace-8556-936393eb829d).
+The following examples illustrate how to implement marker-by-environments interaction models using BGLR, for further details about these models see [Lopez-Cruz et al. (2015)](https://doi.org/10.1534/g3.114.016097).
 
 
 **(1) As a random regression on markers**
@@ -49,7 +49,7 @@ The following examples illustrate how to implement marker-by-environments intera
 
 **(2) Using genomic relationships**
 
-A model equivalent to the one presented above can be implemented using G-matrices (or factorizations of it) with off-diagnoal blocks zeroed out for interactions, for further detials see [Lopez-Cruz et al., 2015](http://www.g3journal.org/content/5/4/569.full?sid=81d404b6-7d0f-4ace-8556-936393eb829d).
+A model equivalent to the one presented above can be implemented using G-matrices (or factorizations of it) with off-diagnoal blocks zeroed out for interactions, for further detials see [Lopez-Cruz et al., 2015](https://doi.org/10.1534/g3.114.016097).
 
 
 
@@ -87,7 +87,7 @@ A model equivalent to the one presented above can be implemented using G-matrice
 
 **(3) Incomplete, unbalanced designs**
 
-In the example presented above, as in [Lopez-Cruz et al. (2015)](http://www.g3journal.org/content/5/4/569.full?sid=81d404b6-7d0f-4ace-8556-936393eb829d), the data is assumed to be complete and balanced (i.e., all gentoypes on all environment), but this is not needed. The example below illustrates how to fit the interaction model with unbalanced data.
+In the example presented above, as in [Lopez-Cruz et al. (2015)](https://doi.org/10.1534/g3.114.016097), the data is assumed to be complete and balanced (i.e., all gentoypes on all environment), but this is not needed. The example below illustrates how to fit the interaction model with unbalanced data.
 
 
 ```R
