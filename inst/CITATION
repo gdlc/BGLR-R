@@ -1,7 +1,7 @@
 citHeader("To cite BGLR in publications use:")
 
 bibentry(
-    entry = "article",
+    bibtype = "article",
     title = "Genome-Wide Regression and Prediction with the BGLR Statistical Package",
     author = c(
         person("Paulino", "Perez"),
