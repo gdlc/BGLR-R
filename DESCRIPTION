@@ -7,3 +7,4 @@ Depends: R (>= 3.5.0)
 Imports: truncnorm, MASS, methods
 Description: Bayesian Generalized Linear Regression.
 License: GPL-3
+NeedsCompilation: yes
