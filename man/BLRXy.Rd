@@ -32,8 +32,8 @@ ETA=list(list(X=W, model="FIXED"),
 	      plus regression on Z, with regression coefficients modeled as in the 
           Bayesian Ridge Regression.
 
-	      The following options are implemented for linear regressions: FIXED (Flat prior),
-	      BayesA, BayesB, BRR (Gaussian prior), BayesC and SSVS. 
+	      The following options are implemented for linear regressions: FIXED (flat prior),
+	      BayesA, BayesB, BRR (Gaussian prior), BayesC, SSVS and RKHS. 
              }
    \item{nIter,burnIn, thin}{(integer) the number of iterations, burn-in and thinning.}
    \item{saveAt}{(string) this may include a path and a pre-fix that will be added to the name of the files that are saved as the program runs.}
