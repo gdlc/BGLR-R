@@ -37,8 +37,8 @@ BLRCross(y=NULL,my=NULL,vy=NULL,n=NULL,
    \item{priors}{(list) This is a two-level list used to specify the regression function (or linear predictor). 
               Regression on covariates and other types of random effects are specified in this two-level list.
 
-	      For linear regressions the following options are implemented: FIXED (Flat prior),
-	      BayesA, BayesB, BRR (Gaussian prior), BayesC and SSVS. 
+	      For linear regressions the following options are implemented: FIXED (flat prior),
+	      BayesA, BayesB, BRR (Gaussian prior), BayesC, SSVS and RKHS. 
              }
    \item{idPriors}{(numeric) an integer vector that allow us to specify the priors for the columns of matrix X.}
    \item{verbose}{(logical) if TRUE the iteration history is printed, default TRUE.}
