@@ -13,7 +13,7 @@ version beta version. The latest stable release can be downloaded from [CRAN](ht
 
 #### Citation
 
-Please cite [Perez & de los Campos, 2014](http://www.ncbi.nlm.nih.gov/pubmed/25009151) and [Perez & de los Campos, 2022](https://academic.oup.com/genetics/article/222/1/iyac112/6655691) for BGLR and Multitrait, respectively.
+Please cite [Perez & de los Campos, 2014](https://doi.org/10.1534/genetics.114.164442) and [Perez & de los Campos, 2022](https://doi.org/10.1093/genetics/iyac112) for BGLR and Multitrait, respectively.
 
 
 #### Installation
