@@ -93,19 +93,19 @@ Useful references:
 **Other Omics**
 ----------------------------------------------------------------
 
-  - Metabolomics (milk-spectra): [Ferragina et al., J.D.Sci, 2015](http://www.sciencedirect.com/science/article/pii/S0022030215006645)
+  - Metabolomics (milk-spectra): [Ferragina et al., J.D.Sci, 2015](https://doi.org/10.3168/jds.2014-9143)
   
   - Multi-omic (gene expression, methylation & CNV): [Vazquez et al. (10th, WCGALP)](https://www.researchgate.net/profile/Sadeep_Shrestha/publication/266077932_Integration_of_Multi-Layer_Omic_Data_for_Prediction_of_Disease_Risk_in_Humans/links/542430f30cf26120b7a72201.pdf) & [Vazquez et al. (Genetics, 2016)](https://doi.org/10.1534%2Fgenetics.115.185181)
 
 **Markers or Pedigree and Environmental Covariates**
 ----------------------------------------------------------------
-  -Wheat (SNPs and env. covariates): [Jarquin et al. (TAG, 2014)](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3931944/)
+  -Wheat (SNPs and env. covariates): [Jarquin et al. (TAG, 2014)](https://doi.org/10.1007%2Fs00122-013-2243-1)
   
-  -Cotton (Pedigree and env. covariates): [Perez-Rodriguez et al.(Crop. Sci, 2015)](https://dl.sciencesocieties.org/publications/cs/abstracts/55/3/1143)
+  -Cotton (Pedigree and env. covariates): [Perez-Rodriguez et al.(Crop. Sci, 2015)](https://doi.org/10.2135/cropsci2014.08.0577)
   
 **Image Data**
 ----------------------------------------------------------------
-  -Maize (Image data): [Aguate et al. (IBC, 2016)](https://dl.sciencesocieties.org/publications/cs/articles/57/5/2517)
+  -Maize (Image data): [Aguate et al. (Crop. Sci, 2017)](https://doi.org/10.2135/cropsci2017.01.0007)
 
 ## 2. Multi-trait models
 ----------------------------------------------------------------
