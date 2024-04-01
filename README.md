@@ -95,7 +95,7 @@ Useful references:
 
   - Metabolomics (milk-spectra): [Ferragina et al., J.D.Sci, 2015](http://www.sciencedirect.com/science/article/pii/S0022030215006645)
   
-  - Multi-omic (gene expression, methylation & CNV): [Vazquez et al. (10th, WCGALP)](https://www.researchgate.net/profile/Sadeep_Shrestha/publication/266077932_Integration_of_Multi-Layer_Omic_Data_for_Prediction_of_Disease_Risk_in_Humans/links/542430f30cf26120b7a72201.pdf) & [Vazquez et al. (Genetics, 2016)](http://www.genetics.org/content/early/2016/04/27/genetics.115.185181.abstract)
+  - Multi-omic (gene expression, methylation & CNV): [Vazquez et al. (10th, WCGALP)](https://www.researchgate.net/profile/Sadeep_Shrestha/publication/266077932_Integration_of_Multi-Layer_Omic_Data_for_Prediction_of_Disease_Risk_in_Humans/links/542430f30cf26120b7a72201.pdf) & [Vazquez et al. (Genetics, 2016)](https://doi.org/10.1534%2Fgenetics.115.185181)
 
 **Markers or Pedigree and Environmental Covariates**
 ----------------------------------------------------------------
