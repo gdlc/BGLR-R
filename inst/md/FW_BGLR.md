@@ -12,7 +12,7 @@ You will need to source the `FW_BGLR.R` function and load the `sample_FW.RData` 
 ### Two-steps Finlay-Wilkinson Regression using BGLR
 
 
-The following data and code is reproduced from the supplementary data from [de los Campos et al., Nat. Comm., 2020](https://www.nature.com/articles/s41467-020-18480-y).
+The following data and code is reproduced from the supplementary data from [de los Campos et al., Nat. Comm., 2020](https://doi.org/10.1038/s41467-020-18480-y).
 
 
 
