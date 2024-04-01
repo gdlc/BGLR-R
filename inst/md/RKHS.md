@@ -1,6 +1,6 @@
 #### Semi-parametric regression
 
-Examples (modified) from [de los Campos et al., Genetics Research, 2010](http://www.ncbi.nlm.nih.gov/pubmed/20943010).
+Examples (modified) from [de los Campos et al., Genetics Research, 2010](https://doi.org/10.1017/s0016672310000285).
 
 **(1) RKHS with a Gaussian Kernel and fixed bandwidth parameter**
 
