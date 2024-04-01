@@ -2,7 +2,7 @@
 
 **Authors**: Gustavo de los Campos <gustavoc@msu.edu> ,  Paulino Perez-Rodriguez <perpdgo@gmail.com>  &  BOGARD Matthieu <M.BOGARD@arvalis.fr> 
 
-**Citations**: [FW-Function](https://www.nature.com/articles/s41467-020-18480-y) and [BGLR](https://www.genetics.org/content/198/2/483.short) R-package.
+**Citations**: [FW-Function](https://www.nature.com/articles/s41467-020-18480-y) and [BGLR](https://doi.org/10.1534/genetics.114.164442) R-package.
 
 **Before you run the code below, dowload the** [FW.BGLR](https://github.com/gdlc/BGLR-R/blob/master/inst/md/FW_BGLR.R)  function and the following  [Sample Data](https://github.com/gdlc/BGLR-R/blob/master/data/sample_FW.RData).
 
@@ -85,6 +85,7 @@ Finlay K.W. and G.N. Wilkinson. 1963. “The Analysis of Adaptation in a Plant-B
 Lopez-Cruz M., J. Crossa, D. Bonnett, S. Dreisigacker, J. Poland, J.L. Jannink, R.P. Singh, E. Autrique, and G. de los Campos. 2015. “Increased Prediction Accuracy in Wheat Breeding Trials Using a Marker x Environment Interaction Genomic Selection Model.” G3 (Bethesda, Md.) 5 (4). G3: Genes, Genomes, Genetics:569–82. https://doi.org/10.1534/g3.114.016097.
 
 Pérez, P. and G. de los Campos. 2014. Genome-Wide Regression and Prediction with the BGLR Statistical Package. Genetics, 198: 483-495.
+https://doi.org/10.1534/genetics.114.164442.
 
 R Core Team. 2019. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
 
