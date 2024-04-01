@@ -1,6 +1,6 @@
 ### Estimating the proportion of variance explained by PC
 
-For further details see Janss et al. [Genetics, 2014](http://www.ncbi.nlm.nih.gov/pubmed/?term=janss+de+los+campos+sorensen) and references therein.
+For further details see Janss et al. [Genetics, 2012](https://doi.org/10.1534/genetics.112.141143) and references therein.
 
 ```R
  
