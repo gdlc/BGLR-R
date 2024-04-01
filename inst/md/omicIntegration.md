@@ -1,6 +1,6 @@
 ## Integrating multiple Omics for Prediction of BC Survival
 
-The following scripts illustrate how to fit some of the models presented in [Vazquez et al., Genetics (2016)]().
+The following scripts illustrate how to fit some of the models presented in [Vazquez et al., Genetics (2016)](https://doi.org/10.1534/genetics.115.185181).
 
 #### (1) Installing required libraries
 
@@ -32,7 +32,7 @@ The code below illustrates how to install BGLR and BGData from GitHub. BGLR can 
 
 #### (3)  Fitting a survival model for Fixed effects using BGLR
 
-The following code illustrates how to use BGLR to fit a fixed effects model. The matrix XF is an incidence matrix for effects. There is no column for intercept in XF because BGLR adds the intercept authomatically. The response variable `y` is assumed to be coded with two lables (e.g., 0/1), the argument `response_type` is used to indicate to BGLR that the response is ordinal (the binary case is a special case with only two levels). Predictors are given to BGLR in the form a two-level list. The argument `save_at` can be used to provide a path and a pre-fix to be added to the files saved by BGLR. For further details see [Pérez-Rodriguez and de los Campos, Genetics, 2014](http://www.genetics.org/content/genetics/198/2/483.full.pdf) The code also shows how to retrieve estimates of effects and of psuccess probabilities.
+The following code illustrates how to use BGLR to fit a fixed effects model. The matrix XF is an incidence matrix for effects. There is no column for intercept in XF because BGLR adds the intercept authomatically. The response variable `y` is assumed to be coded with two lables (e.g., 0/1), the argument `response_type` is used to indicate to BGLR that the response is ordinal (the binary case is a special case with only two levels). Predictors are given to BGLR in the form a two-level list. The argument `save_at` can be used to provide a path and a pre-fix to be added to the files saved by BGLR. For further details see [Pérez and de los Campos, Genetics, 2014](https://doi.org/10.1534/genetics.114.164442) The code also shows how to retrieve estimates of effects and of psuccess probabilities.
 
 ```R
  # Inputs
