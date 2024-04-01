@@ -1,6 +1,6 @@
 #### Etimation of Genomic Heritability: two approaches
 
-The following examples implement ideas described in *Genomic Heritability: What is it?* [(de los Campos et al., PLoS Genetics, 2015)](http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1005048) and references therein.
+The following examples implement ideas described in *Genomic Heritability: What is it?* [(de los Campos et al., PLoS Genetics, 2015)](https://doi.org/10.1371/journal.pgen.1005048) and references therein.
 
 **Simple Simulation**
 ```R
