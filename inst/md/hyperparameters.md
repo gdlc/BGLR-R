@@ -4,7 +4,7 @@
 
 In BGLR the hyper-parameters entering in the prior distributions assigned to effects are treated as random; in all cases proper priors are
 used. By default BGLR sets relatively flat priors; however the user can modify this. The following example illustrates this for two cases: BRR and 
-BayesB. Further details about the prior used can be found in [Perez and de los Campos, Genetics (2014)](http://www.ncbi.nlm.nih.gov/pubmed/25009151).
+BayesB. Further details about the prior used can be found in [Perez and de los Campos, Genetics (2014)](https://doi.org/10.1534/genetics.114.164442).
 
 
 **(1) Fitting GBLUP with fixed variance components**
