@@ -3,7 +3,7 @@
 
 **Authors**: Gustavo de los Campos <gustavoc@msu.edu> ,  Paulino Perez-Rodriguez <perpdgo@gmail.com>  &  BOGARD Matthieu <M.BOGARD@arvalis.fr> 
 
-The following data and code is reproduced from the supplementary data from [de los Campos et al., Nat. Comm., 2020](https://www.nature.com/articles/s41467-020-18480-y).
+The following data and code is reproduced from the supplementary data from [de los Campos et al., Nat. Comm., 2020](https://doi.org/10.1038/s41467-020-18480-y).
 
 **Citation**: de los Campos G., Pérez-Rodríguez P., Bogard M., Gouache D., and Crossa J. *A data-driven simulation platform to predict cultivars’ performances under uncertain weather conditions* Nature Communications  11, Article number: 4876 (2020).
 
@@ -81,6 +81,6 @@ Finlay K.W. and G.N. Wilkinson. 1963. “The Analysis of Adaptation in a Plant-B
 
 Lopez-Cruz M., J. Crossa, D. Bonnett, S. Dreisigacker, J. Poland, J.L. Jannink, R.P. Singh, E. Autrique, and G. de los Campos. 2015. “Increased Prediction Accuracy in Wheat Breeding Trials Using a Marker x Environment Interaction Genomic Selection Model.” G3 (Bethesda, Md.) 5 (4). G3: Genes, Genomes, Genetics:569–82. https://doi.org/10.1534/g3.114.016097.
 
-Pérez, P. and G. de los Campos. 2014. Genome-Wide Regression and Prediction with the BGLR Statistical Package. Genetics, 198: 483-495.
+Pérez, P. and G. de los Campos. 2014. Genome-Wide Regression and Prediction with the BGLR Statistical Package. Genetics, 198: 483-495. https://doi.org/10.1534/genetics.114.164442
 
 R Core Team. 2019. R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL https://www.R-project.org/.
