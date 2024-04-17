@@ -281,7 +281,7 @@ setCov.FA<-function(Cov,traits,nD,j,mo,saveAt)
 	Cov$Omega<-riwish(v=traits,S=diag(Cov$S0))
 	
 	sdU <- sqrt(diag(Cov$Omega))
-    FA <- factanal(covmat = Cov$Omega, factors = Cov$nF)
+    FA <- factanal(covmat = Cov$Omega, factors = Cov$nF,start=10)
     Cov$W <- matrix(nrow = traits, ncol = Cov$nF, 0)
     Cov$W[Cov$M] <- (diag(sdU) %*% FA$loadings)[Cov$M]
     Cov$PSI <- (sdU^2) * FA$uniquenesses + 1e-04
@@ -917,7 +917,7 @@ setResCov<-function(resCov,traits,error,Sy,R2,saveAt)
 		}
 				
 		sdU <- sqrt(diag(resCov$R))
-        FA <- factanal(covmat = resCov$R, factors = resCov$nF)
+        FA <- factanal(covmat = resCov$R, factors = resCov$nF,nstart=10)
         resCov$W <- matrix(nrow = traits, ncol = resCov$nF, 0)
         resCov$W[resCov$M] <- (diag(sdU) %*% FA$loadings)[resCov$M]
         resCov$PSI <- (sdU^2) * FA$uniquenesses + 1e-04
