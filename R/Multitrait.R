@@ -1825,7 +1825,7 @@ Multitrait<-function(y,
 			{
 				if (sum(resCov$M) > 0) 
 				{
-					tmp <- resCov$W[resCov$M]
+					tmp <- resCov$W
 					write(tmp, ncolumns = length(tmp), file = resCov$f_W, append = TRUE, 
 					      sep = " ")
 					rm(tmp)
@@ -1844,7 +1844,7 @@ Multitrait<-function(y,
 					{
 						if (sum(ETA[[j]]$Cov$M) > 0) 
 						{
-							tmp <- ETA[[j]]$Cov$W[ETA[[j]]$Cov$M]
+							tmp <- ETA[[j]]$Cov$W
 							write(tmp, ncolumns = length(tmp), file = ETA[[j]]$Cov$f_W, 
 							      append = TRUE, sep = " ")
 							rm(tmp)
