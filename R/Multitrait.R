@@ -289,7 +289,7 @@ setCov.FA<-function(Cov,traits,nD,j,mo,saveAt)
 	sdU <- sqrt(diag(Cov$Omega))
 
 	# Initializing common factors and uniquenesses
-        if(is.null(Cov$W){
+        if(is.null(Cov$W)){
   	  FA <- factanal(covmat = Cov$Omega, factors = Cov$nF,nstart=10)
     
           Cov$W <- matrix(nrow = traits, ncol = Cov$nF, 0)
