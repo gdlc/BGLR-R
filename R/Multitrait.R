@@ -281,18 +281,24 @@ setCov.FA<-function(Cov,traits,nD,j,mo,saveAt)
 	Cov$Omega<-riwish(v=traits,S=diag(Cov$S0))
 	
 	sdU <- sqrt(diag(Cov$Omega))
+
+	# Initializing common factors and uniquenesses
+        if(is.null(Cov$W){
+  	  FA <- factanal(covmat = Cov$Omega, factors = Cov$nF,nstart=10)
     
-    FA <- factanal(covmat = Cov$Omega, factors = Cov$nF,nstart=10)
-    
-    Cov$W <- matrix(nrow = traits, ncol = Cov$nF, 0)
-    Cov$W[Cov$M] <- (diag(sdU) %*% FA$loadings)[Cov$M]
-    Cov$PSI <- (sdU^2) * FA$uniquenesses + 1e-04
-    Cov$Omega <- tcrossprod(Cov$W) + diag(Cov$PSI)
-    Cov$Omegainv<-solve(Cov$Omega)
-    
-    Cov$F <- matrix(nrow = nD, ncol = Cov$nF, 0)
+          Cov$W <- matrix(nrow = traits, ncol = Cov$nF, 0)
+          Cov$W[Cov$M] <- (diag(sdU) %*% FA$loadings)[Cov$M]
+          Cov$PSI <- (sdU^2) * FA$uniquenesses + 1e-04
+        }else{
+	  Cov$PSI<-(sdU^2)/2 # assumining factors explain 50% of the variances	
+	}
         
-    #Objects for saving posterior means for MCMC
+	Cov$Omega <- tcrossprod(Cov$W) + diag(Cov$PSI)
+        Cov$Omegainv<-solve(Cov$Omega)
+     
+        Cov$F <- matrix(nrow = nD, ncol = Cov$nF, 0)
+        
+       #Objects for saving posterior means for MCMC
 	Cov$post_Omega<-matrix(0,nrow=traits,ncol=traits)
 	Cov$post_Omega2<-matrix(0,nrow=traits,ncol=traits)
 	Cov$post_W<-matrix(0,nrow=traits,ncol=Cov$nF)
