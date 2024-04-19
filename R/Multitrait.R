@@ -1099,7 +1099,7 @@ sample_G0_FA <- function(U, F, M, B, PSI, traits, nF, nD,
     {
         tmpY <- U - F[, -i] %*% matrix((B[, -i]), ncol = traits)
         rhs <- tmpY %*% matrix(B[, i]/PSI, ncol = 1)
-        CInv <- 1/(sum((B[, i]^2)/PSI) + 1)
+        CInv <- 1/(sum((B[, i]^2)/PSI) + 1/traits)
         sol <- CInv * rhs
         SD <- sqrt(CInv)
         F[, i] <- rnorm(n = nD, sd = SD, mean = sol)
