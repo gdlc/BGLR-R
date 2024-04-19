@@ -1108,7 +1108,7 @@ sample_G0_REC <- function(U, M, PSI, traits, priorVar = 100,
 
 
 sample_G0_FA <- function(U, F, M, B, PSI, traits, nF, nD, 
-                       df0 = rep(1, traits), S0 = rep(1/100,traits), priorVar = 100) 
+                       df0 = rep(1, traits), S0 = rep(1/100,traits), priorVar = 100,varimaxRotate=TRUE) 
 {
     ## sampling common factors LOOP OVER FACTORS
     for (i in 1:nF) 
