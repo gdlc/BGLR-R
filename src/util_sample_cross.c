@@ -120,9 +120,7 @@ SEXP sampler_DiracSS(SEXP nCol,
          	pb[j]=z*sqrt(pvarB[j]);
          	pbeta[j_global]=0;
          }
-
-	 //Rprintf("Z=%f\n",RSS);
-	     
+         
          pRSS[0]+=(pow(pbeta[j_global],2) - pow(old_beta,2))*Cjj  -2*(pbeta[j_global]-old_beta)*(rhs-offset);
 
     }
@@ -139,6 +137,150 @@ SEXP sampler_DiracSS(SEXP nCol,
       UNPROTECT(9);
  
       return(list);
+}
+
+/*
+
+Dirac Spikes and Slab
+This verion uses daxpy instead of ddot
+
+nCol the number of columns in X'X
+XX matrix X'X
+XY matrix X'y
+idColumns A subset of columns of X'X used for updating b, beta and d
+length the length of vector idColumns
+
+*/
+
+SEXP sampler_DiracSS_v2(SEXP nCol, 
+         SEXP XX, 
+         SEXP XY,
+         SEXP idColumns,
+         SEXP length, 
+         SEXP b, 
+         SEXP beta, 
+         SEXP d, 
+         SEXP varB, 
+         SEXP varE, 
+         SEXP probIn, 
+         SEXP RSS,
+         SEXP dots)
+{
+
+    double Cjj, lhs, rhs,  sol, offset, vare, z, u, logOdds, logPriorOdds,logP, probin, old_beta, shift;
+    double *pXX, *pXY, *pb, *pd, *pvarB, *pbeta, *pRSS, *pdots;
+    int *pidColumns;
+ 
+    int inc=1;
+    int p;
+    int q;
+    int j;
+    
+    ptrdiff_t j_global;
+ 
+    SEXP list;
+ 
+    GetRNGstate();
+ 
+    p=INTEGER_VALUE(nCol);
+    //Rprintf("p=%d\n",p);
+    q=INTEGER_VALUE(length);
+    //Rprintf("q=%d\n",q);
+ 
+    vare=NUMERIC_VALUE(varE);
+    probin=NUMERIC_VALUE(probIn);
+    
+    
+    PROTECT(XX=AS_NUMERIC(XX));
+    pXX=NUMERIC_POINTER(XX);
+ 
+    PROTECT(XY=AS_NUMERIC(XY));
+    pXY=NUMERIC_POINTER(XY);
+ 
+    PROTECT(b=AS_NUMERIC(b));
+    pb=NUMERIC_POINTER(b);
+ 
+    PROTECT(d=AS_NUMERIC(d));
+    pd=NUMERIC_POINTER(d);
+
+    PROTECT(beta=AS_NUMERIC(beta)); // beta=b*D
+    pbeta=NUMERIC_POINTER(beta);
+
+    PROTECT(varB=AS_NUMERIC(varB));
+    pvarB=NUMERIC_POINTER(varB);
+
+    PROTECT(RSS=AS_NUMERIC(RSS));
+    pRSS=NUMERIC_POINTER(RSS);
+    
+    PROTECT(idColumns=AS_INTEGER(idColumns));
+    pidColumns=INTEGER_POINTER(idColumns);
+    
+    logPriorOdds=log(probin/(1-probin));
+    
+    PROTECT(dots=AS_NUMERIC(dots));
+    pdots=NUMERIC_POINTER(dots);    
+
+    /*
+    This loop is for the idsColumns
+    */   
+	 
+	  
+    for(j=0; j<q;j++)
+    {
+          
+          j_global=pidColumns[j]-1;  //Substract one because in C we count in zero
+          Cjj=pXX[j_global*(p+1)];
+          rhs=pXY[j_global];
+          
+          old_beta=pbeta[j_global];
+          
+          offset=pdots[j_global];
+          offset-=Cjj*pbeta[j_global];
+          
+          lhs=Cjj+vare/pvarB[j];
+          
+          //random variables
+          z=norm_rand();
+          u=unif_rand();
+          logOdds=log(u/(1-u));
+              	
+              	
+          //include the effect in the model?
+	  logP= -(0.5/vare)*( Cjj*pow(pb[j],2)-2*pb[j]*(rhs-offset) ) +  logPriorOdds;
+            
+          if(logP>logOdds){
+            	pd[j]=1;
+            	sol=(rhs-offset)/lhs;
+            	pb[j]=sol+sqrt(vare/lhs)*z;
+            	pbeta[j_global]=pb[j];         	
+         }else{    
+         	pd[j]=0;
+         	pb[j]=z*sqrt(pvarB[j]);
+         	pbeta[j_global]=0;
+         } 
+         
+         shift=pbeta[j_global]-old_beta;
+         
+         if(fabs(shift)>0)
+         {
+         	pRSS[0]+=(pow(pbeta[j_global],2) - pow(old_beta,2))*Cjj-2*(pbeta[j_global]-old_beta)*(rhs-offset);
+         	F77_NAME(daxpy)(&p, &shift,pXX+j_global*p,&inc,pdots, &inc);
+         }
+
+    }
+ 
+    //Creating a list with 1 vector elements:
+    PROTECT(list = allocVector(VECSXP, 4));
+    SET_VECTOR_ELT(list, 0, b);
+    SET_VECTOR_ELT(list, 1, d);      
+    SET_VECTOR_ELT(list, 2, beta);
+    SET_VECTOR_ELT(list, 3, RSS);
+       
+    PutRNGstate();
+ 
+    UNPROTECT(10);
+ 
+    return(list);
 }
 
 
