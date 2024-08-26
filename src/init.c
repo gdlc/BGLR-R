@@ -33,6 +33,7 @@ extern SEXP sampler_BRR_mt(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP,
 extern SEXP sampler_BRR_mt_fixed(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sampler_BRR_mt_v2(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sampler_DiracSS(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP sampler_DiracSS_v2(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sampler_DiracSS_mt_v2(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP sampler_others(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
@@ -54,6 +55,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"sampler_BRR_mt_fixed",      (DL_FUNC) &sampler_BRR_mt_fixed,      10},
     {"sampler_BRR_mt_v2",         (DL_FUNC) &sampler_BRR_mt_v2,          9},
     {"sampler_DiracSS",           (DL_FUNC) &sampler_DiracSS,           12},
+    {"sampler_DiracSS_v2",        (DL_FUNC) &sampler_DiracSS_v2,        13},
     {"sampler_DiracSS_mt_v2",     (DL_FUNC) &sampler_DiracSS_mt_v2,     13},
     {"sampler_others",            (DL_FUNC) &sampler_others,             9},
     {NULL, NULL, 0}
