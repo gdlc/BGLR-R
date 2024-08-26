@@ -936,7 +936,8 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     nSums=0		#For running means
     
     #VERY IMPORTANT DO NOT CHANGE THIS LINE IN THE INITIALIZATION
-    beta=rep(0,p)  
+    beta=rep(0,p)
+    dots=rep(0,p) 
         
     for(i in 1:nIter)
     {	
@@ -968,8 +969,12 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     		
     		if(priors[[j]]$model=="BayesB")
     		{
-    			ans=.Call("sampler_DiracSS",p, XX, Xy, ETA[[j]]$idColumns, ETA[[j]]$p, ETA[[j]]$a, beta,
-    			           ETA[[j]]$d, ETA[[j]]$varB, varE, ETA[[j]]$probIn,RSS)
+    			#ans=.Call("sampler_DiracSS",p, XX, Xy, ETA[[j]]$idColumns, ETA[[j]]$p, ETA[[j]]$a, beta,
+    			#           ETA[[j]]$d, ETA[[j]]$varB, varE, ETA[[j]]$probIn,RSS)
+                       
+ 			ans=.Call("sampler_DiracSS_v2",p, XX, Xy, ETA[[j]]$idColumns, ETA[[j]]$p, ETA[[j]]$a, beta,
+    			           ETA[[j]]$d, ETA[[j]]$varB, varE, ETA[[j]]$probIn,RSS,dots)
+
     			
     			ETA[[j]]$a=ans[[1]]
     			ETA[[j]]$d=ans[[2]]
@@ -984,12 +989,12 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     			
     			#Update the scale
     			tmpShape=ETA[[j]]$p*ETA[[j]]$df0/2+ETA[[j]]$shape0
-                tmpRate=sum(1/ETA[[j]]$varB)/2+ETA[[j]]$rate0
-                ETA[[j]]$S=rgamma(shape=tmpShape,rate=tmpRate,n=1)
+                	tmpRate=sum(1/ETA[[j]]$varB)/2+ETA[[j]]$rate0
+                	ETA[[j]]$S=rgamma(shape=tmpShape,rate=tmpRate,n=1)
                                 
-                #Update inclusion probabilities            
-                mrkIn = sum(ETA[[j]]$d)
-                ETA[[j]]$probIn=rbeta(shape1 = (mrkIn + ETA[[j]]$countsIn + 1),
+                	#Update inclusion probabilities            
+                	mrkIn = sum(ETA[[j]]$d)
+                	ETA[[j]]$probIn=rbeta(shape1 = (mrkIn + ETA[[j]]$countsIn + 1),
                                                 shape2 = (ETA[[j]]$p - mrkIn + ETA[[j]]$countsOut + 1), n = 1)
     		                
     		}#End of BayesB
@@ -998,9 +1003,12 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     		if(priors[[j]]$model=="BayesC")
     		{
     			
-    			ans=.Call("sampler_DiracSS",p, XX, Xy, ETA[[j]]$idColumns, ETA[[j]]$p, ETA[[j]]$a, beta,
-    			           ETA[[j]]$d, rep(ETA[[j]]$varB,nCols[j]), varE, ETA[[j]]$probIn,RSS)
-    			
+    			#ans=.Call("sampler_DiracSS",p, XX, Xy, ETA[[j]]$idColumns, ETA[[j]]$p, ETA[[j]]$a, beta,
+    			#           ETA[[j]]$d, rep(ETA[[j]]$varB,nCols[j]), varE, ETA[[j]]$probIn,RSS)
+	
+    			ans=.Call("sampler_DiracSS_v2",p, XX, Xy, ETA[[j]]$idColumns, ETA[[j]]$p, ETA[[j]]$a, beta,
+    			           ETA[[j]]$d, rep(ETA[[j]]$varB,nCols[j]), varE, ETA[[j]]$probIn,RSS,dots)
+    		
     			ETA[[j]]$a=ans[[1]]
     			ETA[[j]]$d=ans[[2]]
     			beta=ans[[3]]
