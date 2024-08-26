@@ -4,9 +4,7 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/BGLR?color=green)](https://CRAN.R-project.org/package=BGLR)
 [![CRAN checks](https://badges.cranchecks.info/worst/BGLR.svg)](https://cran.r-project.org/web/checks/check_results_BGLR.html)
 [![Downloads](https://cranlogs.r-pkg.org/badges/grand-total/BGLR)](http://www.r-pkg.org/pkg/BGLR)
-[![Downloads](http://cranlogs.r-pkg.org/badges/BGLR?color=blue)](http://www.r-pkg.org/pkg/BGLR)
-[![Downloads/month](https://cranlogs.r-pkg.org/badges/BGLR?color=blue)](http://www.r-pkg.org/pkg/BGLR)
-
+[![Downloads](https://cranlogs.r-pkg.org/badges/BGLR?color=blue)](http://www.r-pkg.org/pkg/BGLR)
 
 The BGLR Package ([Perez & de los Campos, 2014](https://doi.org/10.1534/genetics.114.164442)) implements a variety of shrinkage and variable selection regression procedures. In this repository we maintain the latest
 version beta version. The latest stable release can be downloaded from [CRAN](https://cran.r-project.org/web/packages/BGLR/index.html).
