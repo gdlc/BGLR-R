@@ -548,7 +548,7 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
     tmp= LT$d > LT$tolD
     LT$levelsU = sum(tmp)
     LT$d = LT$d[tmp]
-    LT$V = LT$V[, tmp]
+    LT$V = LT$V[, tmp, drop=FALSE]
     
     #Default degrees of freedom and scale parameter associated with the variance component for marker effect
     if (is.null(LT$df0)) 
