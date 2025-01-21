@@ -165,7 +165,7 @@ fm7=BGLR( y=y,ETA=list(list(X=Rt,model='BRR',lower_tri=TRUE)),nIter=nIter,
   library Matrix.
   
 ```R
- rm(list=ls())
+rm(list=ls())
 library(BGLR)
 library(Matrix)
 
