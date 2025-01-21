@@ -1,5 +1,5 @@
 Package: BGLR
-Version: 1.1.3
+Version: 1.1.4
 Title: Bayesian Generalized Linear Regression
 Authors@R: c(person(given = "Gustavo",
                       family = "de los Campos",
@@ -14,7 +14,7 @@ Imports: truncnorm, MASS, methods
 Description: Bayesian Generalized Linear Regression.
 License: GPL-3
 NeedsCompilation: yes
-Packaged: 2024-08-25 22:30:37 UTC; pperez
+Packaged: 2024-10-07 21:53:19 UTC; pperez
 Author: Gustavo de los Campos [aut],
   Paulino Perez Rodriguez [aut, cre]
 Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
