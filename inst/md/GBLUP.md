@@ -156,11 +156,11 @@ fm7=BGLR( y=y,ETA=list(list(X=Rt,model='BRR',lower_tri=TRUE)),nIter=nIter,
 ```
 [Menu](#menu)
 
-<div id="CHOL" />
+<div id="CholSparse" />
 
 
 ---------------------------------------------
-**(6) Using the Cholesky decompositon and sparse matrix `model='BRR_sparse'`**
+**(7) Using the Cholesky decompositon and sparse matrix `model='BRR_sparse'`**
   This approach won't work if G is not positive definite; in our case the matrix is positive semi-definite, we can make it positive definite by adding a small constant to the diagonal. The resulting Cholesky factor can be represented as as sparse matrix using the 
   library Matrix.
   
