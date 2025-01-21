@@ -170,8 +170,6 @@ library(BGLR)
 library(Matrix)
 
 data(wheat)
-nIter<-12000
-burnIn<-2000
 X<-scale(wheat.X)/sqrt(ncol(wheat.X))
 y<-wheat.Y[,1]
 G<-tcrossprod(X)
