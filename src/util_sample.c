@@ -193,7 +193,136 @@ SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, 
       return(list);
 }
 
+/*
+ * This is a generic function to sample betas in various models, including 
+ * Bayesian LASSO, BayesA, Bayesian Ridge Regression, etc.
+ 
+ * For example, in the Bayesian LASSO, we wish to draw samples from the full 
+ * conditional distribution of each of the elements in the vector bL. The full conditional 
+ * distribution is normal with mean and variance equal to the solution (inverse of the coefficient of the left hand side)
+ * of the following equation (See suplementary materials in de los Campos et al., 2009 for details),
+   
+    (1/varE x_j' x_j + 1/(varE tau_j^2)) bL_j = 1/varE x_j' e
+ 
+    or equivalently, 
+    
+    mean= (1/varE x_j' e)/ (1/varE x_j' x_j + 1/(varE tau_j^2))
+    variance= 1/ (1/varE x_j' x_j + 1/(varE tau_j^2))
+    
+    xj= the jth column of the incidence matrix
+    
+ *The notation in the routine is as follows:
 
+ pL: Number of columns in X
+ XL: non zero values in X, @x in object of class "dgCMatrix" in package "Matrix" (Compressed Sparse Column)
+ cOffset: column offset, cumulative number of non zero elements in X, @p in object of class "dgCMatrix" in package "Matrix" (Compressed Sparse Column)
+ rIndex: row index of each element in XL, @i in object of class "dgCMatrix" in package "Matrix" (Compressed Sparse Column)
+ XL2: vector with x_j' x_j, j=1,...,p
+ bL: vector of regression coefficients
+ e: vector with residuals, e=y-yHat, yHat= predicted values
+ varBj: vector with variances, 
+	For Bayesian LASSO, varBj=tau_j^2 * varE, j=1,...,p
+	For Ridge regression, varBj=varB, j=1,...,p, varB is the variance common to all betas.
+	For BayesA, varBj=varB_j, j=1,...,p
+	For BayesCpi, varBj=varB, j=1,...,p, varB is the variance common to all betas
+	
+ varE: residual variance
+ minAbsBeta: in some cases values of betas near to zero can lead to numerical problems in BL, 
+             so, instead of using this tiny number we assingn them minAbsBeta
+ 
+ */
+
+
+SEXP sample_beta_sparse(SEXP pL, SEXP XL, SEXP cOffset, SEXP rIndex, SEXP xL2, SEXP bL, SEXP e, SEXP varBj, SEXP varE, SEXP minAbsBeta)
+{
+    double *pXL, *pxL2, *pbL, *pe, *pvarBj;
+    int *pcOffset, *prIndex;
+    double b;
+    double rhs,c,sigma2e, smallBeta;
+    int j, cols;
+    int low, up;
+    int k;
+
+    SEXP list;	
+
+    GetRNGstate();
+	
+    cols=INTEGER_VALUE(pL);
+    sigma2e=NUMERIC_VALUE(varE);
+    smallBeta=NUMERIC_VALUE(minAbsBeta);
+	
+    PROTECT(XL=AS_NUMERIC(XL));
+    pXL=NUMERIC_POINTER(XL);
+   
+    PROTECT(cOffset=AS_INTEGER(cOffset));
+    pcOffset=INTEGER_POINTER(cOffset);
+    
+    PROTECT(rIndex=AS_INTEGER(rIndex));
+    prIndex=INTEGER_POINTER(rIndex);
+
+    PROTECT(xL2=AS_NUMERIC(xL2));
+    pxL2=NUMERIC_POINTER(xL2);
+
+    PROTECT(bL=AS_NUMERIC(bL));
+    pbL=NUMERIC_POINTER(bL);
+
+    PROTECT(e=AS_NUMERIC(e));
+    pe=NUMERIC_POINTER(e);
+
+    PROTECT(varBj=AS_NUMERIC(varBj));
+    pvarBj=NUMERIC_POINTER(varBj);
+
+    for(j=0; j<cols;j++)
+    {
+	  /*index the elements of XL using the column offset*/
+	  low=pcOffset[j];
+          up=pcOffset[j+1]-1;
+          //nnz=up-low+1;
+          
+          b=pbL[j];
+
+          rhs=0;
+
+	  /*equivalent to ddot*/
+          for(k=low;k<=up;k++)
+          {
+              rhs=rhs+pXL[k]*pe[prIndex[k]];
+	  }
+
+          rhs=rhs/sigma2e;
+
+          rhs+=pxL2[j]*b/sigma2e;
+          c=pxL2[j]/sigma2e + 1.0/pvarBj[j];
+          pbL[j]=rhs/c + sqrt(1.0/c)*norm_rand();
+
+          b-=pbL[j];
+
+	  /*equivalent to daxpy to update the error*/
+          
+          for(k=low; k<=up; k++)
+          {
+	     pe[prIndex[k]]=b*pXL[k] + pe[prIndex[k]];
+          }
+          	       
+          if(fabs(pbL[j])<smallBeta)
+          {
+             pbL[j]=smallBeta;
+          }
+      }
+        
+      // Creating a list with 2 vector elements:
+      PROTECT(list = allocVector(VECSXP, 2));
+      // attaching bL vector to list:
+      SET_VECTOR_ELT(list, 0, bL);
+      // attaching e vector to list:
+      SET_VECTOR_ELT(list, 1, e);
+
+      PutRNGstate();
+
+      UNPROTECT(8);
+
+      return(list);
+}
 
 /*
   Routine for sampling coefficients for BayesCpi and BayesB
