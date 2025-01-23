@@ -176,7 +176,7 @@ y<-wheat.Y[,1]
 G<-tcrossprod(X)
 diag(G)<-diag(G)+1/1e4
 L<-t(chol(G))
-Ls<-as(L,"sparseMatrix")
+Ls<-as(L,"dgCMatrix")
 
 object.size(L)
 object.size(Ls)
