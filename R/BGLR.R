@@ -229,7 +229,7 @@ setLT.BRR_sparse=function(LT,y,n,j,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
 
     if(is.null(LT$X)) stop("X can not be null\n")
 
-    if(!is(Ls,"dtCMatrix")) stop("X must be an object of class dtCMatrix\n")
+    if(!is(LT$X,"dtCMatrix")) stop("X must be an object of class dtCMatrix\n")
        
     LT$p=ncol(LT$X)
     LT$colNames=colnames(LT$X)
@@ -245,7 +245,7 @@ setLT.BRR_sparse=function(LT,y,n,j,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
     }   
 
     #The sum of the squares for each of the columns
-    LT$x2=apply(Ls,2L,function(x) sum(x^2))
+    LT$x2=apply(LT$X,2L,function(x) sum(x^2))
       
 
     sumMeanXSq = sum((apply(LT$X,2L,mean))^2)
