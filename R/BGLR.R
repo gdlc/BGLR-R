@@ -229,7 +229,7 @@ setLT.BRR_sparse=function(LT,y,n,j,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
 
     if(is.null(LT$X)) stop("X can not be null\n")
 
-    if(!is(LT$X,"dtCMatrix")) stop("X must be an object of class dtCMatrix\n")
+    if(!is(LT$X,"dgCMatrix")) stop("X must be an object of class dgCMatrix\n")
        
     LT$p=ncol(LT$X)
     LT$colNames=colnames(LT$X)
