@@ -79,11 +79,13 @@ y=as.vector(wheat.Y)
 X0=scale(wheat.X,center=TRUE,scale=FALSE)
  
 ETA=list()
+
 # Main Effects
 X=X0
 for(i in 2:nEnv){
    X=rbind(X,X0)
 }
+
 ETA[[1]]=list(X=X,model='BRR')
  
 # Interactions
