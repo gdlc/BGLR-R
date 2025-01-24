@@ -3,8 +3,8 @@
 The following examples demonstrate how to use sparse matrices in BGLR. 
 
 To do this, 
- 1) In the linear predictor `ETA` we allow for ETA[[i]]$X` to be a sparse matrix (`dgCMatrix`) and
- 2) Whave options for the model variable for sparse matrice:
+ 1) In the linear predictor `ETA` we allow for `ETA[[i]]$X` to be a sparse matrix (`dgCMatrix`) and
+ 2) Whave options for the model variable for sparse matrixes:
 
 
 
