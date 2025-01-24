@@ -21,6 +21,37 @@ We note, however, that the creation of the sparse matrix, if not adequatly thoug
 
 ## Example 1: Using a Sparse Matrix to store a Cholesky decomposition
 
+In this example we fit a GBLUP model using the Cholesky decompositon of a GRM, first using dense, and then sparse matrices. Approximately 50% of the entries of a cholesky decomposition are equal to zero. Thus, in this case the memmory advantages are minimal (20%) and the computational advantages are modest (~28% reduction in computational time when the sparse matrix is used; however, note that the advantage may be higher for larger n).
+  
+```r
+rm(list=ls())
+library(BGLR)
+library(Matrix)
+
+data(wheat)
+X<-scale(wheat.X)/sqrt(ncol(wheat.X))
+y<-wheat.Y[,1]
+G<-tcrossprod(X)
+diag(G)<-diag(G)+1/1e4
+L<-t(chol(G))
+Ls<-as(L,"dgCMatrix")
+
+object.size(Ls)/object.size(L)
+
+# First using a dense matrix
+ ETA<-list(list(X=L,model="BRR"))
+
+ set.seed(123)
+  setwd(tempdir())
+  system.time(fm<-BGLR(y=y,ETA=ETA,nIter=12000,burnIn=2000,verbose=FALSE))
+
+# Now sparse
+ ETA<-list(list(X=Ls,model="BRR_sparse"))
+ set.seed(123)
+ system.time(fm_SP<-BGLR(y=y,ETA=ETA,nIter=12000,burnIn=2000,verbose=FALSE))
+
+plot(fm$yHat,fm_SP$yHat);abline(a=0,b=1,col=2)
+```
 
 ## Example 2: Genotype by environment models
 
