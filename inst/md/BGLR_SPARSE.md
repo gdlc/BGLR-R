@@ -53,7 +53,7 @@ object.size(Ls)/object.size(L)
 plot(fm$yHat,fm_SP$yHat);abline(a=0,b=1,col=2)
 ```
 
-## Example 2: Genotype by environment models
+## Example 2: Genotype by environment models (with 4 environments)
 
 ```r
 rm(list=ls())
@@ -108,4 +108,22 @@ plot(fm$yHat,fm_SP$yHat);abline(a=0,b=1)
 
 ```
 
+## Example 3: Genotype by environment models (with 136 year-locations)
+
+```r
+library(MatrixModels)
+PHENO=read.csv('/mnt/research/quantgen/projects/G2F/data/PHENO.csv')
+
+y=PHENO$yield
+
+Z.YL=model.matrix(~year_loc-1,data=PHENO)
+Z.YL_SP=model.Matrix(~year_loc-1,data=PHENO,sparse=TRUE)
+
+round(100*(1-object.size(Z.YL_SP)/object.size(Z.YL)),1) # ~93% less memmory
+
+system.time( fm<-BGLR(y=y,ETA=list(list(X=Z.YL,model='BRR')),verbose=FALSE) )
+
+system.time(fmSP<-BGLR(y=y,ETA=list(list(X=Z.YL_SP,model='BRR_sparse')),verbose=FALSE))
+
+```
 
