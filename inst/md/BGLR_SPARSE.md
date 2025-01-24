@@ -15,13 +15,23 @@ To do this,
 
 ## Advantages of using sparse matrices
 
-Using sparse matrices can help reducing memmory requirement and can speed up computations. Because we use `dgCMatrix`, there will be sizable memmory advantages if the sparsity of the incidence matrix is more than 50%. There will be also computational advantages which will increase with the sparsity of the matrix (see examples below).
+Using sparse matrices can help reducing memory requirement and can speed up computations. Because we use `dgCMatrix`, 
+there will be sizable memory advantages if the sparsity of the incidence matrix is more than 50%. There will be 
+also computational advantages which will increase with the sparsity of the matrix (see examples below).
 
-We note, however, that the creation of the sparse matrix, if not adequatly thought, may have memmory bottlnecks (peaks in mmmeory usage) that may reduce the mmemory advantage of using sparse matrices. We are working developing `apps` to efficiently create some types of sparse matrices.
+We note, however, that the creation of the sparse matrix, if not adequatly thought, 
+may have memmory bottlnecks (peaks in memory usage) that may reduce the mmemory 
+advantage of using sparse matrices. We are working developing `apps` to 
+efficiently create some types of sparse matrices.
 
 ## Example 1: Using a Sparse Matrix to store a Cholesky decomposition
 
-In this example we fit a GBLUP model using the Cholesky decompositon of a GRM, first using dense, and then sparse matrices. Approximately 50% of the entries of a cholesky decomposition are equal to zero. Thus, in this case the memmory advantages are minimal (20%) and the computational advantages are modest (~28% reduction in computational time when the sparse matrix is used; however, note that the advantage may be higher for larger n).
+In this example we fit a GBLUP model using the Cholesky decompositon of a GRM, 
+first using dense, and then sparse matrices. Approximately 50% of the entries 
+of a Cholesky decomposition are equal to zero. Thus, in this case the memory advantages 
+are minimal (20%) and the computational advantages are modest 
+(~28% reduction in computational time when the sparse matrix is used; 
+however, note that the advantage may be higher for larger n).
   
 ```r
 rm(list=ls())
@@ -39,18 +49,19 @@ Ls<-as(L,"dgCMatrix")
 object.size(Ls)/object.size(L)
 
 # First using a dense matrix
- ETA<-list(list(X=L,model="BRR"))
+ETA<-list(list(X=L,model="BRR"))
 
- set.seed(123)
-  setwd(tempdir())
-  system.time(fm<-BGLR(y=y,ETA=ETA,nIter=12000,burnIn=2000,verbose=FALSE))
+set.seed(123)
+setwd(tempdir())
+system.time(fm<-BGLR(y=y,ETA=ETA,nIter=12000,burnIn=2000,verbose=FALSE))
 
 # Now sparse
- ETA<-list(list(X=Ls,model="BRR_sparse"))
- set.seed(123)
- system.time(fm_SP<-BGLR(y=y,ETA=ETA,nIter=12000,burnIn=2000,verbose=FALSE))
+ETA<-list(list(X=Ls,model="BRR_sparse"))
+set.seed(123)
+system.time(fm_SP<-BGLR(y=y,ETA=ETA,nIter=12000,burnIn=2000,verbose=FALSE))
 
-plot(fm$yHat,fm_SP$yHat);abline(a=0,b=1,col=2)
+plot(fm$yHat,fm_SP$yHat)
+abline(a=0,b=1,col=2)
 ```
 
 ## Example 2: Genotype by environment models (with 4 environments)
@@ -66,7 +77,6 @@ nGeno=nrow(wheat.Y)
 y=as.vector(wheat.Y)
  
 X0=scale(wheat.X,center=TRUE,scale=FALSE)
- 
  
 ETA=list()
 # Main Effects
@@ -90,7 +100,8 @@ setwd('../output')
 PWD=getwd()
  
 setwd(tempdir())
-  system.time(fm<-BGLR(y=y,ETA=ETA,nIter=12000,burnIn=2000,verbose=FALSE))
+
+system.time(fm<-BGLR(y=y,ETA=ETA,nIter=12000,burnIn=2000,verbose=FALSE))
  
 ## Now Sparse
 ETA_SP=ETA
@@ -104,14 +115,17 @@ object.size(ETA_SP)[1]/object.size(ETA)[1]
  
 system.time(fm_SP<-BGLR(y=y,ETA=ETA_SP,nIter=12000,burnIn=2000,verbose=FALSE))
 
-plot(fm$yHat,fm_SP$yHat);abline(a=0,b=1)
+plot(fm$yHat,fm_SP$yHat)
+abline(a=0,b=1)
 
 ```
 
 ## Example 3: Genotype by environment models (with 136 year-locations)
 
 ```r
+#Example using data in MSU HPCC cluster
 library(MatrixModels)
+
 PHENO=read.csv('/mnt/research/quantgen/projects/G2F/data/PHENO.csv')
 
 y=PHENO$yield
