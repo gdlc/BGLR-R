@@ -88,7 +88,6 @@ SEXP sample_beta(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEXP varBj
 	  pbL[j]=rhs/c + sqrt(1.0/c)*norm_rand();
 
           b-=pbL[j];
-          //b=-pbL[j];        
 
           F77_NAME(daxpy)(&rows, &b,xj,&inc, pe,&inc);
           
@@ -160,7 +159,6 @@ SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, 
 	  pbL[j]=rhs/c + sqrt(1.0/c)*norm_rand();
 
           b-=pbL[j];
-          //b=-pbL[j];        
 
           F77_NAME(daxpy)(&r, &b,xj,&inc, pe1,&inc);
           
@@ -214,9 +212,12 @@ SEXP sample_beta_lower_tri(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, 
  *The notation in the routine is as follows:
 
  pL: Number of columns in X
- XL: non zero values in X, @x in object of class "dgCMatrix" in package "Matrix" (Compressed Sparse Column)
- cOffset: column offset, cumulative number of non zero elements in X, @p in object of class "dgCMatrix" in package "Matrix" (Compressed Sparse Column)
- rIndex: row index of each element in XL, @i in object of class "dgCMatrix" in package "Matrix" (Compressed Sparse Column)
+ XL: non zero values in X, @x in object of class "dgCMatrix" in package 
+     "Matrix" (Compressed Sparse Column)
+ cOffset: column offset, cumulative number of non zero elements in X, @p in object of class "dgCMatrix" 
+          in package "Matrix" (Compressed Sparse Column)
+ rIndex: row index of each element in XL, @i in object of class "dgCMatrix" 
+         in package "Matrix" (Compressed Sparse Column)
  XL2: vector with x_j' x_j, j=1,...,p
  bL: vector of regression coefficients
  e: vector with residuals, e=y-yHat, yHat= predicted values
@@ -241,7 +242,7 @@ SEXP sample_beta_sparse(SEXP pL, SEXP XL, SEXP cOffset, SEXP rIndex, SEXP xL2, S
     double rhs,c,sigma2e, smallBeta;
     int j, cols;
     int low, up;
-    int k;
+    int m;
 
     SEXP list;	
 
@@ -284,9 +285,9 @@ SEXP sample_beta_sparse(SEXP pL, SEXP XL, SEXP cOffset, SEXP rIndex, SEXP xL2, S
           rhs=0;
 
 	  /*equivalent to ddot*/
-          for(k=low;k<=up;k++)
+          for(m=low;m<=up;m++)
           {
-              rhs=rhs+pXL[k]*pe[prIndex[k]];
+              rhs=rhs+pXL[m]*pe[prIndex[m]];
 	  }
 
           rhs=rhs/sigma2e;
@@ -299,9 +300,9 @@ SEXP sample_beta_sparse(SEXP pL, SEXP XL, SEXP cOffset, SEXP rIndex, SEXP xL2, S
 
 	  /*equivalent to daxpy to update the error*/
           
-          for(k=low; k<=up; k++)
+          for(m=low; m<=up; m++)
           {
-	     pe[prIndex[k]]=b*pXL[k] + pe[prIndex[k]];
+	     pe[prIndex[m]]=b*pXL[m] + pe[prIndex[m]];
           }
           	       
           if(fabs(pbL[j])<smallBeta)
@@ -646,26 +647,27 @@ void weighted_ddot(int n, double *dx, double *dy, int *groups, double *rhs)
 
    int m, i;
 
-  /* Clean-up loop so remaining vector length is a multiple of 5.  */
+   /* Clean-up loop so remaining vector length is a multiple of 5.  */
 
-      m = n % 5;
-      if ( m != 0 ) {
+   m = n % 5;
+   
+   if ( m != 0 ) 
+   {
          for ( i = 0 ; i < m; i++ )
             rhs[groups[i]]+= dx[i] * dy[i];
          if ( n < 5 )
             return;
-      }
-      for (i = m; i < n; i = i + 5)
-      {
+   }
+   
+   for (i = m; i < n; i = i + 5)
+   {
          rhs[groups[i]]+= dx[i] * dy[i]; 
          rhs[groups[i+1]]+= dx[i+1] * dy[i+1];
          rhs[groups[i+2]]+= dx[i+2] * dy[i+2]; 
          rhs[groups[i+3]]+= dx[i+3] * dy[i+3];
          rhs[groups[i+4]]+= dx[i+4] * dy[i+4];
-      }
+   }
 }
-
-
 
 /*
  * This is a generic function to sample betas in various models, including 
@@ -717,7 +719,7 @@ SEXP sample_beta_groups(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEX
     int i, j, k, rows, cols;
     int ngroups;  //number of groups
     int *g;       //pointer for holding groups
-    double *rhs, c, *sigma2e; //now the rhs, c and sigma2e are vectors, we have to take the sum over the corresponding elements.
+    double *rhs, c, *sigma2e; //now the rhs, sigma2e are vectors, we have to take the sum over the corresponding elements.
     double sum_rhs;
 
     SEXP list;	
@@ -760,44 +762,24 @@ SEXP sample_beta_groups(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEX
 
           xj=pXL+(long long)j*rows;
           b=pbL[j];
-
-          //rhs=F77_NAME(ddot)(&rows,xj,&inc,pe,&inc)/sigma2e;
-          //rhs+=pxL2[j]*b/sigma2e;
-  	  //c=pxL2[j]/sigma2e + 1.0/pvarBj[j];
-	  //pbL[j]=rhs/c + sqrt(1.0/c)*norm_rand();
-
-          /*
-          This code works well but it is not efficient
-	  for(i=0;i<rows;i++)
-	  {
-		rhs+=xj[i]*pe[i]/sigma2e[g[i]-1]+b*xj[i]*xj[i]/sigma2e[g[i]-1];
-                c+=xj[i]*xj[i]/sigma2e[g[i]-1]; 
-          }
-
-          c+=1.0/pvarBj[j];
-          pbL[j]=rhs/c + sqrt(1.0/c)*norm_rand();
-          */
           
           //This code works well but perhaps we can do it more efficiently with 
-          //a call to ddot 
-          //
+          //a call to a weighted_ddot
+          //weighted_ddot(rows, xj, pe, g, rhs);
           
           for(i=0;i<rows;i++)
 	  {
-              /*rhs+=xj[i]*pe[i]/sigma2e[g[i]-1];*/
               rhs[g[i]]+=xj[i]*pe[i];
           }
-
-          //weighted_ddot(rows, xj, pe, g, rhs);
 
           xj2=pXL2+(long long)j*ngroups;
 
           for(k=0;k<ngroups;k++)
 	  {
-             //rhs+=b*xj2[k]/sigma2e[k];
              sum_rhs+=(rhs[k]+b*xj2[k])/sigma2e[k];
              c+=xj2[k]/sigma2e[k];
           }
+
           c+=1.0/pvarBj[j];
           pbL[j]=sum_rhs/c + sqrt(1.0/c)*norm_rand();
           
@@ -823,6 +805,164 @@ SEXP sample_beta_groups(SEXP n, SEXP pL, SEXP XL, SEXP xL2, SEXP bL, SEXP e, SEX
       PutRNGstate();
 
       UNPROTECT(6);
+
+      //free(rhs);
+
+      return(list);
+}
+
+/*
+ * This is a generic function to sample betas in various models, including 
+ * Bayesian LASSO, BayesA, Bayesian Ridge Regression, etc.
+ 
+ * For example, in the Bayesian LASSO, we wish to draw samples from the full 
+ * conditional distribution of each of the elements in the vector bL. The full conditional 
+ * distribution is normal with mean and variance equal to the solution (inverse of the coefficient of the left hand side)
+ * of the following equation (See suplementary materials in de los Campos et al., 2009 for details),
+   
+    (1/varE x_j' x_j + 1/(varE tau_j^2)) bL_j = 1/varE x_j' e
+ 
+    or equivalently, 
+    
+    mean= (1/varE x_j' e)/ (1/varE x_j' x_j + 1/(varE tau_j^2))
+    variance= 1/ (1/varE x_j' x_j + 1/(varE tau_j^2))
+    
+    xj= the jth column of the incidence matrix
+    
+ *The notation in the routine is as follows:
+
+ pL: Number of columns in X
+ XL: non zero values in X, @x in object of class "dgCMatrix" in package 
+     "Matrix" (Compressed Sparse Column)
+ cOffset: column offset, cumulative number of non zero elements in X, @p in object of class "dgCMatrix" 
+         in package "Matrix" (Compressed Sparse Column)
+ rIndex: row index of each element in XL, @i in object of class "dgCMatrix" 
+         in package "Matrix" (Compressed Sparse Column)
+ XL2: vector with x_j' x_j, j=1,...,p
+ bL: vector of regression coefficients
+ e: vector with residuals, e=y-yHat, yHat= predicted values
+ varBj: vector with variances, 
+	For Bayesian LASSO, varBj=tau_j^2 * varE, j=1,...,p
+	For Ridge regression, varBj=varB, j=1,...,p, varB is the variance common to all betas.
+	For BayesA, varBj=varB_j, j=1,...,p
+	For BayesCpi, varBj=varB, j=1,...,p, varB is the variance common to all betas
+	
+ varE: residual variance
+ minAbsBeta: in some cases values of betas near to zero can lead to numerical problems in BL, 
+             so, instead of using this tiny number we assingn them minAbsBeta
+ 
+ */
+
+
+SEXP sample_beta_groups_sparse(SEXP pL, SEXP XL, SEXP cOffset, SEXP rIndex, SEXP xL2, SEXP bL, SEXP e, 
+                               SEXP varBj, SEXP varE, SEXP minAbsBeta, SEXP groups, SEXP nGroups)
+{
+    double *xj2;
+    double *pXL, *pXL2, *pbL, *pe, *pvarBj;
+    int *pcOffset, *prIndex;
+    double b;
+    double smallBeta;
+    int j, k, cols;
+    int ngroups;  //number of groups
+    int *g;       //pointer for holding groups
+    double *rhs, *sigma2e; //now the rhs, sigma2e are vectors, we have to take the sum over the corresponding elements.
+    double c;
+    double sum_rhs;
+    int low, up;
+    int m;
+
+    SEXP list;	
+
+    GetRNGstate();
+	
+    cols=INTEGER_VALUE(pL);
+    smallBeta=NUMERIC_VALUE(minAbsBeta);
+	
+    PROTECT(XL=AS_NUMERIC(XL));
+    pXL=NUMERIC_POINTER(XL);
+    
+    PROTECT(cOffset=AS_INTEGER(cOffset));
+    pcOffset=INTEGER_POINTER(cOffset);
+    
+    PROTECT(rIndex=AS_INTEGER(rIndex));
+    prIndex=INTEGER_POINTER(rIndex);
+
+    PROTECT(xL2=AS_NUMERIC(xL2));
+    pXL2=NUMERIC_POINTER(xL2);
+
+    PROTECT(bL=AS_NUMERIC(bL));
+    pbL=NUMERIC_POINTER(bL);
+
+    PROTECT(e=AS_NUMERIC(e));
+    pe=NUMERIC_POINTER(e);
+
+    PROTECT(varBj=AS_NUMERIC(varBj));
+    pvarBj=NUMERIC_POINTER(varBj);
+
+    sigma2e=NUMERIC_POINTER(varE);
+    ngroups=INTEGER_VALUE(nGroups);
+    g=INTEGER_POINTER(groups);
+
+    //rhs =(double *) malloc(ngroups);
+    rhs=(double *) R_alloc(ngroups, sizeof(double));
+    
+    for(j=0; j<cols;j++)
+    {
+	  /*index the elements of XL using the column offset*/
+	  low=pcOffset[j];
+          up=pcOffset[j+1]-1;
+          //nnz=up-low+1;
+
+          sum_rhs=0;
+
+          for(k=0;k<ngroups;k++) rhs[k]=0;
+
+          c=0;
+
+          b=pbL[j];
+          
+          for(m=low; m<=up;m++)
+          {
+		rhs[g[prIndex[m]]]+=pXL[m]*pe[prIndex[m]];
+          }
+                    
+          xj2=pXL2+(long long)j*ngroups;
+
+          for(k=0;k<ngroups;k++)
+	  {
+             sum_rhs+=(rhs[k]+b*xj2[k])/sigma2e[k];
+             c+=xj2[k]/sigma2e[k];
+          }
+          c+=1.0/pvarBj[j];
+          pbL[j]=sum_rhs/c + sqrt(1.0/c)*norm_rand();
+          
+          //End of code for groups
+
+          b-=pbL[j]; 
+
+          /*equivalent to daxpy to update the error*/
+          
+          for(m=low; m<=up; m++)
+          {
+	     pe[prIndex[m]]=b*pXL[m] + pe[prIndex[m]];
+          } 
+ 
+          if(fabs(pbL[j])<smallBeta)
+          {
+             pbL[j]=smallBeta;
+          }
+      }
+        
+      // Creating a list with 2 vector elements:
+      PROTECT(list = allocVector(VECSXP, 2));
+      // attaching bL vector to list:
+      SET_VECTOR_ELT(list, 0, bL);
+      // attaching e vector to list:
+      SET_VECTOR_ELT(list, 1, e);
+
+      PutRNGstate();
+
+      UNPROTECT(8);
 
       //free(rhs);
 
