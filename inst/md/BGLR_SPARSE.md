@@ -175,7 +175,7 @@ fm<-BGLR(y=y,
          ETA=list(main=list(X=X_main,model='BRR'),
                   int1=list(X=X_1,model='BRR'),
                   int2=list(X=X_2,model='BRR')),
-	     nIter=6000,burnIn=1000,groups=rep(1:2,each=nrow(X))
+	     nIter=6000,burnIn=1000,saveAt='GxE_',groups=rep(1:2,each=nrow(X))
 	   )
 
 varU_main<-scan('GxE_ETA_main_varB.dat')[-c(1:200)]
