@@ -149,7 +149,7 @@ The following examples illustrate how to implement marker-by-environments intera
 for further details about these models see [Lopez-Cruz et al. (2015)](https://doi.org/10.1534/g3.114.016097).
 
 
-** As a random regression on markers**
+** As a random regression on markers **
 
 ``` R
  rm(list=ls())
