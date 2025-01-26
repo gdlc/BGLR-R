@@ -143,16 +143,13 @@ system.time(fmSP<-BGLR(y=y,ETA=list(list(X=Z.YL_SP,model='BRR_sparse')),verbose=
 
 ```
 
-### Example 4: GxE using marker-by-environment interactions
+### Example 4: GxE using marker-by-environment interactions using markers
 
 The following examples illustrate how to implement marker-by-environments interaction models using BGLR, 
 for further details about these models see [Lopez-Cruz et al. (2015)](https://doi.org/10.1534/g3.114.016097).
 
-
-** As a random regression on markers **
-
 ``` R
- rm(list=ls())
+rm(list=ls())
 
 library(BGLR)
 library(Matrix)
@@ -178,18 +175,18 @@ fm<-BGLR(y=y,
          ETA=list(main=list(X=X_main,model='BRR'),
                   int1=list(X=X_1,model='BRR'),
                   int2=list(X=X_2,model='BRR')),
-	     nIter=10000,burnIn=5000,groups=rep(1:2,each=nrow(X))
+	     nIter=6000,burnIn=1000,groups=rep(1:2,each=nrow(X))
 	   )
 
-varU_main=scan('GxE_ETA_main_varB.dat')[-c(1:200)]
-varU_int1=scan('GxE_ETA_int1_varB.dat')[-c(1:200)]
-varU_int2=scan('GxE_ETA_int2_varB.dat')[-c(1:200)]
-varE=read.table('GxE_varE.dat',header=FALSE)[-c(1:200),]
-varU1=varU_main+varU_int1
-varU2=varU_main+varU_int2
-h2_1=varU1/(varU1+varE[,1])
-h2_2=varU2/(varU2+varE[,2])
-COR=varU_main/sqrt(varU1*varU2)
+varU_main<-scan('GxE_ETA_main_varB.dat')[-c(1:200)]
+varU_int1<-scan('GxE_ETA_int1_varB.dat')[-c(1:200)]
+varU_int2<-scan('GxE_ETA_int2_varB.dat')[-c(1:200)]
+varE<-read.table('GxE_varE.dat',header=FALSE)[-c(1:200),]
+varU1<-varU_main+varU_int1
+varU2<-varU_main+varU_int2
+h2_1<-varU1/(varU1+varE[,1])
+h2_2<-varU2/(varU2+varE[,2])
+COR<-varU_main/sqrt(varU1*varU2)
 mean(h2_1)
 mean(h2_2)
 mean(COR)
@@ -205,7 +202,7 @@ fms<-BGLR(y=y,
           ETA=list(main=list(X=X_main,model='BRR'),
                    int1=list(X=X_1s,model='BRR_sparse'),
                    int2=list(X=X_2s,model='BRR_sparse')),
-	      nIter=10000,burnIn=5000,groups=rep(1:2,each=nrow(X))
+	      nIter=6000,burnIn=1000,groups=rep(1:2,each=nrow(X))
 	   )
 	   
 unlink("*.dat")
