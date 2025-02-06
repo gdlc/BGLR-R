@@ -122,24 +122,38 @@ abline(a=0,b=1)
 
 ```
 
-## Example 3: Genotype by environment models (with 136 year-locations)
+## Example 3: Genotype by environment models using the Genomes 2 Fields data set (with 136 year-locations) 
 
 ```r
-#Example using data in MSU HPCC cluster
-library(MatrixModels)
 
-PHENO=read.csv('/mnt/research/quantgen/projects/G2F/data/PHENO.csv')
+# Libraries
+ library(MatrixModels)
+ library(BGLR)
 
-y=PHENO$yield
+# Data
+ DATA=read.csv('/mnt/research/quantgen/projects/G2F/data/PHENO.csv')
 
-Z.YL=model.matrix(~year_loc-1,data=PHENO)
-Z.YL_SP=model.Matrix(~year_loc-1,data=PHENO,sparse=TRUE)
+y=DATA$yield
+
+Z.YL=model.matrix(~year_loc-1,data=DATA)
+Z.YL_SP=model.Matrix(~year_loc-1,data=DATA,sparse=TRUE)
 
 round(100*(1-object.size(Z.YL_SP)/object.size(Z.YL)),1) # ~93% less memmory
 
-system.time( fm<-BGLR(y=y,ETA=list(list(X=Z.YL,model='BRR')),verbose=FALSE) )
 
-system.time(fmSP<-BGLR(y=y,ETA=list(list(X=Z.YL_SP,model='BRR_sparse')),verbose=FALSE))
+# Here, we use the `group` variable to estimate year-location specific error variances
+# Note: using groups can increase computational time significantly
+system.time(
+   fm<-BGLR(y=y,ETA=list(list(X=Z.YL,model='BRR')),
+		verbose=FALSE,group=DATA$year_loc)
+)
+
+system.time(
+	fmSP<-BGLR(y=y,ETA=list(list(X=Z.YL_SP,model='BRR_sparse')),
+			verbose=FALSE,group=DATA$year_loc)
+)
+plot(fm$varE,fmSP$varE);abline(a=0,b=1,col=2)
+plot(fm$ETA[[1]]$b,fmSP$ETA[[1]]$b);abline(a=0,b=1,col=2)
 
 ```
 
