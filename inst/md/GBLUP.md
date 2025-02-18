@@ -8,7 +8,7 @@ In the following example we show how to fit a GBLUP model (i.e., a Gaussian proc
    * [Using oringial inputs (e.g., SNPs)](#BRR)
    * [Using a G-matrix (or kernel)](#RKHS)
    * [Using eigenvalues and eigenvectors](#RKHS2)
-   * [Using scaled-principal components)](#PC)
+   * [Using scaled-principal components](#PC)
    * [Using a Cholesky decomposition](#CHOL)
    * [Using a QR decomposition](#QR)
    * [Using a Cholesky decomposition and sparse matrix](#CholSparse)
