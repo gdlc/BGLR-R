@@ -121,7 +121,9 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
    			ready=ifelse(nrow(TMP)==0,TRUE,max(TMP[,2,drop=FALSE])<minSetProb)
 
    			if(!ready){
-        		B_CHR[,TMP[,1],drop=FALSE]=FALSE
+				print(str(B_CHR))
+				print(TMP[,1])
+        		B_CHR[,TMP[,1]]=FALSE
         		SETS[[count_chr]][[count_sets]]=cbind('set'=count_sets,TMP)
         		count_sets=count_sets+1
    			}
