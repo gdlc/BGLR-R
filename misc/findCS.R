@@ -122,7 +122,7 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
 
    			if(!ready){
 				print(str(B_CHR))
-				print(TMP[,1])
+				print(str(TMP[,1]))
         		B_CHR[,TMP[,1]]=FALSE
         		SETS[[count_chr]][[count_sets]]=cbind('set'=count_sets,TMP)
         		count_sets=count_sets+1
