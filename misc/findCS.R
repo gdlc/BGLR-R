@@ -99,6 +99,10 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
    if(!is.logical(B)){
       B=(B!=0)
    }
+
+   if(is.null(colnames(B))){
+	colnames(B)=1:ncol(B)
+   }
  
  
     SETS=list()
@@ -120,10 +124,6 @@ nextCS=function(B,minProbIn=.05,maxSize=min(ncol(B),10),
    			ready=ifelse(nrow(TMP)==0,TRUE,max(TMP[,2,drop=FALSE])<minSetProb)
 
    			if(!ready){
-				print('Hello')
-				print(str(B_CHR))
-				print(str(TMP))
-				print(str(TMP[,1]))
         		B_CHR[,TMP[,1]]=FALSE
         		SETS[[count_chr]][[count_sets]]=cbind('set'=count_sets,TMP)
         		count_sets=count_sets+1
