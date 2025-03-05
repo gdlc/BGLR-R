@@ -1284,8 +1284,8 @@ Multitrait<-function(y,
 	
 	n<-nrow(y)
 	
-	#Compute sample variance covariance matrix using flashier
-	Sy <- mr.mash.alpha:::compute_cov_flash(y)
+	#Compute sample variance covariance matrix using flashier (removing rows that have all NAs)
+	Sy <- mr.mash.alpha:::compute_cov_flash(y[rowSums(is.na(y)) != ncol(y), ])
 	Sy[is.na(Sy)]=0
 	
 	#Deep copy of y, DO NOT REPLACE with y.back<-y, it does not work, both objects 
