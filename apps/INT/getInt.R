@@ -5,8 +5,13 @@ getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=TRUE,centerX=FALSE,...){
 	if(centerX){
 		X=scale(X,center=TRUE,scale=FALSE)
 	}
+	
+	# Means
+	 W=as.matrix(model.matrix(~factor(eID)))[,-1]
+         ETA=list(meanDif=list(X=W,model='FIXED'))
+	
 	# Main effects
-	 ETA[[1]]=list(X=X,...)
+	 ETA[[2]]=list(X=X,...)
 
 	# Interacctions
 	levels=unique(eID)
@@ -14,10 +19,10 @@ getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=TRUE,centerX=FALSE,...){
 	for(i in 1:nLevels){
 		Z=X
 		Z[eID!=levels[i],]=0
-		ETA[[i+1]]=list(X=Z,...)
+		ETA[[i+2]]=list(X=Z,...)
 		if(sparse){
-			ETA[[i+1]]$X=as(ETA[[i+1]]$X,"CsparseMatrix") 
-			ETA[[i+1]]$model=paste0(ETA[[i+1]]$model,'_sparse')
+			ETA[[i+2]]$X=as(ETA[[i+1]]$X,"CsparseMatrix") 
+			ETA[[i+2]]$model=paste0(ETA[[i+1]]$model,'_sparse')
 		}
 	}
 	names(ETA)=c('main',paste0('int_',levels))
