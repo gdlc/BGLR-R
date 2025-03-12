@@ -1,5 +1,5 @@
 getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=TRUE,centerX=FALSE,...){
-	stopifnot(all(GID%in%rownames(X)))
+	stopifnot(all(gID%in%rownames(X)))
 	ETA=list()
 	X=X[gID,]
 	if(centerX){
