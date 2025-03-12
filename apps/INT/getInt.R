@@ -21,8 +21,8 @@ getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=TRUE,centerX=FALSE,...){
 		Z[eID!=levels[i],]=0
 		ETA[[i+2]]=list(X=Z,...)
 		if(sparse){
-			ETA[[i+2]]$X=as(ETA[[i+1]]$X,"CsparseMatrix") 
-			ETA[[i+2]]$model=paste0(ETA[[i+1]]$model,'_sparse')
+			ETA[[i+2]]$X=as(ETA[[i+2]]$X,"CsparseMatrix") 
+			ETA[[i+2]]$model=paste0(ETA[[i+2]]$model,'_sparse')
 		}
 	}
 	names(ETA)=c('main',paste0('int_',levels))
