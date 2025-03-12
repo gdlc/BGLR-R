@@ -8,7 +8,7 @@ getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=TRUE,centerX=FALSE,...){
 	
 	# Means
 	 W=as.matrix(model.matrix(~factor(eID)))[,-1]
-         ETA=list(meanDif=list(X=W,model='FIXED'))
+         ETA[[1]]=list(X=W,model='FIXED')
 	
 	# Main effects
 	 ETA[[2]]=list(X=X,...)
