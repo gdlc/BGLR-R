@@ -1,11 +1,12 @@
 getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=TRUE,centerX=FALSE,...){
 	stopifnot(all(gID%in%rownames(X)))
-	ETA=list()
+	
 	X=X[gID,]
 	if(centerX){
 		X=scale(X,center=TRUE,scale=FALSE)
 	}
 	
+	ETA=list()
 	# Means
 	 W=as.matrix(model.matrix(~factor(eID)))[,-1]
          ETA[[1]]=list(X=W,model='FIXED')
@@ -25,8 +26,7 @@ getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=TRUE,centerX=FALSE,...){
 			ETA[[i+2]]$model=paste0(ETA[[i+2]]$model,'_sparse')
 		}
 	}
-	names(ETA)=c('main',paste0('int_',levels))
-	W=as.matrix(model.matrix(~factor(eID)))[,-1]
-        ETA=c(meanDif=list(X=W,model='FIXED'),ETA)
+	names(ETA)=c('meansDif','main',paste0('int_',levels))
+
 	return(ETA)
 }
