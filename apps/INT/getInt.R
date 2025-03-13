@@ -8,7 +8,7 @@ getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=FALSE,centerX=FALSE,...){
 	
 	ETA=list()
 	# Means
-	 W=as.matrix(model.matrix(~factor(eID)))[,-1]
+	 W=as.matrix(model.matrix(~factor(eID))[,-1])
          ETA[[1]]=list(X=W,model='FIXED')
 	
 	# Main effects
