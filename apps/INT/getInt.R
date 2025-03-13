@@ -1,4 +1,4 @@
-getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=TRUE,centerX=FALSE,...){
+getInt=function(X,eID,gID=rep(1:nrow(X)),sparse=FALSE,centerX=FALSE,...){
 	stopifnot(all(gID%in%rownames(X)))
 	
 	X=X[gID,]
