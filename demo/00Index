@@ -12,3 +12,5 @@ read_bed	Read a BED file
 read_ped	Read a PED file
 write_bed      	Write a BED file
 censored	Regression for censored samples
+BRR_Sparse	Sparse matrix support in Bayesian Ridge Regression
+
