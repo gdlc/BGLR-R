@@ -849,10 +849,12 @@ setLT.BayesBandC=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles, groups
   LT$fileOut=file(description=fname,open="w")
   LT$NamefileOut=fname;
   
-  if(model=="BayesB")
-  {
+  if(model=="BayesB"){
 	tmp=c('probIn','scale')
-   	write(tmp, ncolumns = LT$p, file = LT$fileOut, append = TRUE)
+   	write(tmp, ncolumns = 2, file = LT$fileOut, append = TRUE)
+  }else if(model=="BayesC"){
+	tmp=c('probIn','varB')
+        write(tmp, ncolumns = 2, file = LT$fileOut, append = TRUE)
   }
 
   #Objects for storing MCMC information 
@@ -1006,7 +1008,7 @@ welcome=function()
   message("#                      Bayesian Generalized Linear Regression        #");
   message("#                      Gustavo de los Campos, gdeloscampos@gmail.com #");
   message("#    .oooO     Oooo.   Paulino Perez-Rodriguez, perpdgo@gmail.com    #");
-  message("#    (   )     (   )   January, 2025                                 #");
+  message("#    (   )     (   )   March, 2025                                   #");
   message("#_____\\ (_______) /_________________________________________________ #");
   message("#      \\_)     (_/                                                   #");
   message("#                                                                    #");
