@@ -11,10 +11,11 @@ Authors@R: c(person(given = "Gustavo",
                       email = "perpdgo@colpos.mx"))
 Depends: R (>= 3.5.0)
 Imports: truncnorm, MASS, methods
+Suggests: pROC, Matrix, survival
 Description: Bayesian Generalized Linear Regression.
 License: GPL-3
 NeedsCompilation: yes
-Packaged: 2025-01-26 18:53:15 UTC; paulino
+Packaged: 2025-03-26 21:28:37 UTC; paulino
 Author: Gustavo de los Campos [aut],
   Paulino Perez Rodriguez [aut, cre]
 Maintainer: Paulino Perez Rodriguez <perpdgo@colpos.mx>
