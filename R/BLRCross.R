@@ -1456,6 +1456,8 @@ BLRXy<-function(y, intercept=TRUE, ETA,
 	{
 		whichNA<-is.na(y)
 	}
+
+	
 	
 	for(j in 1:nLT)
 	{		
@@ -1520,6 +1522,8 @@ BLRXy<-function(y, intercept=TRUE, ETA,
 		                   rmExistingFiles=rmExistingFiles)
 		                   
 	}
+
+	names(out$ETA)<-names(ETA)
 	
 	return(out)
 	
