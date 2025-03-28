@@ -13,8 +13,49 @@ bibentry(
     number = "2",
     pages = "483--495",
     textVersion = paste(
-        "Perez, P., and de los Campos, G., 2014 ",
+        "Perez, P., and de los Campos, G., 2014.",
         "Genome-Wide Regression and Prediction with the BGLR Statistical Package.",
         "Genetics 198 (2): 483-495."
     )
+)
+
+bibentry(
+  bibtype = "article",
+  title = "Multitrait Bayesian shrinkage and variable selection models with the BGLR-R package",
+  author = c(
+      person("Paulino", "Perez-Rodriguez"),
+      person("Gustavo", "de los Campos")
+  ),
+  journal = "Genetics",
+  year="2022",
+  volume="222",
+  number="1",
+  pages="iyac112",
+  textVersion=paste(
+        "Perez-Rodriguez, P. and de los Campos, G. 2022.",
+        "Multitrait Bayesian shrinkage and variable selection models with the BGLR-R package.", 
+        "Genetics 222 (1): iyac112."               
+  )
+)
+
+bibentry(
+  bibtype = "article",
+  title = "Fast analysis of biobank-size data and meta-analysis using the BGLR R-package",
+  author = c(
+      person("Paulino", "Perez-Rodriguez"),
+      person("Gustavo", "de los Campos"),
+      person("Wu", "Hao"),
+      person("Ana I.", "Vazquez"),
+      person("Jones", "Kyle")
+  ),
+  journal = "G3 Genes|Genomes|Genetics",
+  year="2024",
+  volume="",
+  number="",
+  pages="jkae288",
+  textVersion=paste(
+        "Perez-Rodriguez, P., de los Campos, G., Hao W., Vazquez, A.I., Kyle, J. 2024.",
+        "Fast analysis of biobank-size data and meta-analysis using the BGLR R-package.",
+        "G3 Genes|Genomes|Genetics:jkae288."
+  )
 )
