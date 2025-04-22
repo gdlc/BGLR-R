@@ -5,7 +5,6 @@
 #It returns the incidence matrix
 set.X=function(LT)
 {
-
 	flag=TRUE
 	n_elements=length(LT)
 	i=0
@@ -97,8 +96,7 @@ setLT.Fixed=function(LT,n,j,y,weights,nLT,saveAt,rmExistingFiles,groups,nGroups)
 #All the arguments are defined in the function BGLR
 setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups,verbose,thin,nIter,burnIn,lower_tri){ #*#
 
-    #Check inputs
-
+    #Checking inputs
     if(is.null(LT$X)) LT$X=set.X(LT)
        
     LT$X=as.matrix(LT$X)
@@ -120,7 +118,6 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
 
     if(!is.null(groups))
     {
-    
 	x2=matrix(NA,nrow=nGroups,ncol=ncol(LT$X))
 	for(g in 1:nGroups)
 	{
@@ -169,7 +166,13 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
     LT$b=rep(0,LT$p)
     LT$post_b=rep(0,LT$p)
     LT$post_b2=rep(0,LT$p)
-    LT$varB=LT$S0/(LT$df0+2)
+    tmp<-LT$S0/(LT$df0+2) # default value when df0>0 and S0>0
+    if(tmp>0){
+      LT$varB=tmp
+    }else{
+      LT$varB=(var(y,na.rm=TRUE)*LT$R2)/(LT$MSx)
+    }
+	    
     LT$post_varB=0                 
     LT$post_varB2=0
     
@@ -216,6 +219,137 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
     }#*#
 
     return(LT)
+}
+
+if(FALSE){
+  # Old setLT.BRR
+	## Gaussian Regression ############################################################
+#Function for initializing regression coefficients for Ridge Regression.
+#All the arguments are defined in the function BGLR
+setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups,verbose,thin,nIter,burnIn,lower_tri){ #*#
+
+    #Check inputs
+
+    if(is.null(LT$X)) LT$X=set.X(LT)
+       
+    LT$X=as.matrix(LT$X)
+    LT$p=ncol(LT$X)
+    LT$colNames=colnames(LT$X)
+   
+    if(any(is.na(LT$X)))
+    { 
+      stop("LP ",j," has NAs in X")
+    }
+    
+    if(nrow(LT$X)!=n)
+    {
+      stop("Number of rows of LP ",j,"  not equal to the number of phenotypes")
+    }   
+
+    #Weight inputs if necessary
+    LT$X=sweep(LT$X,1L,weights,FUN="*")  #weights
+
+    if(!is.null(groups))
+    {
+    
+   x2=matrix(NA,nrow=nGroups,ncol=ncol(LT$X))
+   for(g in 1:nGroups)
+   {
+      x2[g,]=apply(LT$X[groups==g,,drop=FALSE],2L,function(x) sum(x^2)) #the sum of the square of each of the columns for each group
+   }
+        LT$x2=x2;
+    }else{
+   LT$x2=apply(LT$X,2L,function(x) sum(x^2))  #the sum of the square of each of the columns
+    }  
+
+    sumMeanXSq = sum((apply(LT$X,2L,mean))^2)
+
+    #Default df for the prior assigned to the variance of marker effects
+    if(is.null(LT$df0))
+    {
+   LT$df0=5
+
+   if(verbose)
+   {
+      message("Degree of freedom of LP ",j,"  set to default value (",LT$df0,")")
+   }
+    }
+
+    if(is.null(LT$R2))
+    { 
+        LT$R2=R2/nLT
+    }
+
+ 
+    #Default scale parameter for the prior assigned to the variance of marker effects
+    if(is.null(LT$S0))
+    {
+        if(LT$df0<=0) stop("df0>0 in BRR in order to set S0")
+
+   LT$MSx=sum(LT$x2)/n-sumMeanXSq       
+   LT$S0=((var(y,na.rm=TRUE)*LT$R2)/(LT$MSx))*(LT$df0+2)  
+   
+   if(verbose)
+   {
+      message("Scale parameter of LP ",j,"  set to default value (",LT$S0,")")
+   }
+    }
+
+    
+    #Objects for saving posterior means from MCMC
+    LT$b=rep(0,LT$p)
+    LT$post_b=rep(0,LT$p)
+    LT$post_b2=rep(0,LT$p)
+    LT$varB=LT$S0/(LT$df0+2)
+    LT$post_varB=0                 
+    LT$post_varB2=0
+    
+    fname=paste(saveAt,LT$Name,"_varB.dat",sep=""); 
+    
+    if(rmExistingFiles)
+    { 
+       unlink(fname) 
+    }
+
+    LT$NamefileOut=fname
+    LT$fileOut=file(description=fname,open="w")
+
+    if(is.null(LT$lower_tri)) LT$lower_tri=FALSE;
+
+    if(LT$lower_tri)
+    {
+   message("You have provided a lower triangular matrix for LP ", j)
+   message("Checking dimmensions...")
+   if(ncol(LT$X)==nrow(LT$X))
+   {
+      message("Ok.")
+      LT$X=LT$X[lower.tri(LT$X,diag=TRUE)]
+        }
+    }else{
+       LT$X=as.vector(LT$X)
+    }
+
+    LT$x2=as.vector(LT$x2)
+    
+    #*#
+    if(is.null(LT$saveEffects)){LT$saveEffects=FALSE}
+    if(LT$saveEffects){
+        if(is.null(LT$storageMode)){LT$storageMode="double"}
+        if(!LT$storageMode%in%c("single","double")) {
+            stop("storageMode of LP ",j," can either be 'single' or 'double' (default)")
+        }
+      if(is.null(LT$thin)){ LT$thin=thin }
+      fname=paste(saveAt,LT$Name,"_b.bin",sep="")
+      if(rmExistingFiles){ unlink(fname) }
+      LT$fileEffects=file(fname,open='wb')
+      nRow=floor((nIter-burnIn)/LT$thin)
+      writeBin(object=c(nRow,LT$p),con=LT$fileEffects,size=ifelse(LT$storageMode=="single",4,8))
+    }#*#
+
+    return(LT)
+}
+
+
 }
 
 
