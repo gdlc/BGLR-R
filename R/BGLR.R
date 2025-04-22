@@ -166,9 +166,9 @@ setLT.BRR=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,groups,nGroups
     LT$b=rep(0,LT$p)
     LT$post_b=rep(0,LT$p)
     LT$post_b2=rep(0,LT$p)
-    tmp<-LT$S0/(LT$df0+2) # default value when df0>0 and S0>0
-    if(tmp>0){
-      LT$varB=tmp
+
+    if((LT$S0>0)&(LT$df0> -2)){
+      LT$varB=LT$S0/(LT$df0+2) # default value when df0>= -2 and S0>0
     }else{
       LT$varB=(var(y,na.rm=TRUE)*LT$R2)/(LT$MSx)
     }
