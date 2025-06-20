@@ -1061,7 +1061,7 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     			beta=ans[[1]]
     			ETA[[j]]$b=beta[ETA[[j]]$idColumns]
     			RSS=ans[[2]]
-			print(RSS)
+			message('RSS after sampling ',RSS)
     			
     			#Sampling hyper-parameters
     			DF = ETA[[j]]$df0 + ETA[[j]]$p
