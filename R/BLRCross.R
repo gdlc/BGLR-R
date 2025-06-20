@@ -797,9 +797,9 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
 		n=length(y)
 	}
 
-	#Assuming all efects are zero, including the intercept, if it exists...
+    #Assuming all efects are zero, including the intercept, if it exists...
     RSS=ssy
-    
+    message('RSS 0 is ',RSS)
     p=ncol(XX)
     
     #Number of predictors in each group
@@ -1054,7 +1054,7 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     		if(priors[[j]]$model%in%c("BRR","RKHS"))
     		{
     			
-    			
+    			message('RSS before sampling ',RSS)
     			ans=.Call("sampler_others",p, XX, Xy, ETA[[j]]$idColumns, ETA[[j]]$p, beta,
     			           rep(ETA[[j]]$varB,nCols[j]), varE,RSS)
     			
