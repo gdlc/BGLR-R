@@ -1523,6 +1523,10 @@ BLRXy<-function(y, intercept=TRUE, ETA,
 		                   
 	}
 
+	out$R2=R2
+    	out$S0=S0
+    	out$df0=df0
+
 	names(out$ETA)<-names(ETA)
 	
 	return(out)
