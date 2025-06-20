@@ -1061,6 +1061,7 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     			beta=ans[[1]]
     			ETA[[j]]$b=beta[ETA[[j]]$idColumns]
     			RSS=ans[[2]]
+			print(RSS)
     			
     			#Sampling hyper-parameters
     			DF = ETA[[j]]$df0 + ETA[[j]]$p
@@ -1308,6 +1309,7 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     out$R2=R2
     out$df0=df0
     out$S0=S0
+    out$RSS=RSS
     class(out)="BLRCross"
     
     return(out)
