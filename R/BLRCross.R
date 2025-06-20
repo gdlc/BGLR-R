@@ -1305,7 +1305,9 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     
     out$varE = post_varE
     out$SD.varE = sqrt(post_varE2 - post_varE^2)
-    out$R2=out
+    out$R2=R2
+    out$df0=df0
+    out$S0=S0
     class(out)="BLRCross"
     
     return(out)
