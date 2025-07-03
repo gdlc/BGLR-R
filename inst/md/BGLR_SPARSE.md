@@ -20,7 +20,7 @@ there will be sizable memory advantages if the sparsity of the incidence matrix 
 also computational advantages which will increase with the sparsity of the matrix (see examples below).
 
 We note, however, that the creation of the sparse matrix, if not adequatly thought, 
-may have memmory bottlnecks (peaks in memory usage) that may reduce the mmemory 
+may have memory bottlnecks (peaks in memory usage) that may reduce the mmemory 
 advantage of using sparse matrices. We are working developing `apps` to 
 efficiently create some types of sparse matrices.
 
