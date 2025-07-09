@@ -45,7 +45,7 @@ BRR.Hybrid_prediction<-function(y, location, id1, id2, idH,
 	Z3star<-Z3%*%eigen_H$vectors%*%sqrt(diag(eigen_H$values))
 
 	#Linear predictor
-	ETA<-list(list(X=ZE,model="BRR"),
+	ETA<-list(list(X=ZE,model="FIXED"),
               list(X=Z1star,model="BRR"),
        	      list(X=Z2star,model="BRR"),
               list(X=Z3star,model="BRR"))
