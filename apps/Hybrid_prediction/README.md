@@ -66,7 +66,7 @@ library(BGLR)
 #This loads a list, from where we extract the information
 load('cornHybrid.RData')
 
-#Extract the hybid information, a data.frame with columns: 
+#Extract the hybrid information, a data.frame with columns: 
 #1)Location, 2)GCA1, ids for parent1, 
 #3)GCA2, ids fro parent 2,
 #4)SCA id for hybrids, 5)Yield and 6)PlantHeight
