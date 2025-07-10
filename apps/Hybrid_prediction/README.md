@@ -113,11 +113,11 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
  source('https://raw.githubusercontent.com/gdlc/BGLR-R/master/apps/Hybrid_prediction/Hybrid_prediction.R')
 ```
 
-**Fitting the model**
+**Fitting the model for plant height (cm)**
 
 ```r
  set.seed(456)
- fm<-BRR.Hybrid_prediction(y=pheno$Yield,
+ fm<-BRR.Hybrid_prediction(y=pheno$Plant_Height*100,
                             location=pheno$Location,
                             id1=pheno$GCA1,
                             id2=pheno$GCA2,
