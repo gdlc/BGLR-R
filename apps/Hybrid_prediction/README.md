@@ -117,7 +117,7 @@ H<-kronecker(G1,G2,make.dimnames=TRUE)
 
 ```r
  set.seed(456)
- fm<-BRR.Hybrid_prediction(y=pheno$Plant_Height*100,
+ fm<-BRR.Hybrid_prediction(y=pheno$PlantHeight*100,
                             location=pheno$Location,
                             id1=pheno$GCA1,
                             id2=pheno$GCA2,
