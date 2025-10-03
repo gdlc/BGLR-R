@@ -1054,14 +1054,14 @@ BLRCross=function(y=NULL,my=NULL, vy=NULL, n=NULL,
     		if(priors[[j]]$model%in%c("BRR","RKHS"))
     		{
     			
-    			message('RSS before sampling ',RSS)
+    		
     			ans=.Call("sampler_others",p, XX, Xy, ETA[[j]]$idColumns, ETA[[j]]$p, beta,
     			           rep(ETA[[j]]$varB,nCols[j]), varE,RSS)
     			
     			beta=ans[[1]]
     			ETA[[j]]$b=beta[ETA[[j]]$idColumns]
     			RSS=ans[[2]]
-			message('RSS after sampling ',RSS)
+
     			
     			#Sampling hyper-parameters
     			DF = ETA[[j]]$df0 + ETA[[j]]$p
