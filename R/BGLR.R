@@ -2208,7 +2208,15 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
             {
                ETA[[i]]$SD.u=sqrt(ETA[[i]]$post_u2 - ETA[[i]]$post_u^2)
                ETA[[i]]$u=ETA[[i]]$post_u
-               ETA[[i]]$uStar=ETA[[i]]$post_uStar
+			   
+			   #Correction for the BUG reported by Jean-Luck Jannink, June/22/2026
+			   #The software returns wrong results, we need to divide SD.u and u by the vector of weights
+			   #as indicated by Gustavo, June/24/2026
+			   ETA[[i]]$SD.u=ETA[[i]]$SD.u/weights
+			   ETA[[i]]$u=ETA[[i]]$u/weights
+			   #End of the correction
+               
+			   ETA[[i]]$uStar=ETA[[i]]$post_uStar
                ETA[[i]]$varU=ETA[[i]]$post_varU
                ETA[[i]]$SD.varU=sqrt(ETA[[i]]$post_varU2 - ETA[[i]]$post_varU^2)
                tmp=which(names(ETA[[i]])%in%c("post_varU","post_varU2","post_uStar","post_u","post_u2"))
