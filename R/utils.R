@@ -21,7 +21,7 @@
     n=nrow(x)
     p=ncol(x)
     x=as.vector(x)
-    fileOut<-file(file,open='rb')
+    fileOut<-file(file,open='wb')
     writeBin(object=n,con=fileOut,size=ifelse(storageMode=="single",4,8))
     writeBin(object=p,con=fileOut,size=ifelse(storageMode=="single",4,8))
     writeBin(object=x,con=fileOut,size=ifelse(storageMode=="single",4,8))
