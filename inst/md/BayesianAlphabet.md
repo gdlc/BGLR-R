@@ -4,8 +4,8 @@
 
 The BGLR R-package allows users to select various priors for regression coefficients. The following priors are implemented in the BGLR function.
 
-|-----|------|-----|
 |  Distribution   | Performs    | Keyword    |
+|-----|------|-----|
 |  Flat   | Estimation without shrinkage    | FIXED |
 |  Gaussian   |  Shrinkage    |  BRR   |
 |  Double-Exponential   |  Shrinkage    |  BL   |
