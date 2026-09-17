@@ -2,7 +2,17 @@
 
 #### Parametric Random Regression with BGLR
 
-The BGLR R-package allows users to select various priors for regression coefficients, including flat priors (i.e., "fixed effects") shrinkage priors (Gaussian, Scaled-t, and Double Exponential) and shrinkage and variable selection priors.
+The BGLR R-package allows users to select various priors for regression coefficients. The following priors are implemented in the BGLR function.
+
+|-----|------|-----|
+|  Distribution   | Performs    | Keyword    |
+|  Flat   | Estimation without shrinkage    | FIXED |
+|  Gaussian   |  Shrinkage    |  BRR   |
+|  Double-Exponential   |  Shrinkage    |  BL   |
+|  Scaled-t   |  Shrinkage    |  BayesA   |
+|  Mixture of Gaussian slab and a point of mass at zero   |   Variable selection and shrinkage   |     Bayes C |
+
+, including flat priors (i.e., "fixed effects") shrinkage priors (Gaussian, Scaled-t, and Double Exponential) and shrinkage and variable selection priors.
 
 The following examples illustrate the priors implemented so far for linear regression in BGLR. In these examples we illustrate the use of these priors, one at a time.
 
