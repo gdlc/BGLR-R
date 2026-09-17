@@ -2,8 +2,7 @@
 
 #### Parametric Random Regression with BGLR
 
-The following examples illustrate the priors implemented so far for linear regression in BGLR. In thes examples we illustrate the use of these priors
-one at a time.
+The following examples illustrate the priors implemented so far for linear regression in BGLR. In these examples we illustrate the use of these priors, one at a time.
 
 **1. Flat Prior (FIXED)**
 
