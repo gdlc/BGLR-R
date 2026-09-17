@@ -10,11 +10,13 @@ The BGLR R-package allows users to select various priors for regression coeffici
 |  Gaussian   |  Shrinkage    |  BRR   |
 |  Double-Exponential   |  Shrinkage    |  BL   |
 |  Scaled-t   |  Shrinkage    |  BayesA   |
-|  Mixture of Gaussian slab and a point of mass at zero   |   Variable selection and shrinkage   |     Bayes C |
+| Point of mass at zero & Gaussian slab   |   Variable selection and shrinkage   |     Bayes C |
+| Point of mass at zero & Scale-t slab   |   Variable selection and shrinkage   |     Bayes B | 
+| Gaussian with group-specific variances | Differential shrinkage | BRR_sets |
 
-, including flat priors (i.e., "fixed effects") shrinkage priors (Gaussian, Scaled-t, and Double Exponential) and shrinkage and variable selection priors.
+Each of the above priors have hyper-parameters, some of which are, by default estimated by treating them as random (e.g., variances, mixture proportions) and others (typically df and scales) are fixed. 
 
-The following examples illustrate the priors implemented so far for linear regression in BGLR. In these examples we illustrate the use of these priors, one at a time.
+Each of the following examples illustrates how to invoke each of the priors. Since BGLR admits one than more term in the linear predictor (`ETA`) these priors can be combine, assigning to some predictors some priors and other priors to other sets of predictors. 
 
 **1. Flat Prior (FIXED)**
 
