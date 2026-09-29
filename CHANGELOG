@@ -97,3 +97,14 @@ version 1.1.3
 
 version 1.1.4
   Experimental support for sparse matrixes for BRR
+
+version 1.1.5 (development)
+  Added heterogeneous residual variances for single-response RKHS models using groups,
+  including multiple kernels, observation weights, and ordinary missing responses.
+  Grouped RKHS models are supported for uncensored Gaussian responses.
+
+  Corrected residual standard deviation indexing for ordinary missing responses in
+  grouped models and evaluation of grouped likelihoods at posterior mean variances.
+
+  Preserved matrix dimensions for rank-one kernels and added kernel dimension checks,
+  conditional-distribution tests, and a multi-environment GBLUP example.

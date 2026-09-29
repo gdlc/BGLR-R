@@ -58,7 +58,13 @@ ETA=list(list(X=W, model="FIXED"),
              further details see the vignettes in the package.}
    \item{verbose}{(logical) if TRUE the iteration history is printed, default TRUE.}
    \item{rmExistingFiles}{(logical) if TRUE removes existing output files from previous runs, default TRUE.}
-   \item{groups}{(factor) a vector of the same length of y that associates observations with groups, each group will have an associated variance component for the error term.}
+   \item{groups}{(factor) a vector of the same length of y that associates observations with groups, each group will have an associated variance component for the error term.
+                  Group labels must be provided for all observations, including missing responses.
+                  Supported linear terms are \code{FIXED}, \code{BRR}, \code{BRR_sparse},
+                  \code{BayesB}, \code{BayesC}, and \code{RKHS}.
+                  For \code{RKHS}, groups are supported for uncensored Gaussian responses,
+                  with ordinary missing responses allowed. Group-specific means must be
+                  specified separately in \code{ETA}.}
 }
 
 \details{
