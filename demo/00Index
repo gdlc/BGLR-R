@@ -2,6 +2,7 @@ BL		Bayesian LASSO
 BRR		Bayesian Ridge Regression
 BRR_sets        Bayesian Ridge Regression with sliding windows
 RKHS		Reproducing kernel Hilbert spaces
+RKHS_groups	Single-response RKHS with group-specific residual variances
 RKHS_KA		Reproducing kernel Hilbert spaces with kernel averaging
 BayesC		BayesC-pi
 BA		BayesA

@@ -749,7 +749,7 @@ setLT.BL=function(LT,y,n,j,weights,nLT,R2,saveAt,rmExistingFiles,verbose,thin,nI
 #for Reproducing Kernel Hilbert Spaces. The algorithm used here is 
 #Fully described in de los Campos et al (2010).
 
-setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)  
+setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose,groups=NULL,nGroups=1)
 {
 
     #Checking inputs
@@ -762,6 +762,7 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
 	LT$K = as.matrix(LT$K)
 
         if(nrow(LT$K)!=ncol(LT$K)) stop("Kernel for linear term ",j, " is not a square matrix")
+        if(nrow(LT$K)!=n) stop("Number of rows of kernel for linear term ",j, " not equal to the number of phenotypes")
 
 	#This code was rewritten to speed up computations
     	#T = diag(weights)   
@@ -785,6 +786,11 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
         }
 
     }
+
+    if(!is.matrix(LT$V) || !is.numeric(LT$V)) stop("Eigenvectors for linear term ",j, " must be a numeric matrix")
+    if(nrow(LT$V)!=n) stop("Number of rows of eigenvectors for linear term ",j, " not equal to the number of phenotypes")
+    if(!is.numeric(LT$d) || length(LT$d)!=ncol(LT$V)) stop("Eigenvalues for linear term ",j, " must match the number of eigenvectors")
+    if(any(!is.finite(LT$V)) || any(!is.finite(LT$d))) stop("Eigenvectors and eigenvalues for linear term ",j, " must be finite")
     
     #Defaul value for tolD
     #Only those eigenvectors whose eigenvalues> tolD are kept.
@@ -800,8 +806,19 @@ setLT.RKHS=function(LT,y,n,j,weights,saveAt,R2,nLT,rmExistingFiles,verbose)
     #Removing elements whose eigenvalues < tolD
     tmp= LT$d > LT$tolD
     LT$levelsU = sum(tmp)
+    if(LT$levelsU==0) stop("No eigenvalues greater than tolD for linear term ",j)
     LT$d = LT$d[tmp]
-    LT$V = LT$V[, tmp]
+    LT$V = LT$V[, tmp, drop=FALSE]
+
+    if(!is.null(groups))
+    {
+        x2=matrix(0,nrow=nGroups,ncol=LT$levelsU)
+        for(g in 1:nGroups)
+        {
+            x2[g,]=colSums(LT$V[groups==g,,drop=FALSE]^2)
+        }
+        LT$x2=as.vector(x2)
+    }
     
     #Default degrees of freedom and scale parameter associated with the variance component for marker effect
     if (is.null(LT$df0)) 
@@ -1343,6 +1360,12 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
     nGroups=1
     if(!is.null(groups))
     {
+		if(length(groups)!=n || anyNA(groups)) stop("length of groups and y differs, NA's not allowed in groups");
+                if((response_type!="gaussian" || !is.null(a) || !is.null(b)) &&
+                   any(vapply(ETA,function(LT) isTRUE(LT$model=="RKHS"),logical(1))))
+                {
+                    stop("RKHS with groups is only implemented for uncensored Gaussian responses")
+                }
 		groups<-as.character(groups)  #Groups as character and then as factor to avoid dummy levels
 		groups<-as.factor(groups)
 		#Number of records by group
@@ -1505,14 +1528,14 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
             if(!is.null(groups))
             {
-		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC","BRR_sparse"))) stop("Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups")
+		if(!(ETA[[i]]$model %in%  c("BRR","FIXED","BayesB","BayesC","BRR_sparse","RKHS"))) stop("Error in ETA[[", i, "]]", " model ", ETA[[i]]$model, " not implemented for groups")
             }
 
             ETA[[i]] = switch(ETA[[i]]$model, 
 			      FIXED = setLT.Fixed(LT = ETA[[i]],  n = n, j = i, weights = weights, y = y, nLT = nLT, saveAt = saveAt, rmExistingFiles = rmExistingFiles,groups=groups,nGroups=nGroups), 
                               BRR = setLT.BRR(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,groups=groups,nGroups=nGroups,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn,lower_tri=ETA[[i]]$lower_tri),#*#
                               BL = setLT.BL(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn), 
-                              RKHS = setLT.RKHS(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,verbose=verbose), 
+                              RKHS = setLT.RKHS(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,verbose=verbose,groups=groups,nGroups=nGroups),
                               BayesC = setLT.BayesBandC(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,groups=groups,nGroups=nGroups,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn),
                               BayesA = setLT.BayesA(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn),
                               BayesB = setLT.BayesBandC(LT = ETA[[i]], n = n, j = i, weights = weights, y = y, nLT = nLT, R2 = R2, saveAt = saveAt, rmExistingFiles = rmExistingFiles,groups=groups,nGroups=nGroups,verbose=verbose,thin=thin,nIter=nIter,burnIn=burnIn),
@@ -1689,6 +1712,18 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 
                 ## RKHS ####################################################################
                 if (ETA[[j]]$model == "RKHS") {
+                  if(!is.null(groups))
+                  {
+                    #uStar has prior variance varU*d. With groups, V'R^{-1}V
+                    #is not generally diagonal; update its coordinates in turn.
+                    varBj = ETA[[j]]$varU * ETA[[j]]$d
+                    ans = .Call("sample_beta_groups", n, ETA[[j]]$levelsU,
+                                ETA[[j]]$V, ETA[[j]]$x2, ETA[[j]]$uStar,
+                                e, varBj, varE, 0, ggg, nGroups)
+                    ETA[[j]]$uStar = ans[[1]]
+                    e = ans[[2]]
+                    ETA[[j]]$u = as.vector(ETA[[j]]$V %*% ETA[[j]]$uStar)
+                  }else{
                   #error
                   e = e + ETA[[j]]$u
                   rhs = crossprod(ETA[[j]]$V, e)/varE
@@ -1702,6 +1737,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 		  
                   #update error
                   e = e - ETA[[j]]$u
+                  }
                    
                   #update the variance
                   tmp = ETA[[j]]$uStar/sqrt(ETA[[j]]$d)
@@ -1818,8 +1854,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
             else{
                  if(!is.null(groups))
                  {
-                    #FIXME: Double check this, I was testing it and is ok
-                    sdEexpanded=sdE[groups]
+                    sdEexpanded=sdE[groups[whichNa]]
                     yStar[whichNa] = yHat[whichNa] + rnorm(n = nNa, sd = sdEexpanded)
                  }else{
                     yStar[whichNa] = yHat[whichNa] + rnorm(n = nNa, sd = sdE)
@@ -2148,7 +2183,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
                     for(g in 1:nGroups)
                     {
                        index=(groups==g)
-                       tmpSD[index]=sqrt(varE[g])/weights[index]
+                       tmpSD[index]=sqrt(post_varE[g])/weights[index]
                     }
          }else{
     		tmpSD = sqrt(post_varE)/weights
@@ -2219,7 +2254,7 @@ BGLR=function (y, response_type = "gaussian", a = NULL, b = NULL,
 			   ETA[[i]]$uStar=ETA[[i]]$post_uStar
                ETA[[i]]$varU=ETA[[i]]$post_varU
                ETA[[i]]$SD.varU=sqrt(ETA[[i]]$post_varU2 - ETA[[i]]$post_varU^2)
-               tmp=which(names(ETA[[i]])%in%c("post_varU","post_varU2","post_uStar","post_u","post_u2"))
+               tmp=which(names(ETA[[i]])%in%c("post_varU","post_varU2","post_uStar","post_u","post_u2","x2"))
                ETA[[i]]=ETA[[i]][-tmp]
             }
 
@@ -2376,4 +2411,3 @@ BLR=function (y, XF = NULL, XR = NULL, XL = NULL, GF = list(ID = NULL,
     class(out) = "BLR"
     return(out)
 }
-
