@@ -4,7 +4,7 @@ Examples (modified) from [de los Campos et al., Genetics Research, 2010](https:/
 
 **(1) RKHS with a Gaussian Kernel and fixed bandwidth parameter**
 
-```R
+```r
  library(BGLR)
  data(wheat); X=wheat.X; Y=wheat.Y
 
@@ -34,7 +34,7 @@ Examples (modified) from [de los Campos et al., Genetics Research, 2010](https:/
 
 **(2) Fitting the model over a grid of values of the bandwidth parameter**
 
-```R
+```r
  h=c(.01,.1,.4,.8,1.5,3,5)
  PMSE<-numeric(); VARE<-numeric(); VARU<-numeric();
  pD<-numeric(); DIC<-numeric()
@@ -77,7 +77,7 @@ Examples (modified) from [de los Campos et al., Genetics Research, 2010](https:/
 
 **(3) Kernel Averaging**
 
-```R
+```r
  PMSE<-numeric()
  VARE<-numeric()
  KList<-list()
