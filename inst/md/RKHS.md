@@ -30,7 +30,7 @@ Likewise, when $\boldsymbol{K}=\boldsymbol{XX}'$ (i.e., a linear kernel), the mo
 
 The Gaussian kernel is a common choice for semi-parametric regression. The Gaussian kernel is defined as
 
-$$\boldsymbol{K}=exp{-h\boldsymbol{D}}$$
+$$\boldsymbol{K}=exp\{-h\boldsymbol{D}\}$$
 
 where $\boldsymbol{D}$ is a distance matrix, with zeroes in the diagonals and distances between pairs of points in the off-diagonals (e.g., $D_{ij}=\lVert \boldsymbol{x}_i-\boldsymbol{x}_j \rVert^2$.
 
