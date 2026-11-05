@@ -7,6 +7,7 @@ In a RKHS regression we model the evaluations of a function $f(x_i)$ a a Gaussia
 
 $$\boldsymbol{f} \sim MVN(\boldsymbol{0},\boldsymbol{K}\sigma^2_u)$$
 
+where $\boldsymbol{f}=(f(x_1),...,f()x_n)'$
 ```r
  library(BGLR)
  data(wheat); X=wheat.X; Y=wheat.Y
