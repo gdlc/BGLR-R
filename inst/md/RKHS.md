@@ -7,14 +7,14 @@ Consider a regression model of the form
 
 $$y_i=\mu+f(x_i)+\varepsilon_i$$
 
-where, $y_i$ is an observed otucome value which is the sum of an intercept ($\mu$), plus the evaluation of a regression function $f()$ at $x_i$, and $\varepsilon_i$ is an error term which, for quantiative outcomes we will assume are normally distributed (typically IID normal with mean zero and variance $\sigma^2_{\varepsilon}$).  Here, $x_i$ is an input (scalar or vector) used to predict the outcome.
+where, $y_i$ is an observed outcome value which is the sum of an intercept ($\mu$), plus the evaluation of a regression function $f()$ at $x_i$, and $\varepsilon_i$ is an error term which, for quantiative outcomes we will assume are normally distributed (typically IID normal with mean zero and variance $\sigma^2_{\varepsilon}$).  Here, $\boldsymbol{x}_i$ is an input (scalar or vector) used to predict the outcome.
 
 
-In a RKHS regression we model the evaluations of a function $f(x_i)$ as a Gaussian process of the form 
+In a RKHS regression we model the evaluations of a function $f(\boldsymbol{x}_i)$ as a Gaussian process of the form 
 
 $$\boldsymbol{f} \sim MVN(\boldsymbol{0},\boldsymbol{K}\sigma^2_u)$$
 
-where $\boldsymbol{f}=[f(x_1),...,f()x_n]'$, $\boldsymbol{K}$ is a symmetric positive semi definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points, specifically, $Cov(f(x_i),f(x_j))=K_{ij} \sigma^2_u$.
+where $\boldsymbol{f}=[f(\boldsymbol{x}_1),...,f(\boldsymbol{x}_n)]'$, $\boldsymbol{K}$ is a symmetric positive semi definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points, specifically, $Cov(f(\boldsymbol{x}_i),f(\boldsymbol{x}_j))=K_{ij} \sigma^2_u$.
 
 **Parametric models**
 
@@ -29,7 +29,7 @@ The Gaussian kernel is a common choice for semi-parametric regression. The Gauss
 
 $$\boldsymbol{K}=exp{-h\boldsymbol{D}}$$
 
-where $\boldsymbol{D}$ is a distance matrix, with zeroes in the diagonals and distances between pairs of points in the off-diagonals (e.g., $D_{ij}=\lVert x_i-x_j \rVert^2$.
+where $\boldsymbol{D}$ is a distance matrix, with zeroes in the diagonals and distances between pairs of points in the off-diagonals (e.g., $D_{ij}=\lVert \boldsymbol{x}_i-\boldsymbl{x}_j \rVert^2$.
 
 For semi-parameteric regre
 
