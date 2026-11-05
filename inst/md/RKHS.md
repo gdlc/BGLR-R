@@ -29,7 +29,7 @@ The Gaussian kernel is a common choice for semi-parametric regression. The Gauss
 
 $$\boldsymbol{K}=exp{-h\boldsymbol{D}}$$
 
-where $\boldsymbol{D}$ is a distance matrix, with zeroes in the diagonals and distances between pairs of points in the off-diagonals (e.g., $D_{ij}=||x_i-x_j||^2$.
+where $\boldsymbol{D}$ is a distance matrix, with zeroes in the diagonals and distances between pairs of points in the off-diagonals (e.g., $D_{ij}=\lVert x_i-x_j \rVert^2$.
 
 For semi-parameteric regre
 
