@@ -3,11 +3,22 @@
 
 **(1) RKHS with a Gaussian Kernel and fixed bandwidth parameter**
 
-In a RKHS regression we model the evaluations of a function $f(x_i)$ a a Gaussian process of the form 
+Consider a regression model of the form
+
+$$y_i=\mu+f(x_i)+\varepsilon_i$$
+
+where, $y_i$ is an observed otucome value which is the sum of an intercept ($\mu$), plus the evaluation of a regression function $f()$ at $x_i$, and $\varepsilon_i$ is an error term which, for quantiative outcomes we will assume are normally distributed (typically IID normal with mean zero and variance $\sigma^2_{\varepsilon}$).  Here, $x_i$ is an input (scalar or vector) used to predict the outcome.
+
+
+In a RKHS regression we model the evaluations of a function $f(x_i)$ as a Gaussian process of the form 
 
 $$\boldsymbol{f} \sim MVN(\boldsymbol{0},\boldsymbol{K}\sigma^2_u)$$
 
-where $\boldsymbol{f}=[f(x_1),...,f()x_n]'$ is a vector with the evaluations of the function at each of the points in the data set, $\boldsymbol{K}$ is a symmetric positive definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points, specifically, $Cov(f(x_i),f(x_j))=K_ij\simga^2_u$.
+where $\boldsymbol{f}=[f(x_1),...,f()x_n]'$, $\boldsymbol{K}$ is a symmetric positive definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points, specifically, $Cov(f(x_i),f(x_j))=K_ij\simga^2_u$.
+
+**Special cases**
+
+When the input information is pedigree, and $\boldsymbol{K}$ is an additive relationship matrix, the model described above is equivalent to a standard additive infinitesimal model (aka animal model).
 
 
 ```r
