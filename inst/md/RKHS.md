@@ -33,34 +33,58 @@ $$\boldsymbol{K}=exp(-h\boldsymbol{D}).$$
 
 where $\boldsymbol{D}$ is a distance matrix, with zeroes in the diagonals and distances between pairs of points in the off-diagonals (e.g., $D_{ij}=\lVert \boldsymbol{x}_i-\boldsymbol{x}_j \rVert^2)$.
 
+We can compute distances from relationship matrices ($G_{ij}$) using the following
 
+$$D_{ij}=G_{ii}+G_{jj}-2G_{ij}.$$
+
+[Couto et al. (2019)](https://pubmed.ncbi.nlm.nih.gov/30774704/) (see Supplementary Methods 2) suggested using this to evaluate a Gaussian kernel from an additive relationship matrix. 
+
+The following function maps a relationship matrix into a distance matrix
+
+```{r}
+ G2D=function(G){
+  n=nrow(G)
+  D=matrix(nrow=n,ncol=n,0)
+  for(i in 1:(n-1)){
+    for(j in (i+1):n){
+       D[i,j]=G[i,i]+G[j,j]-2*G[i,j]
+       D[j,i]=D[i,j]
+    }
+  }
+  return(D)
+ }
+```
+
+In this setting, using $h$ values near 0.5 or 1 usually gives a reasonably good kernel. 
+
+The following example illustrates how to fit a RKHS genomic regression using a single Gaussian kernel.
 
 ```r
+## Data
  library(BGLR)
  data(wheat); X=wheat.X; Y=wheat.Y
 
-### DISTANCE MATRIX #############################
-  D<-as.matrix(dist(X,method="euclidean"))^2
-  D<-D/mean(D)
-  h<-1
+## GRM and Distance  matrix
+ G=tcrossprod(scale(X,center=TRUE,scale=FALSE))
+ G=G/mean(diag(G))
+ D=G2D(G)
 
-### KERNEL ######################################
-  K<-exp(-h*D)
+## Kernel
+ h=1
+ K<-exp(-h*D)
   
-### GENERATES TESTING SET #######################
+## Generating a testing set
  set.seed(12345)
  tst<-sample(1:599,size=100,replace=FALSE)
  y<-Y[,4]
  yNA<-y
  yNA[tst]<-NA
   
-### MODEL FITTING #################################
-
+## Fitting the model
  fm=BGLR(y=yNA,ETA=list(list(K=K,model='RKHS')),nIter=6000,burnIn=1000)
  fm$varE
  fm$ETA[[1]]$varU
  cor(y[tst],fm$yHat[tst])
-
 ```
 
 **(2) Fitting the model over a grid of values of the bandwidth parameter**
