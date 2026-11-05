@@ -7,7 +7,9 @@ In a RKHS regression we model the evaluations of a function $f(x_i)$ a a Gaussia
 
 $$\boldsymbol{f} \sim MVN(\boldsymbol{0},\boldsymbol{K}\sigma^2_u)$$
 
-where $\boldsymbol{f}=(f(x_1),...,f()x_n)'$
+where $\boldsymbol{f}=[f(x_1),...,f()x_n]'$ is a vector with the evaluations of the function at each of the points in the data set, $\boldsymbol{K}$ is a symmetric positive definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points, specifically, $Cov(f(x_i),f(x_j))=K_ij\simga^2_u$.
+
+
 ```r
  library(BGLR)
  data(wheat); X=wheat.X; Y=wheat.Y
