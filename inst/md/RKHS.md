@@ -14,11 +14,24 @@ In a RKHS regression we model the evaluations of a function $f(x_i)$ as a Gaussi
 
 $$\boldsymbol{f} \sim MVN(\boldsymbol{0},\boldsymbol{K}\sigma^2_u)$$
 
-where $\boldsymbol{f}=[f(x_1),...,f()x_n]'$, $\boldsymbol{K}$ is a symmetric positive definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points, specifically, $Cov(f(x_i),f(x_j))=K_{ij} \simga^2_u$.
+where $\boldsymbol{f}=[f(x_1),...,f()x_n]'$, $\boldsymbol{K}$ is a symmetric positive semi definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points, specifically, $Cov(f(x_i),f(x_j))=K_{ij} \sigma^2_u$.
 
-**Special cases**
+**Parametric models**
 
-When the input information is pedigree, and $\boldsymbol{K}$ is an additive relationship matrix, the model described above is equivalent to a standard additive infinitesimal model (aka animal model).
+When the input information is pedigree, and $\boldsymbol{K}$ is an additive relationship matrix, the model described above is equivalent to a standard *additive infinitesimal model* (aka animal model).
+
+Likewise, when $\boldsymbol{K}=\boldsymbol{XX}'$ (i.e., a linear kernel), the model described above is equivalent  the a *GBLUP* model.
+
+
+**Gaussian Kernel**
+
+The Gaussian kernel is a common choice for semi-parametric regression. The Gaussian kernel is defined as
+
+$$\boldsymbol{K}=exp{-h\boldsymbol{D}}$$
+
+where $\boldsymbol{D}$ is a distance matrix, with zeroes in the diagonals and distances between pairs of points in the off-diagonals (e.g., $D_{ij}=||x_i-x_j||^2$.
+
+For semi-parameteric regre
 
 
 ```r
