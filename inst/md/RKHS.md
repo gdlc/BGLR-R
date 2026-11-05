@@ -17,7 +17,6 @@ $$\boldsymbol{f} \sim MVN(\boldsymbol{0},\boldsymbol{K}\sigma^2_u)$$
 where $\boldsymbol{f}=[f(\boldsymbol{x}_1),...,f(\boldsymbol{x}_n)]'$, $\boldsymbol{K}$ is a symmetric positive semi definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points, specifically, 
 $Cov( f(\boldsymbol{x}_i) , f(\boldsymbol{x}_j))=K_{ij}\sigma^2_u$.
 
-$$f(\boldsymbol{x}_i)$$
 
 **Parametric models**
 
@@ -30,7 +29,7 @@ Likewise, when $\boldsymbol{K}=\boldsymbol{XX}'$ (i.e., a linear kernel), the mo
 
 The Gaussian kernel is a common choice for semi-parametric regression. The Gaussian kernel is defined as
 
-$$\boldsymbol{K}=exp\{-h\boldsymbol{D}\}$$
+$$\boldsymbol{K}=exp(-h\boldsymbol{D}).$$
 
 where $\boldsymbol{D}$ is a distance matrix, with zeroes in the diagonals and distances between pairs of points in the off-diagonals (e.g., $D_{ij}=\lVert \boldsymbol{x}_i-\boldsymbol{x}_j \rVert^2$.
 
