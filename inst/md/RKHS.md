@@ -1,8 +1,11 @@
-#### Semi-parametric regression
+## Semi-parametric regression using Reproducing Kernel Hilbert Spaces (RKHS)
 
-Examples (modified) from [de los Campos et al., Genetics Research, 2010](https://doi.org/10.1017/s0016672310000285).
 
 **(1) RKHS with a Gaussian Kernel and fixed bandwidth parameter**
+
+In a RKHS regression we model the evaluations of a function $f(x_i)$ a a Gaussian process of the form 
+
+$$\boldsymbol{f} \sim MVN(\boldsymbol{0},\boldsymbol{K}\sigma^2_u)$$
 
 ```r
  library(BGLR)
@@ -95,5 +98,10 @@ Examples (modified) from [de los Campos et al., Genetics Research, 2010](https:/
  PMSE<-mean((y[tst]-fmKA$yHat[tst])^2)
  R2_KA<-1-PMSE/mean((y[tst]-mean(y[-tst]))^2)
 ```
+
+[1] [de los Campos et al., Genetics Research, 2010](https://doi.org/10.1017/s0016672310000285).
+[2] [Couto et al., 2019](https://pubmed.ncbi.nlm.nih.gov/30774704/)
+
+`Supplementary Method 2 in Couto et al. (2019)` 
 
 [Return to examples](https://github.com/gdlc/BGLR-R/blob/master/README.md)
