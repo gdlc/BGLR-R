@@ -5,7 +5,7 @@
 
 Consider a regression model of the form
 
-$$y_i=\mu+f(x_i)+\varepsilon_i$$
+$$y_i=\mu+f(\boldsymbol{x}_i)+\varepsilon_i$$
 
 where, $y_i$ is an observed outcome value which is the sum of an intercept ($\mu$), plus the evaluation of a regression function $f()$ at $x_i$, and $\varepsilon_i$ is an error term which, for quantiative outcomes we will assume are normally distributed (typically IID normal with mean zero and variance $\sigma^2_{\varepsilon}$).  Here, $\boldsymbol{x}_i$ is an input (scalar or vector) used to predict the outcome.
 
