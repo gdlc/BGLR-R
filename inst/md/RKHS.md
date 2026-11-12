@@ -40,7 +40,7 @@ $$D_{ij}=G_{ii}+G_{jj}-2G_{ij}.$$
 
 The following function maps a relationship matrix into a distance matrix
 
-```{r}
+```r
  G2D=function(G){
   n=nrow(G)
   D=matrix(nrow=n,ncol=n,0)
