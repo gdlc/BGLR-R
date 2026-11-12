@@ -22,7 +22,7 @@ $Cov( f(\boldsymbol{x}_i) , f(\boldsymbol{x}_j))=K_{ij}\sigma^2_u$.
 
 When the input information is pedigree, and $\boldsymbol{K}$ is an additive relationship matrix, the model described above is equivalent to a standard *additive infinitesimal model* (aka animal model).
 
-Likewise, when $\boldsymbol{K}=\boldsymbol{XX}'$ (i.e., a linear kernel), the model described above is equivalent  the a *GBLUP* model.
+Likewise, when a linear kernel is used (i.e., when $\boldsymbol{K}=\boldsymbol{XX}'$), the model described above is equivalent  the a *GBLUP* model.
 
 
 **Gaussian Kernel**
