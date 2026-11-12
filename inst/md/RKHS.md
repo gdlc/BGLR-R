@@ -80,7 +80,7 @@ The following example illustrates how to fit a RKHS genomic regression using a s
  yNA[tst]<-NA
   
 ## Fitting the model
- fm=BGLR(y=yNA,ETA=list(list(K=K,model='RKHS')),nIter=6000,burnIn=1000)
+ fm=BGLR(y=yNA,ETA=list(list(K=K,model='RKHS')),nIter=6000,burnIn=1000,verbose=FALSE)
  fm$varE
  fm$ETA[[1]]$varU
  cor(y[tst],fm$yHat[tst])
@@ -102,7 +102,7 @@ The following example illustrates how to fit a RKHS genomic regression using a s
     ETA<-list(list(K=K,model='RKHS'))
     prefix<- paste(h[i], "_",sep="")
     fm<-BGLR(y=yNA,ETA=ETA,
-           nIter=5000,burnIn=1000,df0=5,S0=2,saveAt=prefix)
+           nIter=5000,burnIn=1000,df0=5,S0=2,saveAt=prefix, verbose=FALSE)
     fmList[[i]]<-fm
     PMSE[i]<-mean((y[tst]-fm$yHat[tst])^2)
     VARE[i]<-fm$varE
