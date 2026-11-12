@@ -14,7 +14,7 @@ In a RKHS regression we model the evaluations of a function $f(\boldsymbol{x}_i)
 
 $$\boldsymbol{f} \sim MVN(\boldsymbol{0},\boldsymbol{K}\sigma^2_u)$$
 
-where $\boldsymbol{f}=[f(\boldsymbol{x}_1),...,f(\boldsymbol{x}_n)]'$, $\boldsymbol{K}$ is a symmetric positive semi definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points.
+where $\boldsymbol{f}=[f(\boldsymbol{x}_1),...,f(\boldsymbol{x}_n)]'$, $\boldsymbol{K}$ is a symmetric positive semi definite matrix which, up to a constant ($\sigma^2_u$), represent the (co)variance between the evaluation of the function at pairs of points, that is $Cov(f(),f())=K_{ij}$
 
 
 **Parametric models**
