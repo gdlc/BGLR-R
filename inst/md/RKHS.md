@@ -56,7 +56,9 @@ The following function maps a relationship matrix into a distance matrix
 
 In this setting, using $h$ values near 0.5 or 1 usually gives a reasonably good kernel. 
 
-The following example illustrates how to fit a RKHS genomic regression using a single Gaussian kernel.
+The following example illustrates how to fit a RKHS genomic regression using a single Gaussian kernel. 
+
+In the example the distance matrix 
 
 ```r
 ## Data
@@ -89,9 +91,9 @@ The following example illustrates how to fit a RKHS genomic regression using a s
 **(2) Fitting the model over a grid of values of the bandwidth parameter**
 
 ```r
- h=c(.01,.1,.4,.8,1.5,3,5)
- PMSE<-numeric(); VARE<-numeric(); VARU<-numeric();
- pD<-numeric(); DIC<-numeric()
+ h=c(.01,.1,.25,0.5,1,1.25,1.5,3)
+ PMSE<-rep(NA,length(h)); VARE<-PMSE; VARU<-PMSE;
+ COR=PMSE
  fmList<-list()
 
  for(i in 1:length(h)){
@@ -107,29 +109,24 @@ The following example illustrates how to fit a RKHS genomic regression using a s
     PMSE[i]<-mean((y[tst]-fm$yHat[tst])^2)
     VARE[i]<-fm$varE
     VARU[i]<-fm$ETA[[1]]$varU
-    DIC[i]<-fm$fit$DIC
-    pD[i]<-fm$fit$pD
+    COR[i]=cor(y[tst],fm$yHat[tst])
  }
   
  R2<-1-PMSE/mean((y[tst]-mean(y[-tst]))^2)
-
+ 
  ### PLOTS ############################### 
  plot(VARE~h,xlab="Bandwidth", 
       ylab="Residual Variance",type="o",col=4)
   
- plot(I(VARE/VARU)~h,xlab="Bandwidth",
-      ylab="variance ratio (noise/signal)",type="o",col=4)
-
- plot(pD~h,xlab="Bandwidth", ylab="pD",type="o",col=2)
-
- plot(DIC~h,xlab="Bandwidth", ylab="DIC",type="o",col=2)
-
- plot(R2~h,xlab="Bandwidth", ylab="R-squared",type="o",col=2)
+ plot(R2~h,xlab="Bandwidth", ylab="R-squared",type="o",col=2);abline(v=1)
+ plot(COR~h,xlab="Bandwidth", ylab="R-squared",type="o",col=2);abline(v=1)
 
 ```
 
 
 **(3) Kernel Averaging**
+
+In the previous example we considered selecting the band
 
 ```r
  PMSE<-numeric()
