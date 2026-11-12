@@ -21,7 +21,7 @@ where $\boldsymbol{f}=[f(\boldsymbol{x}_1),...,f(\boldsymbol{x}_n)]'$, $\boldsym
 
 When the input information is pedigree, and $\boldsymbol{K}$ is an additive relationship matrix, the model described above is equivalent to a standard *additive infinitesimal model* (aka animal model).
 
-Likewise, when a linear kernel is used ($K=XX'$), the model described above is equivalent  the a *GBLUP* model.
+Likewise, when a linear kernel is used ($\boldsymbol{K=XX'}$), the model described above is equivalent  the a *GBLUP* model.
 
 
 **Gaussian Kernel**
