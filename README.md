@@ -69,6 +69,8 @@ Useful references:
   - [8. Heritability Estimation: two methods](https://github.com/gdlc/BGLR-R/blob/master/inst/md/heritability.md)
 
   - [9. Heterogeneous Error Variance Models](https://github.com/gdlc/BGLR-R/blob/master/inst/md/example_heteroskedastic.md)
+
+  - [Single-response MET GBLUP with heterogeneous residual variances](inst/md/RKHS_groups.md)
   
   - [10. GxE Using Interactions](https://github.com/gdlc/BGLR-R/blob/master/inst/md/GxE_usingInteractions.md)
   
